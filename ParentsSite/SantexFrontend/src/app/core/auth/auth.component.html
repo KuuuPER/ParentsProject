@@ -1,0 +1,25 @@
+<div class="container">
+  <form class="form-signin" role="form" [formGroup]="authForm" (ngSubmit)="onSignin()">
+    <h2 class="form-signin-heading">Авторизация</h2>
+    <p class="error-text error-text-login" [hidden]="!this.authForm.get('login').touched || authForm.get('login').valid">
+      *Введите пожалуйста логин
+    </p>
+    <input
+      type="login"
+      class="form-control"
+      placeholder="Логин"
+      formControlName="login">   
+      <p class="error-text" [hidden]="!authForm.get('password').touched || authForm.get('password').valid">
+        *Введите пожалуйста пароль
+      </p>   
+    <input
+      type="password"
+      class="form-control"
+      placeholder="Пароль"
+      formControlName="password">      
+    <label class="checkbox">
+      <input type="checkbox" value="remember-me"> Запомнить меня
+    </label>
+    <button class="btn btn-lg btn-primary btn-block" [disabled]="!authForm.valid" type="submit">Войти</button>
+  </form>
+</div>

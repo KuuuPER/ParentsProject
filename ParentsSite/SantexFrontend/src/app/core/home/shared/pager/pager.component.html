@@ -1,0 +1,40 @@
+<div class="pager">
+    <ng-template 
+    [ngTemplateOutlet]="loadTemplate()"
+    [ngTemplateOutletContext]="{ $implicit: product, index: i }"></ng-template>    
+</div>
+
+<ng-template #fewItems>
+    <ul class="pagination pagination-lg">
+      <li [ngClass]="{'disabled': currentPage==1}"><a href="#">&laquo;</a></li>
+      <li *ngFor="let x of Arr(pagesCount).fill(1); let i = index" [ngClass]="{'active': i+1 == currentPage}"><a href="#">{{i + 1}}</a></li>
+      <li [ngClass]="{'disabled': currentPage==pagesCount}"><a href="#">&raquo;</a></li>
+    </ul>
+</ng-template>
+  
+<ng-template #aLotItems>
+    <ul class="pagination pagination-lg" *ngIf="currentPage <= 3">
+      <li [ngClass]="{'disabled': currentPage == 1}"><a href="#">&laquo;</a></li>      
+      <li *ngFor="let x of Arr(3).fill(1); let i = index" [ngClass]="{active: currentPage == i+1}"><a href="#">{{ i + 1 }}</a></li>
+      <li><span>...</span></li>
+      <li [ngClass]="{'disabled': currentPage == pagesCount }"><a href="#">&raquo;</a></li>
+    </ul>
+    <ul class="pagination pagination-lg" *ngIf="currentPage > 3 && currentPage < pagesCount - 3">
+        <li><a href="#">&laquo;</a></li>
+        <li><a href="#">{{ 1 }}</a></li>
+        <li><span>...</span></li>
+        <li><a href="#">{{ currentPage -1 }}</a></li>
+        <li class="active"><a href="#">{{ currentPage }}</a></li>
+        <li><a href="#">{{ currentPage + 1 }}</a></li>
+        <li><span>...</span></li>
+        <li><a href="#">{{pagesCount}}</a></li>
+        <li [ngClass]="{'disabled': currentPage==pagesCount}"><a href="#">&raquo;</a></li>
+    </ul>
+    <ul class="pagination pagination-lg" *ngIf="currentPage > pagesCount - 3 && currentPage <= pagesCount">
+        <li><a href="#">&laquo;</a></li>
+        <li><a href="#">1</a></li>
+        <li><span>...</span></li>
+        <li *ngFor="let x of Arr(3).fill(1); let i = index" [ngClass]="{active: currentPage == (pagesCount - 2) + i}"><a href="#">{{ (pagesCount - 2) + i }}</a></li>
+        <li [ngClass]="{'disabled': currentPage==pagesCount}"><a href="#">&raquo;</a></li>
+      </ul>
+</ng-template>
