@@ -1,3 +1,28 @@
-<p>
-  product works!
-</p>
+<h2>Добавить продукт</h2>
+
+<div class="row">
+  <div class="col-xs-12">
+    <form (ngSubmit)="addProduct()" #f="ngForm">
+      <div class="col-sm-5 form-group">
+        <label for="name">Наименование</label>
+        <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        required
+        ngModel>
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="count">Количество</label>
+        <input type="number"
+        class="form-control"
+        id="count"
+        name="count"
+        required
+        pattern="^[1-9]+[0-9]*$"
+        ngModel>
+      </div>
+    </form>
+  </div>
+</div>

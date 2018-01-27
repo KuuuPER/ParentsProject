@@ -5,5 +5,6 @@ export class ProductModel{
         public Name: string,
         public Category: string,
         public Manufacture: string,
-        public Provider: string) {}
+        public Provider: string,
+        public Count: number) {}
 }

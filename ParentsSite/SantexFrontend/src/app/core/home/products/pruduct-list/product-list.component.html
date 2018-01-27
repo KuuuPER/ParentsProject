@@ -1,0 +1,73 @@
+<h1>Товары в наличии</h1>
+
+<a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
+<table class="table table-striped">
+  <thead>
+    <th></th>
+      <th>Название</th>
+      <th>Категория</th>
+      <th>Производитель</th>
+      <th>Поставщик</th>
+      <th>Количество</th>
+    
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of (productsState | async).products; let i = index">
+      <ng-template 
+      [ngTemplateOutlet]="loadTemplate(product)"
+      [ngTemplateOutletContext]="{ $implicit: product, index: i }"></ng-template>
+    </tr>
+  </tbody>
+</table>
+<app-pager 
+  [currentPage]="(productsState | async).pageInfo.currentPage"
+  [pagesCount]="(productsState | async).pageInfo.pageCount()"></app-pager>
+
+<ng-template #readOnlyTemplate let-product let-i="index">
+    <td>{{i + 1}}</td>
+    <td>{{product.Name}}</td>
+    <td>{{product.Category}}</td>
+    <td>{{product.Manufacture}}</td>
+    <td>{{product.Provider}}</td>
+    <td>{{product.Count}}</td>
+    <td>
+        <input type="button" value="Изменить" class="btn btn-default" (click)="editProduct(product)" />
+    </td>
+    <td>
+        <input type="button" value="Удалить" (click)="deleteProduct(product)" class="btn btn-danger" />
+    </td>
+</ng-template>
+
+<ng-template #editTemplate let-i="index">
+    <td>{{i + 1}}</td>
+    <td>
+      <input type="text" [(ngModel)]="editedProduct.Name" class="form-control">
+    </td>
+    <td>
+        <select type="text" [(ngModel)]="editedProduct.Category" class="form-control">
+            <option *ngFor="let category of (productsState | async).categories">
+                {{category.name}}
+            </option>
+        </select>
+    </td>
+    <td>
+        <select type="text" [(ngModel)]="editedProduct.Manufacture" class="form-control">
+            <option *ngFor="let manufacture of (productsState | async).manufactures">
+                {{manufacture.name}}
+            </option>
+        </select>
+    </td>
+    <td>
+        <select type="text" [(ngModel)]="editedProduct.Provider" class="form-control">
+            <option *ngFor="let provider of (productsState | async).providers">
+                {{provider.name}}
+            </option>
+        </select>
+    </td>
+    <td>
+        <input type="button" value="Сохранить" (click)="saveProduct(i)" class="btn btn-success" />
+    </td>
+    <td>
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+    </td>
+</ng-template>
