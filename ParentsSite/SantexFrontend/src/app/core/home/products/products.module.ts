@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { StoreModule } from '@ngrx/store';
 
@@ -17,6 +17,7 @@ import { SharedModule } from '../../../shared/shared.module';
   imports: [
     FormsModule,
     CommonModule,
+    ReactiveFormsModule,
     ProductsRoutingModule,
     StoreModule.forFeature('products', productsReducer),
     SharedModule

@@ -27,16 +27,12 @@ export class ProductListComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromProducts.FeatureState>    
+    private store: Store<fromProducts.FeatureState>
   ) { }
 
   ngOnInit() {
     this.productsState = this.store.select('products');
     //this.store.dispatch(new ProductActions.FetchProducts())
-  }
-
-  addProduct(){
-
   }
 
   editProduct(product: ProductModel){

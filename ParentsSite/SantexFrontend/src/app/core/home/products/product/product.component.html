@@ -1,28 +1,51 @@
 <h2>Добавить продукт</h2>
 
-<div class="row">
-  <div class="col-xs-12">
-    <form (ngSubmit)="addProduct()" #f="ngForm">
-      <div class="col-sm-5 form-group">
-        <label for="name">Наименование</label>
-        <input
-        type="text"
-        class="form-control"
-        id="name"
-        name="name"
-        required
-        ngModel>
+<form (ngSubmit)="addProduct()" [formGroup]="productForm">
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-success" [disabled]="!productForm.valid" type="submit">Сохранить</button>
+      <button class="btn btn-danger" type="button" (click)="onCancel()">Отменить</button>
+    </div>        
+  </div>
+  <div class="row">
+    <div class="col-xs-12">      
+        <div class="col-sm-5 form-group">
+          <label for="name">Наименование</label>
+          <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          formControlName="Name">
+        </div>
+        <div class="col-sm-2 form-group">
+          <label for="count">Количество</label>
+          <input type="number"
+          class="form-control"
+          id="count"
+          name="count"
+          formControlName="Count">
+        </div>      
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="col-sm-2 form-group">
+          <label>Категория</label>
+          <app-dropdown [valueList]="(productsState | async).categories" (onItemSelect)="onCategorySelect($event)"></app-dropdown>        
       </div>
       <div class="col-sm-2 form-group">
-        <label for="count">Количество</label>
-        <input type="number"
-        class="form-control"
-        id="count"
-        name="count"
-        required
-        pattern="^[1-9]+[0-9]*$"
-        ngModel>
+          <label>Производитель</label>
+          <app-dropdown [valueList]="(productsState | async).manufactures" (onItemSelect)="onManufactureSelect($event)"></app-dropdown>        
       </div>
-    </form>
+    </div>  
   </div>
-</div>
+  <div class="row">
+      <div class="col-xs-12">
+        <div class="col-sm-2 form-group">
+            <label>Поставщик</label>
+            <app-dropdown [valueList]="(productsState | async).providers" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
+        </div>
+      </div>  
+    </div>
+</form>
