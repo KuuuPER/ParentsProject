@@ -10,6 +10,8 @@ import { productsReducer } from './store/products.reducers';
 import { PagerComponent } from '../shared/pager/pager.component';
 import { ProductComponent } from './product/product.component';
 import { ProductListComponent } from './pruduct-list/product-list.component';
+import { DropdownComponent } from '../shared/dropdown/dropdown.component';
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -17,6 +19,7 @@ import { ProductListComponent } from './pruduct-list/product-list.component';
     CommonModule,
     ProductsRoutingModule,
     StoreModule.forFeature('products', productsReducer),
+    SharedModule
     // EffectsModule.forFeature([ProductsEffects])
   ],
   declarations: [
@@ -24,6 +27,7 @@ import { ProductListComponent } from './pruduct-list/product-list.component';
     ProductListComponent,
     ProductsComponent,
     PagerComponent,
+    DropdownComponent
 ],
 })
 export class ProductsModule { }
