@@ -1,0 +1,64 @@
+label{
+    display: inline;
+    cursor: pointer;    
+}
+
+.dropdown{
+    width: 120px;
+    position: relative;
+}
+
+.open label{
+    display: none;
+}
+
+.dropdown .form-group{
+    height: 0;
+    visibility: hidden;
+    transition: top 1s ease-in;
+    position: absolute;
+}
+
+.open .form-group{
+    height: auto;
+    visibility: visible;
+}
+
+ul{
+    height: 100%;
+    position: relative;
+    top: -3.3em;
+    opacity: 0;    
+    transition: top 0.2s ease-in, opacity 0.2s ease-out;
+    max-height: 75px;
+    overflow: auto;
+}
+
+.open div>ul{
+    padding: 6px 0px;
+    top: 0;
+    opacity: 1;
+    transition: top 0.2s ease-in, opacity 0.2s ease-in;
+}
+
+ul li{
+    text-align: center;
+    list-style-type: none;
+    cursor: pointer;
+}
+
+ul li:hover{
+    background: #337ab7;
+}
+
+ul li{
+    color: black;
+}
+
+ul li:hover a{
+    color: white;    
+}
+
+a:hover{
+    text-decoration: none;
+}

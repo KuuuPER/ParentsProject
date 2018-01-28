@@ -1,0 +1,17 @@
+<div class="dropdown" [ngClass]="isOpen ? 'open' : ''">
+  <label (click)="toggleDropdown()">
+    <a>
+      {{selectedItem.name}}
+    </a>
+  </label>
+  <div class="form-group">
+    <input type="text" class="form-control" [ngModel]='inputText' #searchText (keyup)="filterItems(searchText.value)">
+    <ul class="form-control">
+      <li *ngFor="let element of valueList">
+        <a (click)="itemSelect(element)" style="cursor: pointer">
+          {{element.name}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

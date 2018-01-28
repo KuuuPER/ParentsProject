@@ -16,7 +16,7 @@
         <ng-template #logout>
           <li><a style="cursor: pointer;" >Log Out</a></li>
         </ng-template>
-        <li class="dropdown" appDropdown *ngIf="(authState | async).authenticated;">
+        <li class="dropdown" *ngIf="(authState | async).authenticated;" appDropdown="false">
           <a
           style="cursor: pointer"
           class="dropdown-toggle"

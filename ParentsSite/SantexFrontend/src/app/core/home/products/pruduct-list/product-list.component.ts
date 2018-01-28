@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import * as fromProducts from '../store/products.reducers';
 import * as ProductActions from '../store/products.actions';
 import { ProductModel } from '../src/ProductModel';
+import { INameId } from '../../src/INameId';
 
 @Component({
   selector: 'app-product-list',
@@ -43,14 +44,24 @@ export class ProductListComponent implements OnInit {
   }
 
   deleteProduct(index: number){
-    debugger;
     this.store.dispatch(new ProductActions.DeleteProduct(index));
   }
 
   saveProduct(index: number){
-    debugger;
     this.store.dispatch(new ProductActions.EditProduct({ index: index, product: this.editedProduct }));
     this.editedProduct = null;
+  }
+
+  onCategorySelect(selectedCategory: INameId){
+    this.editedProduct.Category = selectedCategory;
+  }
+
+  onManufactureSelect(selectedManufacture: INameId){
+    this.editedProduct.Manufacture = selectedManufacture;
+  }
+
+  onProviderSelect(selectedProvider: INameId){
+    this.editedProduct.Provider = selectedProvider;
   }
 
   cancel(){

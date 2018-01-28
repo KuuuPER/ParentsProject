@@ -26,9 +26,9 @@
 <ng-template #readOnlyTemplate let-product let-i="index">
     <td>{{i + 1}}</td>
     <td>{{product.Name}}</td>
-    <td>{{product.Category}}</td>
-    <td>{{product.Manufacture}}</td>
-    <td>{{product.Provider}}</td>
+    <td>{{product.Category.name}}</td>
+    <td>{{product.Manufacture.name}}</td>
+    <td>{{product.Provider.name}}</td>
     <td>{{product.Count}}</td>
     <td>
         <input type="button" value="Изменить" class="btn btn-default" (click)="editProduct(product)" />
@@ -44,25 +44,16 @@
       <input type="text" [(ngModel)]="editedProduct.Name" class="form-control">
     </td>
     <td>
-        <select type="text" [(ngModel)]="editedProduct.Category" class="form-control">
-            <option *ngFor="let category of (productsState | async).categories">
-                {{category.name}}
-            </option>
-        </select>
+      <app-dropdown [valueList]="(productsState | async).categories" [selectedItem]="editedProduct.Category" (onItemSelect)="onCategorySelect($event)"></app-dropdown>
     </td>
     <td>
-        <select type="text" [(ngModel)]="editedProduct.Manufacture" class="form-control">
-            <option *ngFor="let manufacture of (productsState | async).manufactures">
-                {{manufacture.name}}
-            </option>
-        </select>
+        <app-dropdown [valueList]="(productsState | async).manufactures" [selectedItem]="editedProduct.Manufacture" (onItemSelect)="onManufactureSelect($event)"></app-dropdown>
     </td>
     <td>
-        <select type="text" [(ngModel)]="editedProduct.Provider" class="form-control">
-            <option *ngFor="let provider of (productsState | async).providers">
-                {{provider.name}}
-            </option>
-        </select>
+        <app-dropdown [valueList]="(productsState | async).providers" [selectedItem]="editedProduct.Provider" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="editedProduct.Count" class="form-control">
     </td>
     <td>
         <input type="button" value="Сохранить" (click)="saveProduct(i)" class="btn btn-success" />
