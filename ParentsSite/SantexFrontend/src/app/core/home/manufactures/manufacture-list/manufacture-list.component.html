@@ -1,0 +1,45 @@
+<h1>Производители</h1>
+
+<a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
+<table class="table table-striped">
+  <thead>
+    <th></th>
+    <th>Название</th>
+    <th></th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let manufacture of (manufacturesState | async).manufactures; let i = index">
+      <ng-template 
+      [ngTemplateOutlet]="loadTemplate(manufacture)"
+      [ngTemplateOutletContext]="{ $implicit: manufacture, index: i }"></ng-template>
+    </tr>
+  </tbody>
+</table>
+<app-pager 
+  [currentPage]="(manufacturesState | async).pageInfo.currentPage"
+  [pagesCount]="(manufacturesState | async).pageInfo.pageCount()"></app-pager>
+
+  <ng-template #readOnlyTemplate let-manufacture let-i="index">
+      <td>{{i + 1}}</td>
+      <td>{{manufacture.Name}}</td>
+      <td>
+          <input type="button" value="Изменить" class="btn btn-default" (click)="editManufacture(manufacture)" />
+      </td>
+      <td>
+          <input type="button" value="Удалить" (click)="deleteManufacture(manufacture)" class="btn btn-danger" />
+      </td>
+  </ng-template>
+
+  <ng-template #editTemplate let-i="index">
+      <td>{{i + 1}}</td>
+      <td>
+        <input type="text" [(ngModel)]="editedManufacture.Name" class="form-control">
+      </td>
+      <td>
+          <input type="button" value="Сохранить" (click)="saveManufacture(i)" class="btn btn-success" />
+      </td>
+      <td>
+          <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+      </td>
+  </ng-template>

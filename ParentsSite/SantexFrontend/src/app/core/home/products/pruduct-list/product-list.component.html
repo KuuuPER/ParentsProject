@@ -9,7 +9,8 @@
       <th>Производитель</th>
       <th>Поставщик</th>
       <th>Количество</th>
-    
+      <th></th>
+      <th></th>
   </thead>
   <tbody>
     <tr *ngFor="let product of (productsState | async).products; let i = index">
@@ -26,9 +27,9 @@
 <ng-template #readOnlyTemplate let-product let-i="index">
     <td>{{i + 1}}</td>
     <td>{{product.Name}}</td>
-    <td>{{product.Category.name}}</td>
-    <td>{{product.Manufacture.name}}</td>
-    <td>{{product.Provider.name}}</td>
+    <td>{{product.Category.Name}}</td>
+    <td>{{product.Manufacture.Name}}</td>
+    <td>{{product.Provider.Name}}</td>
     <td>{{product.Count}}</td>
     <td>
         <input type="button" value="Изменить" class="btn btn-default" (click)="editProduct(product)" />

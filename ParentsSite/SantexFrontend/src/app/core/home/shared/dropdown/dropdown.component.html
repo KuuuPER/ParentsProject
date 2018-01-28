@@ -1,7 +1,7 @@
 <div class="dropdown" [ngClass]="isOpen ? 'open' : ''">
   <label (click)="toggleDropdown()">
     <a>
-      {{selectedItem.name}}
+      {{selectedItem.Name}}
     </a>
   </label>
   <div class="form-group">
@@ -9,7 +9,7 @@
     <ul class="form-control">
       <li *ngFor="let element of valueList">
         <a (click)="itemSelect(element)" style="cursor: pointer">
-          {{element.name}}
+          {{element.Name}}
         </a>
       </li>
     </ul>
