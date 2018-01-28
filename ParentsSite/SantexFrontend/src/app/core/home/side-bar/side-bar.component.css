@@ -1,7 +1,7 @@
 @media (min-width: 768px){
     .sidebar {
         margin-top: 1px;
-        position: fixed;
+        position: absolute;
         top: 51px;
         bottom: 0;
         left: 0;

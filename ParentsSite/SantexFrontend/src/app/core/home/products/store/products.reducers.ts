@@ -34,7 +34,7 @@ const initialState: State = {
     categories: [{Id: '1', name: 'Категория 1'}, {Id: '2', name: 'Категория 2'}, {Id: '3', name: 'Категория 3'}, {Id: '4', name: 'Категория 4'}, {Id: '4', name: 'Категория 5'}],
     manufactures: [{Id: '1', name: 'Производитель 1'}, {Id: '2', name: 'Производитель 2'}, {Id: '3', name: 'Производитель 3'}],
     providers: [{Id: '1', name: 'Поставщик 1'}, {Id: '2', name: 'Поставщик 2'}, {Id: '3', name: 'Поставщик 3'}],
-    pageInfo: new PageInfo(10, 110, 4)
+    pageInfo: new PageInfo(14, 110, 4)
 }
 
 export function productsReducer(state: State = initialState, action: ProductsActions.ProductsActions){
