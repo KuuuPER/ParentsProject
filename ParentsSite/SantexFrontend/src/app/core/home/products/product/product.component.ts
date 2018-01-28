@@ -58,19 +58,19 @@ export class ProductComponent implements OnInit {
   onProviderSelect(selectedProvider: INameId){
       let provider = <FormGroup>this.productForm.get('Provider');
       provider.setControl('Id', new FormControl(selectedProvider.Id, Validators.required))
-      provider.setControl('name', new FormControl(selectedProvider.name, Validators.required));
+      provider.setControl('Name', new FormControl(selectedProvider.Name, Validators.required));
   }
 
   onManufactureSelect(selectedManufacture: INameId){
       let manufacture = <FormGroup>this.productForm.get('Manufacture');
       manufacture.setControl('Id', new FormControl(selectedManufacture.Id, Validators.required));
-      manufacture.setControl('name', new FormControl(selectedManufacture.name, Validators.required));
+      manufacture.setControl('Name', new FormControl(selectedManufacture.Name, Validators.required));
   }
 
   onCategorySelect(selectedCategory: INameId){
     let category = <FormGroup>this.productForm.get('Category');
       category.setControl('Id', new FormControl(selectedCategory.Id, Validators.required));
-      category.setControl('name', new FormControl(selectedCategory.name, Validators.required));
+      category.setControl('Name', new FormControl(selectedCategory.Name, Validators.required));
   }
 
   addProduct(){

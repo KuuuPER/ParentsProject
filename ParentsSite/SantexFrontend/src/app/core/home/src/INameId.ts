@@ -1,4 +1,4 @@
 export interface INameId {
     Id: string;
-    name: string;
+    Name: string;
 }

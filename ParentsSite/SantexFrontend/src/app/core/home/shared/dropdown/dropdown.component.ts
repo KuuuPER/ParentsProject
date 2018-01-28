@@ -26,7 +26,7 @@ export class DropdownComponent implements OnInit {
       this.selectedItem = this.valueList[0];
     }
 
-    this.inputText = this.selectedItem.name;
+    this.inputText = this.selectedItem.Name;
     this.originalList = this.valueList;
   }
 
@@ -37,14 +37,14 @@ export class DropdownComponent implements OnInit {
   @Output() onItemSelect = new EventEmitter<INameId>()
   itemSelect(element: INameId){
     this.selectedItem = element;
-    this.inputText = element.name;
+    this.inputText = element.Name;
     this.isOpen = false;
     this.onItemSelect.emit(element);
   }
 
   filterItems(searchText: string){
     if (searchText !== '') {
-      this.valueList = this.valueList.filter(i => i.name.includes(searchText));
+      this.valueList = this.valueList.filter(i => i.Name.includes(searchText));
     }
     else{
       this.valueList = this.originalList;
