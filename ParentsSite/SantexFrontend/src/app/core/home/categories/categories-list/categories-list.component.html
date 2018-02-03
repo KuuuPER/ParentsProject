@@ -1,0 +1,45 @@
+<h1>Поставщики</h1>
+
+<a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
+<table class="table table-striped">
+  <thead>
+    <th></th>
+    <th>Название</th>
+    <th></th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let category of (categoriesState | async).categories; let i = index">
+      <ng-template 
+      [ngTemplateOutlet]="loadTemplate(category)"
+      [ngTemplateOutletContext]="{ $implicit: category, index: i }"></ng-template>
+    </tr>
+  </tbody>
+</table>
+<app-pager 
+  [currentPage]="(categoriesState | async).pageInfo.currentPage"
+  [pagesCount]="(categoriesState | async).pageInfo.pageCount()"></app-pager>
+
+  <ng-template #readOnlyTemplate let-category let-i="index">
+      <td>{{i + 1}}</td>
+      <td>{{category.Name}}</td>
+      <td>
+          <input type="button" value="Изменить" class="btn btn-default" (click)="editCategory(category)" />
+      </td>
+      <td>
+          <input type="button" value="Удалить" (click)="deleteCategory(category)" class="btn btn-danger" />
+      </td>
+  </ng-template>
+
+  <ng-template #editTemplate let-i="index">
+      <td>{{i + 1}}</td>
+      <td>
+        <input type="text" [(ngModel)]="editedCategory.Name" class="form-control">
+      </td>
+      <td>
+          <input type="button" value="Сохранить" (click)="saveCategory(i)" class="btn btn-success" />
+      </td>
+      <td>
+          <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+      </td>
+  </ng-template>

@@ -1,4 +1,4 @@
-import * as Actions from './manufacture.actions';
+import * as Actions from './manufactures.actions';
 import { ManufactureModel } from '../src/ManufactureModel';
 
 import * as fromApp from '../../../../store/app.reducers';

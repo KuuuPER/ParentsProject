@@ -6,11 +6,10 @@ import { StoreModule } from '@ngrx/store';
 import { HomeSharedModule } from '../shared/home-shared.module';
 import { PagerComponent } from '../shared/pager/pager.component';
 import { DropdownComponent } from '../shared/dropdown/dropdown.component';
-import { ManufactureListComponent } from './manufacture-list/manufacture-list.component';
-import { ManufactureComponent } from './manufacture/manufacture.component';
-import { ManufacturesRoutingModule } from './manufactures-routing.module';
-import { manufacturesReducer } from './store/manufactures.reducers';
-
+import { ProvidersListComponent } from './providers-list/providers-list.component';
+import { ProviderComponent } from './provider/provider.component';
+import { ProvidersRoutingModule } from './providers-routing.module';
+import { providersReducer } from './store/providers.reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -18,14 +17,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ManufacturesRoutingModule,
+    ProvidersRoutingModule,
     HomeSharedModule,
-    StoreModule.forFeature('manufactures', manufacturesReducer),
+    StoreModule.forFeature('providers', providersReducer),
   ],
-
   declarations: [
-    ManufactureListComponent,
-    ManufactureComponent
+    ProvidersListComponent,
+    ProviderComponent
 ]
 })
-export class ManufacturesModule { }
+export class ProvidersModule { }

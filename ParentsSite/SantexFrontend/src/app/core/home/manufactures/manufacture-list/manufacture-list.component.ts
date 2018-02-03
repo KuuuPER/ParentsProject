@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import * as Actions from '../store/manufacture.actions';
-import * as fromManufactures from '../store/manufacture.reducers';
+import * as Actions from '../store/manufactures.actions';
+import * as fromManufactures from '../store/manufactures.reducers';
 import { ManufactureModel } from '../src/ManufactureModel';
 
 @Component({

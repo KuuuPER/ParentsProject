@@ -14,4 +14,18 @@
         border-right: 1px solid #eee;
         margin-bottom: 60px;
     }
+
+    li.active, li:hover{        
+        background-color: #337ab7;
+        border-radius: 3px;
+    }
+    li.active a{
+        color: #f5f5f5;
+    }
+    .nav>li>a:focus, .nav>li>a:hover{
+        color: #f5f5f5;
+        background-color: #337ab7;
+        text-decoration: underline;
+        border-radius: 3px;
+    }
 }

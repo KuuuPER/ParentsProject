@@ -7,8 +7,10 @@ const appRoutes: Routes = [
     { path: '', component: HomeComponent, children:
         [
             { path: '', loadChildren: './products/products.module#ProductsModule' },
+            { path: 'categories', loadChildren: './categories/categories.module#CategoriesModule'},
+            { path: 'manufactures',  loadChildren: './manufactures/manufactures.module#ManufacturesModule'},
             { path: 'products', loadChildren: './products/products.module#ProductsModule' },
-            { path: 'manufactures',  loadChildren: './manufactures/manufactures.module#ManufacturesModule'}
+            { path: 'providers',  loadChildren: './providers/providers.module#ProvidersModule'}
         ] },
   ];
 
