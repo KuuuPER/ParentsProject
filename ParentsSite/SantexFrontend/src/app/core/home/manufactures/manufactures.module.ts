@@ -10,6 +10,7 @@ import { ManufactureListComponent } from './manufacture-list/manufacture-list.co
 import { ManufactureComponent } from './manufacture/manufacture.component';
 import { ManufacturesRoutingModule } from './manufactures-routing.module';
 import { manufacturesReducer } from './store/manufactures.reducers';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -21,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeSharedModule,
     StoreModule.forFeature('manufactures', manufacturesReducer),
   ],
+
   declarations: [
     ManufactureListComponent,
     ManufactureComponent
