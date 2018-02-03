@@ -4,14 +4,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { StoreModule } from '@ngrx/store';
 
-import { ProductsComponent } from './products.component';
-import { ProductsRoutingModule } from './products-routing.module';
-import { productsReducer } from './store/products.reducers';
+import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { PagerComponent } from '../shared/pager/pager.component';
+import { HomeSharedModule } from '../shared/home-shared.module';
+
+import { ProductsComponent } from './products.component';
 import { ProductComponent } from './product/product.component';
 import { ProductListComponent } from './pruduct-list/product-list.component';
-import { DropdownComponent } from '../shared/dropdown/dropdown.component';
-import { SharedModule } from '../../../shared/shared.module';
+import { ProductsRoutingModule } from './products-routing.module';
+import { productsReducer } from './store/products.reducers';
 
 @NgModule({
   imports: [
@@ -19,16 +20,14 @@ import { SharedModule } from '../../../shared/shared.module';
     CommonModule,
     ReactiveFormsModule,
     ProductsRoutingModule,
-    StoreModule.forFeature('products', productsReducer),
-    SharedModule
+    HomeSharedModule,
+    StoreModule.forFeature('products', productsReducer)
     // EffectsModule.forFeature([ProductsEffects])
   ],
   declarations: [
     ProductComponent,
     ProductListComponent,
-    ProductsComponent,
-    PagerComponent,
-    DropdownComponent
+    ProductsComponent
 ],
 })
 export class ProductsModule { }

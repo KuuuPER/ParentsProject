@@ -1,0 +1,28 @@
+<h2>Добавление производителя</h2>
+
+<form (ngSubmit)="addProvider()" [formGroup]="providerForm">
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-success" [disabled]="!providerForm.valid" type="submit">Сохранить</button>
+      <button class="btn btn-danger" type="button" (click)="onCancel()">Отменить</button>
+    </div>        
+  </div>
+  <div class="row">
+    <div class="col-xs-12">      
+        <div class="col-sm-5 form-group">
+          <label for="name">Наименование</label>
+          <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          formControlName="Name">
+        </div>
+        <div class="col-sm-5 form-group error">
+          <label for="name" class="">
+            *Поле необходимо заполнить
+          </label>
+        </div>
+    </div>
+  </div>
+</form>
