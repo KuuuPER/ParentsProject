@@ -30,10 +30,9 @@ export class ManufactureComponent implements OnInit {
   }
 
   initForm(){
-    let manufactureName = '';
-
     this.manufactureForm = new FormGroup({
-      'Name': new FormControl(manufactureName, Validators.required)
+      'Name': new FormControl('', Validators.required),
+      'Country': new FormControl('', Validators.required)
     });
   }
 

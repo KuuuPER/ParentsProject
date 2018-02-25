@@ -5,10 +5,13 @@
   <thead>
     <th></th>
       <th>Название</th>
+      <th>Артикул</th>
       <th>Категория</th>
       <th>Производитель</th>
       <th>Поставщик</th>
       <th>Количество</th>
+      <th>Закупочная цена</th>
+      <th>Фактическая цена</th>
       <th></th>
       <th></th>
   </thead>
@@ -27,10 +30,13 @@
 <ng-template #readOnlyTemplate let-product let-i="index">
     <td>{{i + 1}}</td>
     <td>{{product.Name}}</td>
+    <td>{{product.VendorCode}}</td>
     <td>{{product.Category.Name}}</td>
     <td>{{product.Manufacture.Name}}</td>
     <td>{{product.Provider.Name}}</td>
     <td>{{product.Count}}</td>
+    <td>{{product.PurchasePrice}}</td>
+    <td>{{product.SellingPrice}}</td>
     <td>
         <input type="button" value="Изменить" class="btn btn-default" (click)="editProduct(product)" />
     </td>
@@ -45,6 +51,9 @@
       <input type="text" [(ngModel)]="editedProduct.Name" class="form-control">
     </td>
     <td>
+        <input type="text" [(ngModel)]="editedProduct.VendorCode" class="form-control">
+    </td>
+    <td>
       <app-dropdown [valueList]="(productsState | async).categories" [selectedItem]="editedProduct.Category" (onItemSelect)="onCategorySelect($event)"></app-dropdown>
     </td>
     <td>
@@ -55,6 +64,12 @@
     </td>
     <td>
         <input type="text" [(ngModel)]="editedProduct.Count" class="form-control">
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="editedProduct.PurchasePrice" class="form-control">
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="editedProduct.SellingPrice" class="form-control">
     </td>
     <td>
         <input type="button" value="Сохранить" (click)="saveProduct(i)" class="btn btn-success" />

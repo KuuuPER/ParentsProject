@@ -10,7 +10,11 @@ const appRoutes: Routes = [
             { path: 'categories', loadChildren: './categories/categories.module#CategoriesModule'},
             { path: 'manufactures',  loadChildren: './manufactures/manufactures.module#ManufacturesModule'},
             { path: 'products', loadChildren: './products/products.module#ProductsModule' },
-            { path: 'providers',  loadChildren: './providers/providers.module#ProvidersModule'}
+            { path: 'providers',  loadChildren: './providers/providers.module#ProvidersModule'},
+            { path: 'imports',  loadChildren: './imports/imports.module#ImportsModule'},
+            { path: 'purchases', loadChildren: './purchases/purchases.module#PurchasesModule' },
+            { path: 'drivers', loadChildren: './drivers/drivers.module#DriversModule' },
+            { path: 'deliveries', loadChildren: './deliveries/deliveries.module#DeliveriesModule' }
         ] },
   ];
 

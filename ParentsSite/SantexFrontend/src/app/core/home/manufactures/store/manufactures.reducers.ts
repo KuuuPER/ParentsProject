@@ -15,7 +15,7 @@ export interface State{
 }
 
 const initialState: State = {
-    manufactures: [{Id: '1', Name: 'Производитель 1'}, {Id: '2', Name: 'Производитель 2'}, {Id: '3', Name: 'Производитель 3'}],
+    manufactures: [{Id: '1', Name: 'Производитель 1', Country: 'Россия'}, {Id: '2', Name: 'Производитель 2', Country: 'Россия'}, {Id: '3', Name: 'Производитель 3', Country: 'Россия'}],
     pageInfo: new PageInfo(10, 3, 1)
 }
 

@@ -1,0 +1,80 @@
+<h2>Добавление водителя</h2>
+
+<form (ngSubmit)="addDriver()" [formGroup]="driverForm">
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-success" [disabled]="!driverForm.valid" type="submit">Сохранить</button>
+      <button class="btn btn-danger" type="button" (click)="onCancel()">Отменить</button>
+    </div>        
+  </div>
+  <div class="row">
+    <div class="col-xs-12">      
+        <div class="col-sm-5 form-group">
+          <label for="name">Имя</label>
+          <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          formControlName="name">
+        </div>
+        <div class="col-sm-5 form-group error">
+          <p class="error-text" [hidden]="!driverForm.get('name').touched || driverForm.get('name').valid">
+            *Поле необходимо заполнить
+          </p>
+        </div>
+    </div>
+    <div class="col-xs-12">      
+      <div class="col-sm-5 form-group">
+        <label for="name">Рейтинг</label>
+        <input
+        type="number"
+        class="form-control"
+        id="rate"
+        name="rate"
+        formControlName="rate">
+      </div>
+      <div class="col-sm-5 form-group error">
+        <p class="error-text" [hidden]="!driverForm.get('rate').touched || driverForm.get('rate').valid">
+          *Поле необходимо заполнить
+        </p>
+      </div>
+    </div>
+    <div class="col-xs-12">      
+      <div class="col-sm-5 form-group">
+        <label for="name">Заметки</label>
+        <textarea
+        class="form-control"
+        id="notes"
+        name="notes"
+        formControlName="notes"></textarea>
+      </div>      
+    </div>
+  </div>
+  <!-- <div class="row">
+    <div class="col-xs-12">
+      <table id="products" class="table table-striped">
+        <thead>
+          <th>Наименование</th>
+          <th>Артикул</th>
+          <th>Категория</th>
+          <th>Количество</th>
+          <th>Закупочная цена</th>
+          <th>Фактическая цена</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let driver of (driversState | async).drivers">
+            <td>{{product.Name}}</td>
+            <td>{{product.VendorCode}}</td>
+            <td>{{product.Category.Name}}</td>
+            <td>{{product.Count}}</td>
+            <td>{{product.PurchasePrice}}</td>
+            <td>{{product.SellingPrice}}</td>
+            <td><button class="btn btn-success" (click)="addProductToDelivery(product)">Добавить</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
+</form>

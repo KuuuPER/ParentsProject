@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { StoreModule } from '@ngrx/store';
 
@@ -10,8 +11,6 @@ import { ManufactureListComponent } from './manufacture-list/manufacture-list.co
 import { ManufactureComponent } from './manufacture/manufacture.component';
 import { ManufacturesRoutingModule } from './manufactures-routing.module';
 import { manufacturesReducer } from './store/manufactures.reducers';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [

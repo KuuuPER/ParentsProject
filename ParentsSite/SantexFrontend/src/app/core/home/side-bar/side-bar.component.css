@@ -1,18 +1,14 @@
 @media (min-width: 768px){
     .sidebar {
-        margin-top: 1px;
-        position: absolute;
         top: 51px;
-        bottom: 0;
-        left: 0;
-        z-index: 1000;
-        display: block;
+        margin-top: 1px;
         padding: 20px;
         overflow-x: hidden;
         overflow-y: auto;
         background-color: #f5f5f5;
         border-right: 1px solid #eee;
-        margin-bottom: 60px;
+        position: absolute;
+        bottom: 0px;
     }
 
     li.active, li:hover{        

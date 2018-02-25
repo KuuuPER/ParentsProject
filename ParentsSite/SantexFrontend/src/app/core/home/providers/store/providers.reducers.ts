@@ -10,7 +10,7 @@ export interface FeatureState extends fromApp.AppState {
 }
 
 export interface State{
-    providers: ProviderModel[];    
+    providers: ProviderModel[];
     pageInfo: PageInfo;
 }
 

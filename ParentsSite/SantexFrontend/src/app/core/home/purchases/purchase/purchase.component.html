@@ -1,0 +1,115 @@
+<h2>Создание покупки</h2>
+
+<form (ngSubmit)="addPurchase()" [formGroup]="purchaseForm">
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-success" [disabled]="!purchaseForm.valid" type="submit">Сохранить</button>      
+    </div>        
+  </div>
+  <div class="row">
+    <div class="col-xs-12">      
+        <div class="col-sm-5 form-group">
+          <label for="address">Адрес</label>
+          <input
+          type="text"
+          class="form-control"
+          id="address"
+          name="address"
+          formControlName="Address">
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="col-sm-5 form-group">
+        <label for="purchaseDate">Дата:</label>
+        <div>
+          <my-date-picker 
+          [options]="myDatePickerOptions"
+          name="purchaseDate"
+          formControlName="PurchaseDate"
+          (dateChanged)="onDateChanged($event)"
+          [selDate]="{
+            year: purchaseDate.getFullYear(),
+            month: purchaseDate.getMonth() + 1,
+            day: purchaseDate.getDate()
+        }"></my-date-picker>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Контакт</h3>
+  <div class="row" formGroupName="Contact">
+    <div class="col-xs-12">
+      <div class="col-sm-5 form-group">
+        <label for="contactName">Имя</label>
+        <input type="text" class="form-control" id="contactName" name="contactName" formControlName="ContactName">
+      </div>
+      <div class="col-sm-5 form-group">
+        <label for="contactPhone">Телефон</label>
+        <input type="text" class="form-control" id="contactPhone" name="contactPhone" formControlName="ContactPhone">
+      </div>
+    </div>
+    <div class="col-xs-12">
+      <div class="col-sm-5 form-group">
+        <label for="contactAddress">Адрес</label>
+        <input type="text" id="contactAddress" name="contactAddress" class="form-control" formControlName="ContactAddress">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <table id="purchaseProducts" class="table table-striped">
+        <thead>
+          <th>Наименование</th>
+          <th>Артикул</th>
+          <th>Категория</th>
+          <th>Количество</th>
+          <th>Закупочная цена</th>
+          <th>Фактическая цена</th>
+          <th><button class="btn btn-default" (click)="clearPurchaseProducts()">Очистить</button></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of purchaseProducts; let i = index">
+            <td>{{product.Name}}</td>
+            <td>{{product.VendorCode}}</td>
+            <td>{{product.Category.Name}}</td>
+            <td>{{product.Count}}</td>
+            <td>{{product.PurchasePrice}}</td>
+            <td>{{product.SellingPrice}}</td>
+            <td><button class="btn btn-danger" (click)="deleteProductFromPurchase(i)">Убрать</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <table id="products" class="table table-striped">
+        <thead>
+          <th>Наименование</th>
+          <th>Артикул</th>
+          <th>Категория</th>
+          <th>Количество</th>
+          <th>Закупочная цена</th>
+          <th>Фактическая цена</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of (productsState | async).products">
+            <td>{{product.Name}}</td>
+            <td>{{product.VendorCode}}</td>
+            <td>{{product.Category.Name}}</td>
+            <td>{{product.Count}}</td>
+            <td>{{product.PurchasePrice}}</td>
+            <td>{{product.SellingPrice}}</td>
+            <td><button class="btn btn-success" (click)="addProductToPurchase(product)">Добавить</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</form>

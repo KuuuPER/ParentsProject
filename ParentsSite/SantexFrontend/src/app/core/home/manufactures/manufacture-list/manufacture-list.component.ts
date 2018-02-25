@@ -32,7 +32,7 @@ export class ManufactureListComponent implements OnInit {
   }
 
   editManufacture(manufacture: ManufactureModel){
-    this.editedManufacture = new ManufactureModel(manufacture.Name, manufacture.Id);
+    this.editedManufacture = new ManufactureModel(manufacture.Id, manufacture.Name, manufacture.Country);
   }
 
   deleteManufacture(index: number){

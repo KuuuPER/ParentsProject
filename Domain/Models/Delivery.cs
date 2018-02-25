@@ -6,16 +6,18 @@ namespace Domain.Models
 {
     public class Delivery : BaseEntity
     {
-        public Guid ProviderId { get; set; }
+        public Driver Driver { get; set; }
 
-        public Provider Provider { get; set;}
-
-        public List<ProductUnit> ProductUnits { get; set; }
+        public IEnumerable<PurchaseUnit> PurchaseUnits { get; set; }
 
         public DeliveryStatus Status { get; set; }
 
-        public DateTime? CreatedDate { get; set; }        
+        public DateTime? CreatedDate { get; set; }
+
+        public DateTime? DeliveryDate { get; set; }
 
         public DateTime? FinishDate { get; set; }
+
+        public string Notes { get; set; }
     }
 }

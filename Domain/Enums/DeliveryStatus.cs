@@ -4,6 +4,7 @@
     {
         NotDelivered,
         InDelivery,
-        Delivered
+        Delivered,
+        Canceled
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Domain.Models;
 using DataAccess;
 
-namespace Managers.Sevices
+namespace Managers.Providers
 {
-    public class DeliveryService : BaseService<Delivery>
+    public class DeliveryService : BaseProvider<Delivery>
     {
         public DeliveryService(UnitOfWork unitOfWork) : base(unitOfWork)
         {

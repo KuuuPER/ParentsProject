@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Domain.Enums;
 
 namespace Domain.Models
 {
@@ -10,10 +10,16 @@ namespace Domain.Models
 
         public ProductCategory Category { get; set; }
 
-        public Guid CategoryId { get; set; }
-
         public Manufacture Manufacture { get; set; }
 
-        public Guid ManufactureId { get; set; }
+        public Provider Provider { get; set; }
+
+        public int Count { get; set; }
+
+        public int ProviderPrice { get; set; }
+
+        public int StorePrice { get; set; }
+
+        public ProductState State { get; set; }
     }
 }

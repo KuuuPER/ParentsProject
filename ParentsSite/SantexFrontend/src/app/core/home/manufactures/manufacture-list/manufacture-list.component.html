@@ -5,6 +5,7 @@
   <thead>
     <th></th>
     <th>Название</th>
+    <th>Страна</th>
     <th></th>
     <th></th>
   </thead>
@@ -23,6 +24,7 @@
   <ng-template #readOnlyTemplate let-manufacture let-i="index">
       <td>{{i + 1}}</td>
       <td>{{manufacture.Name}}</td>
+      <td>{{manufacture.Country}}</td>
       <td>
           <input type="button" value="Изменить" class="btn btn-default" (click)="editManufacture(manufacture)" />
       </td>

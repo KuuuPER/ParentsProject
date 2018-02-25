@@ -28,6 +28,7 @@
     "@ngrx/store-devtools": "^4.1.1",
     "@nguniversal/express-engine": "^1.0.0-beta.3",
     "@nguniversal/module-map-ngfactory-loader": "^1.0.0-beta.3",
+    "angular4-datepicker": "^1.0.1",
     "bootstrap": "^3.3.7",
     "core-js": "^2.5.3",
     "express": "^4.16.2",
