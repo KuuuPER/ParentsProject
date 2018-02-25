@@ -1,0 +1,99 @@
+<h2>Создание доставки</h2>
+
+<form (ngSubmit)="addDelivery()" [formGroup]="deliveryForm">
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-success" [disabled]="!deliveryForm.valid" type="submit">Сохранить</button>      
+    </div>        
+  </div>
+  <div class="row">
+    <div class="col-xs-12">      
+        <div class="col-sm-5 form-group">
+          <label for="address">Адрес</label>
+          <input
+          type="text"
+          class="form-control"
+          id="address"
+          name="address"
+          formControlName="Address">
+        </div>
+        <div class="col-sm-2 form-group">
+          <label>Водитель</label>
+          <app-dropdown [valueList]="(deliveriesState | async).drivers" (onItemSelect)="onDriverSelect($event)"></app-dropdown>        
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="col-sm-5 form-group">
+        <label for="deliveryDate">Дата доставки:</label>
+        <div>
+          <my-date-picker 
+          [options]="myDatePickerOptions"
+          name="deliveryDate"
+          formControlName="DeliveryDate"
+          (dateChanged)="onDateChanged($event)"
+          [selDate]="{
+            year: deliveryDate.getFullYear(),
+            month: deliveryDate.getMonth() + 1,
+            day: deliveryDate.getDate()
+        }"></my-date-picker>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <table id="deliveryProducts" class="table table-striped">
+        <thead>
+          <th>Наименование</th>
+          <th>Артикул</th>
+          <th>Категория</th>
+          <th>Количество</th>
+          <th>Закупочная цена</th>
+          <th>Фактическая цена</th>
+          <th><button class="btn btn-default" (click)="clearDeliveryProducts()">Очистить</button></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of deliveryProducts; let i = index">
+            <td>{{product.Name}}</td>
+            <td>{{product.VendorCode}}</td>
+            <td>{{product.Category.Name}}</td>
+            <td>{{product.Count}}</td>
+            <td>{{product.PurchasePrice}}</td>
+            <td>{{product.SellingPrice}}</td>
+            <td><button class="btn btn-danger" (click)="deleteProductFromDelivery(i)">Убрать</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <table id="products" class="table table-striped">
+        <thead>
+          <th>Наименование</th>
+          <th>Артикул</th>
+          <th>Категория</th>
+          <th>Количество</th>
+          <th>Закупочная цена</th>
+          <th>Фактическая цена</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of (productsState | async).products">
+            <td>{{product.Name}}</td>
+            <td>{{product.VendorCode}}</td>
+            <td>{{product.Category.Name}}</td>
+            <td>{{product.Count}}</td>
+            <td>{{product.PurchasePrice}}</td>
+            <td>{{product.SellingPrice}}</td>
+            <td><button class="btn btn-success" (click)="addProductToDelivery(product)">Добавить</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</form>

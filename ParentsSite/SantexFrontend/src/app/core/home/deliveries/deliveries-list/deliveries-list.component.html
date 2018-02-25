@@ -1,0 +1,70 @@
+<h1>Доставки</h1>
+
+<a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
+<table class="table table-striped">
+  <thead>
+    <th></th>
+      <th>Адрес</th>
+      <th>Водитель</th>
+      <th>Дата</th>
+      <th>Количество товаров</th>
+      <th>Статус</th>
+      <th></th>
+      <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let delivery of (deliveriesState | async).deliveries; let i = index">
+      <ng-template 
+      [ngTemplateOutlet]="loadTemplate(delivery)"
+      [ngTemplateOutletContext]="{ $implicit: delivery, index: i }"></ng-template>
+    </tr>
+  </tbody>
+</table>
+<app-pager 
+  [currentPage]="(deliveriesState | async).pageInfo.currentPage"
+  [pagesCount]="(deliveriesState | async).pageInfo.pageCount()"></app-pager>
+
+  <ng-template #readOnlyTemplate let-delivery let-i="index">
+    <td>{{i + 1}}</td>
+    <td>{{delivery.Address}}</td>
+    <td>{{delivery.Driver.Name}}</td>
+    <td>{{delivery.deliveryDate | date:'dd.MM.yyyy'}}</td>
+    <td>{{delivery.ProductsCount}}</td>
+    <td>{{delivery.Status}}</td>
+    <td>
+        <input type="button" value="Изменить" class="btn btn-default" (click)="editDelivery(delivery)" />
+    </td>
+    <td>
+        <input type="button" value="Удалить" (click)="deleteDelivery(delivery)" class="btn btn-danger" />
+    </td>
+</ng-template>
+
+<ng-template #editTemplate let-i="index">
+    <td>{{i + 1}}</td>
+    <td>
+      <input type="text" [(ngModel)]="editedDelivery.Address" class="form-control">
+    </td>
+    <td>
+      <app-dropdown [valueList]="(deliveriesState | async).drivers" [selectedItem]="editedDelivery.Driver" (onItemSelect)="onDriverSelect($event)"></app-dropdown>
+    </td>
+    <td>
+        <my-date-picker [options]="datePickerOptions" name="deliveryDate" [selDate]="
+            {
+                year: editedDelivery.deliveryDate.getFullYear(),
+                month: editedDelivery.deliveryDate.getMonth() + 1,
+                day: editedDelivery.deliveryDate.getDate()
+            }" (dateChanged)="onDateChanged($event)"></my-date-picker>
+    </td>
+    <td>
+        {{editedDelivery.ProductsCount}}
+    </td>
+    <td>
+        {{editedDelivery.Status}}
+    </td>
+    <td>
+        <input type="button" value="Сохранить" (click)="saveDelivery(i)" class="btn btn-success" />
+    </td>
+    <td>
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+    </td>
+</ng-template>

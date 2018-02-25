@@ -13,7 +13,6 @@ using System;
 using DataAccess;
 using Domain.Contexts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace ParentsSite
 {

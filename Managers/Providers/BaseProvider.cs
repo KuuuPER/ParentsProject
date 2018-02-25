@@ -5,14 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Managers.Sevices
+namespace Managers.Providers
 {
-    public abstract class BaseService<TEntity> : IDisposable where TEntity : BaseEntity
+    public class BaseProvider<TEntity> : IDisposable where TEntity : BaseEntity
     {
         public UnitOfWork UnitOfWork { get; set; }
         public BaseRepository<TEntity> Repository { get; set; }
 
-        public BaseService(UnitOfWork unitOfWork)
+        public BaseProvider(UnitOfWork unitOfWork)
         {
             this.UnitOfWork = unitOfWork;
         }

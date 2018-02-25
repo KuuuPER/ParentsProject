@@ -5,9 +5,13 @@ namespace Domain.Contexts
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Provider> Providers { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+
+        public DbSet<Driver> Drivers { get; set; }
 
         public DbSet<Delivery> Deliveries { get; set; }
+
+        public DbSet<Import> Imports { get; set; }
 
         public DbSet<Manufacture> Manufactures { get; set; }
 
@@ -15,7 +19,13 @@ namespace Domain.Contexts
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
-        public DbSet<ProductUnit> ProductUnits { get; set; }
+        public DbSet<Provider> Providers { get; set; }
+
+        public DbSet<Purchase> Purchases { get; set; }
+
+        public DbSet<PurchaseUnit> PurchaseUnits { get; set; }
+
+        public DbSet<ReturnPurchase> ReturnPurchases { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
@@ -24,26 +34,39 @@ namespace Domain.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region Provider
-            modelBuilder.Entity<Provider>()
-                .HasKey(p => p.Id);
+            #region Contact
+            modelBuilder.Entity<Contact>()
+                .HasKey(c => c.Id);
 
-            modelBuilder.Entity<Provider>()
-                .Property(p => p.Name)
+            modelBuilder.Entity<Contact>()
+                .Property(c => c.Name)
                 .IsRequired();
 
-            modelBuilder.Entity<Provider>()
-                .Property(p => p.Address)
+            modelBuilder.Entity<Contact>()
+                .Property(c => c.Phone)
                 .IsRequired();
 
-            modelBuilder.Entity<Provider>()
-                .Property(p => p.Phone)
+            modelBuilder.Entity<Contact>()
+                .Property(c => c.Address);
+            #endregion
+
+            #region Driver
+            modelBuilder.Entity<Driver>()
+                .HasKey(d => d.Id);
+
+            modelBuilder.Entity<Driver>()
+                .Property(d => d.Name)
                 .IsRequired();
 
-            modelBuilder.Entity<Provider>()
-                .HasMany(p => p.Deliveries)
-                .WithOne(d => d.Provider)
-                .HasForeignKey(p => p.ProviderId);
+            modelBuilder.Entity<Driver>()
+                .Property(d => d.Notes);
+
+            modelBuilder.Entity<Driver>()
+                .Property(d => d.Rate);
+
+            modelBuilder.Entity<Driver>()
+                .HasMany(d => d.Deliveries)
+                .WithOne(d => d.Driver);
             #endregion
 
             #region Delivery
@@ -51,29 +74,52 @@ namespace Domain.Contexts
                 .HasKey(p => p.Id);
 
             modelBuilder.Entity<Delivery>()
-                .HasMany(p => p.ProductUnits)
+                .Property(d => d.CreatedDate)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Delivery>()
+                .Property(d => d.DeliveryDate)
+                .IsRequired();
+
+            modelBuilder.Entity<Delivery>()
+                .HasOne(d => d.Driver);
+
+            modelBuilder.Entity<Delivery>()
+                .Property(d => d.FinishDate)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Delivery>()
+                .HasMany(p => p.PurchaseUnits)
                 .WithOne();
 
             modelBuilder.Entity<Delivery>()
-                .Property(d => d.CreatedDate)
-                .ValueGeneratedOnAdd();
+                .Property(d => d.Status)
+                .IsRequired();
+
+            modelBuilder.Entity<Delivery>()
+                .Property(d => d.Notes);
             #endregion
 
-            #region Product
-            modelBuilder.Entity<Product>()
-                .HasKey(p => p.Id);
+            #region Import
+            modelBuilder.Entity<Import>()
+                .HasKey(i => i.Id);
 
-            modelBuilder.Entity<Product>()
-                .Property(p => p.Name)
+            modelBuilder.Entity<Import>()
+                .Property(i => i.FinishDate)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Import>()
+                .Property(i => i.ImportDate)
                 .IsRequired();
 
-            modelBuilder.Entity<Product>()
-                .Property(p => p.VendorCode)
-                .IsRequired();
+            modelBuilder.Entity<Import>()
+                .HasMany(i => i.Products);
 
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Category)
-                .WithOne();
+            modelBuilder.Entity<Import>()
+                .HasOne(i => i.Provider);
+
+            modelBuilder.Entity<Import>()
+                .Property(i => i.Status);
             #endregion
 
             #region Manufacture
@@ -85,7 +131,54 @@ namespace Domain.Contexts
                 .IsRequired();
 
             modelBuilder.Entity<Manufacture>()
+                .Property(p => p.Description);
+
+            modelBuilder.Entity<Manufacture>()
                 .Property(p => p.Country)
+                .IsRequired();
+            #endregion
+
+            #region Product
+            modelBuilder.Entity<Product>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Product>()
+            .Property<int>("CategoryForeignKey");
+
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithOne()
+                .HasForeignKey("CategoryForeignKey");
+
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Count)
+                .IsRequired();
+
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Manufacture);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Name)
+                .IsRequired();
+
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Provider);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.ProviderPrice)
+                .IsRequired();
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.State)
+                .IsRequired();
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.StorePrice)
+                .IsRequired();
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.VendorCode)
                 .IsRequired();
             #endregion
 
@@ -98,30 +191,95 @@ namespace Domain.Contexts
                 .IsRequired();
             #endregion
 
-            #region ProductUnit
-            modelBuilder.Entity<ProductUnit>()
+            #region Provider
+            modelBuilder.Entity<Provider>()
                 .HasKey(p => p.Id);
 
-            modelBuilder.Entity<ProductUnit>()
-                .Property(p => p.ProviderPrice)
+            modelBuilder.Entity<Provider>()
+                .Property(p => p.Name)
                 .IsRequired();
 
-            modelBuilder.Entity<ProductUnit>()
-                .Property(p => p.StorePrice)
-                .IsRequired();
+            modelBuilder.Entity<Provider>()
+                .HasMany(p => p.Contacts);
 
-            modelBuilder.Entity<ProductUnit>()
-                .Property(d => d.CreatedDate)
+            modelBuilder.Entity<Provider>()
+                .HasMany(p => p.Imports)
+                .WithOne(d => d.Provider);
+            #endregion
+
+            #region Purchase
+            modelBuilder.Entity<Purchase>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Purchase>()
+                .HasOne(p => p.Contact);
+
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.CreatedDate)
                 .ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<ProductUnit>()
-                .Property(d => d.UpdatedDate)
-                .ValueGeneratedOnAddOrUpdate();
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.Date)
+                .ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<ProductUnit>()
-                .HasOne(p => p.Product)
-                .WithOne();
+            modelBuilder.Entity<Purchase>()
+                .HasOne(p => p.Delivery);
+
+            modelBuilder.Entity<Purchase>()
+                .HasMany(p => p.PurchaseUnits)
+                .WithOne(p => p.Purchase);
+
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.UpdatedDate)
+                .ValueGeneratedOnUpdate();
             #endregion
+
+            #region PurchaseUnits
+            modelBuilder.Entity<PurchaseUnit>()
+                .HasKey(pu => pu.Id);
+
+            modelBuilder.Entity<PurchaseUnit>()
+                .Property(pu => pu.Count);
+
+            modelBuilder.Entity<PurchaseUnit>()
+                .Property(pu => pu.CreatedDate)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<PurchaseUnit>()
+                .HasOne(pu => pu.Product);
+
+            modelBuilder.Entity<PurchaseUnit>()
+                .HasOne(pu => pu.Purchase)
+                .WithMany(p => p.PurchaseUnits);
+
+            modelBuilder.Entity<PurchaseUnit>()
+                .Property(pu => pu.StorePrice)
+                .IsRequired();
+
+            modelBuilder.Entity<PurchaseUnit>()
+                .Property(pu => pu.Status);
+
+            modelBuilder.Entity<PurchaseUnit>()
+                .Property(pu => pu.UpdatedDate)
+                .ValueGeneratedOnUpdate();
+            #endregion
+
+            #region ReturnPurchase
+            modelBuilder.Entity<ReturnPurchase>()
+                .HasKey(r => r.Id);
+
+            modelBuilder.Entity<ReturnPurchase>()
+                .Property(r => r.Comment);
+
+            modelBuilder.Entity<ReturnPurchase>()
+                .HasOne(r => r.Purchase);
+
+            modelBuilder.Entity<ReturnPurchase>()
+                .Property(r => r.Reason);
+
+            modelBuilder.Entity<ReturnPurchase>()
+                .HasMany(r => r.ReturnItems);
+            #endregion            
         }
     }
 }

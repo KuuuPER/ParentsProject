@@ -1,0 +1,88 @@
+<h1>Доставки</h1>
+
+<a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
+<table class="table table-striped">
+  <thead>
+    <th></th>
+      <th>Поставщик</th>
+      <th>Количество товаров</th>
+      <th>Статус</th>
+      <th>Дата создания</th>
+      <th>Ожидаемая дата завоза</th>
+      <th>Фактическая дата завоза</th>
+      <th></th>
+      <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let import of (importsState | async).imports; let i = index">
+      <ng-template 
+      [ngTemplateOutlet]="loadTemplate(import)"
+      [ngTemplateOutletContext]="{ $implicit: import, index: i }"></ng-template>
+    </tr>
+  </tbody>
+</table>
+<app-pager 
+  [currentPage]="(importsState | async).pageInfo.currentPage"
+  [pagesCount]="(importsState | async).pageInfo.pageCount()"></app-pager>
+
+  <ng-template #readOnlyTemplate let-import let-i="index">
+    <td>{{i + 1}}</td>
+    <td>{{import.provider.Name}}</td>
+    <td>{{import.products.length}}</td>
+    <td>{{import.status}}</td>
+    <td>{{import.createdDate | date:'dd.MM.yyyy'}}</td>
+    <td>{{import.importDate | date:'dd.MM.yyyy'}}</td>
+    <td>{{import.finishtDate ? (import.finishtDate | date:'dd.MM.yyyy') : ''}}</td>
+    <td>
+        <input type="button" value="Изменить" class="btn btn-default" (click)="editImport(import)" />
+    </td>
+    <td>
+        <input type="button" value="Удалить" (click)="deleteImport(import)" class="btn btn-danger" />
+    </td>
+</ng-template>
+
+<ng-template #editTemplate let-i="index">
+    <td>{{i + 1}}</td>
+    <td>
+      <app-dropdown [valueList]="(importsState | async).providers" [selectedItem]="editedImport.provider" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
+    </td>
+    <td>
+        {{editedImport.products.length}}
+    </td>
+    <td>
+      {{editedImport.status}}
+    </td>
+    <td>
+      <my-date-picker [options]="datePickerOptions" name="createdDate" [selDate]="
+          {
+              year: editedImport.createdDate.getFullYear(),
+              month: editedImport.createdDate.getMonth() + 1,
+              day: editedImport.createdDate.getDate()
+          }" (dateChanged)="onCreatedDateChanged($event)"></my-date-picker>
+    </td>
+    <td>
+      <my-date-picker [options]="datePickerOptions" name="importDate" [selDate]="
+          {
+              year: editedImport.importDate.getFullYear(),
+              month: editedImport.importDate.getMonth() + 1,
+              day: editedImport.importDate.getDate()
+          }" (dateChanged)="onImportDateChanged($event)"></my-date-picker>
+    </td>
+    <td>
+      <my-date-picker *ngIf="editedImport.finishDate != null; else elseBlock" [options]="datePickerOptions" name="finishDate" [selDate]="
+          {
+              year: editedImport.finishDate.getFullYear(),
+              month: editedImport.finishDate.getMonth() + 1,
+              day: editedImport.finishDate.getDate()
+          }" (dateChanged)="onFinishDateChanged($event)"></my-date-picker>
+          <ng-template #elseBlock>
+            <my-date-picker [options]="datePickerOptions" name="finishDate"></my-date-picker>
+          </ng-template>
+    </td>    
+    <td>
+        <input type="button" value="Сохранить" (click)="saveImport(i)" class="btn btn-success" />
+    </td>
+    <td>
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+    </td>
+</ng-template>

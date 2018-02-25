@@ -36,7 +36,16 @@ export class ProductListComponent implements OnInit {
   }
 
   editProduct(product: ProductModel){
-    this.editedProduct = new ProductModel(product.Id, product.Name, product.Category, product.Manufacture, product.Provider, product.Count);
+    this.editedProduct = new ProductModel(
+      product.Id,
+      product.Name,
+      product.VendorCode,
+      product.Category,
+      product.Manufacture,
+      product.Provider,
+      product.Count,
+      product.PurchasePrice,
+      product.SellingPrice);
   }
 
   deleteProduct(index: number){

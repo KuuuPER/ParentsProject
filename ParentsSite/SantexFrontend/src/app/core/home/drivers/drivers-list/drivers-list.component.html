@@ -1,0 +1,56 @@
+<h1>Поставщики</h1>
+
+<a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
+<table class="table table-striped">
+  <thead>
+    <th></th>
+    <th>Имя</th>
+    <th>Рейтинг</th>
+    <th>Доставок</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let driver of (driversState | async).drivers; let i = index">
+      <ng-template 
+      [ngTemplateOutlet]="loadTemplate(driver)"
+      [ngTemplateOutletContext]="{ $implicit: driver, index: i }"></ng-template>
+    </tr>
+  </tbody>
+</table>
+<app-pager 
+  [currentPage]="(driversState | async).pageInfo.currentPage"
+  [pagesCount]="(driversState | async).pageInfo.pageCount()"></app-pager>
+
+  <ng-template #readOnlyTemplate let-driver let-i="index">
+      <td>{{i + 1}}</td>
+      <td>{{driver.name}}</td>
+      <td>{{driver.rate}}</td>
+      <td>
+        {{driver.deliveries.length}}
+      </td>
+      <td>
+          <input type="button" value="Изменить" class="btn btn-default" (click)="editDriver(driver)" />
+      </td>
+      <td>
+          <input type="button" value="Удалить" (click)="deleteDriver(driver)" class="btn btn-danger" />
+      </td>
+  </ng-template>
+
+  <ng-template #editTemplate let-i="index">
+      <td>{{i + 1}}</td>
+      <td>
+        <input type="text" [(ngModel)]="editedDriver.name" class="form-control">
+      </td>
+      <td>
+        <input type="number" [(ngModel)]="editedDriver.rate" class="form-control">
+      </td>
+      <td>
+        {{editedDriver.deliveries.length}}
+      </td>
+      <td>
+          <input type="button" value="Сохранить" (click)="saveDriver(i)" class="btn btn-success" />
+      </td>
+      <td>
+          <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+      </td>
+  </ng-template>

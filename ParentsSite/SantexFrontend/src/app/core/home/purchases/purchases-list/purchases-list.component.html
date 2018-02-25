@@ -1,0 +1,63 @@
+<h1>Доставки</h1>
+
+<a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
+<table class="table table-striped">
+  <thead>
+      <th></th>
+      <th>Дата</th>
+      <th>Количество товаров</th>
+      <th>Доставка</th>
+      <th></th>
+      <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let purchase of (purchasesState | async).purchases; let i = index">
+      <ng-template 
+      [ngTemplateOutlet]="loadTemplate(purchase)"
+      [ngTemplateOutletContext]="{ $implicit: purchase, index: i }"></ng-template>
+    </tr>
+  </tbody>
+</table>
+<app-pager 
+  [currentPage]="(purchasesState | async).pageInfo.currentPage"
+  [pagesCount]="(purchasesState | async).pageInfo.pageCount()"></app-pager>
+
+  <ng-template #readOnlyTemplate let-purchase let-i="index">
+    <td>{{i + 1}}</td>
+    <td>{{purchase.date | date:'dd.MM.yyyy'}}</td>
+    <td>{{purchase.products.length}}</td>
+    <td>{{purchase.delivery ? "Есть" : "Нет"}}</td>
+    <td>
+        <input type="button" value="Изменить" class="btn btn-default" (click)="editPurchase(purchase)" />
+    </td>
+    <td>
+        <input type="button" value="Удалить" (click)="deletePurchase(purchase)" class="btn btn-danger" />
+    </td>
+</ng-template>
+
+<ng-template #editTemplate let-i="index">
+    <td>{{i + 1}}</td>
+    <td>
+      <my-date-picker [options]="datePickerOptions" name="deliveryDate" [selDate]="
+            {
+                year: editedPurchase.date.getFullYear(),
+                month: editedPurchase.date.getMonth() + 1,
+                day: editedPurchase.date.getDate()
+            }" (dateChanged)="onDateChanged($event)"></my-date-picker>
+    </td>
+    <td>
+      {{editedPurchase.products.length}}
+    </td>
+    <td>
+      <a routerLink="/deliveries/edit/{{i}}" *ngIf="editedPurchase.delivery != null; else elseBlock">Перейти</a>
+      <ng-template #elseBlock>
+        <a [routerLink]="['/deliveries/add', { purchaseId: editedPurchase.id }]">Создать</a>
+      </ng-template>
+    </td>    
+    <td>
+        <input type="button" value="Сохранить" (click)="savePurchase(i)" class="btn btn-success" />
+    </td>
+    <td>
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+    </td>
+</ng-template>
