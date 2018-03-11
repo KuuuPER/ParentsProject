@@ -31,13 +31,13 @@ export class AddProvider implements Action{
 export class EditProvider implements Action{
     readonly type: string = EDIT_PROVIDER;
 
-    constructor(public payload: {provider: ProviderModel, index: number}){}
+    constructor(public payload: {provider: ProviderModel, id: string}){}
 }
 
 export class DeleteProvider implements Action{
     readonly type: string = DELETE_PROVIDER;
 
-    constructor(public payload: number){}
+    constructor(public payload: string){}
 }
 
 export class NextPage implements Action{
@@ -52,4 +52,4 @@ export class PreviousPage implements Action{
     constructor(public payload: number){}
 }
 
-export type ProviderActions = SetProviders | FetchProducts | AddProvider | EditProvider | NextPage | PreviousPage;
+export type ProviderActions = SetProviders | FetchProducts | AddProvider | EditProvider | DeleteProvider | NextPage | PreviousPage;

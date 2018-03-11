@@ -1,13 +1,14 @@
 import { ProviderModel } from "../../providers/src/ProviderModel";
 import { ProductModel } from "../../products/src/ProductModel";
 import { ImportStatus } from "./ImportStatus";
+import { INameId } from "../../src/INameId";
 
 export class ImportModel{
     private ImportStatus: ImportStatus;
 
     constructor(
         public id: string,
-        public provider: ProviderModel,
+        public provider: INameId,
         public products: ProductModel[],
         public createdDate: Date,
         public importDate: Date,

@@ -9,7 +9,7 @@ import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { ProvidersListComponent } from './providers-list/providers-list.component';
 import { ProviderComponent } from './provider/provider.component';
 import { ProvidersRoutingModule } from './providers-routing.module';
-import { providersReducer } from './store/providers.reducers';
+import * as fromReducers from './store/reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -19,7 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     ProvidersRoutingModule,
     HomeSharedModule,
-    StoreModule.forFeature('providers', providersReducer),
+    StoreModule.forFeature('providers', fromReducers.reducer),
   ],
   declarations: [
     ProvidersListComponent,

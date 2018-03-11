@@ -9,7 +9,7 @@ import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { ImportsListComponent } from './imports-list/imports-list.component';
 import { ImportComponent } from './import/import.component';
 import { ImportsRoutingModule } from './imports-routing.module';
-import { importsReducer } from './store/imports.reducers';
+import * as fromReducers from './store/reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-date-picker.module';
@@ -21,7 +21,7 @@ import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-da
     ReactiveFormsModule,
     ImportsRoutingModule,
     HomeSharedModule,
-    StoreModule.forFeature('imports', importsReducer),
+    StoreModule.forFeature('imports', fromReducers.reducers),
     MyDatePickerModule
   ],
   declarations: [

@@ -30,13 +30,13 @@ export class AddProduct implements Action{
 export class EditProduct implements Action{
     readonly type: string = EDIT_PRODUCT;
 
-    constructor(public payload: {product: ProductModel, index: number}){}
+    constructor(public payload: {product: ProductModel, id: string}){}
 }
 
 export class DeleteProduct implements Action{
     readonly type: string = DELETE_PRODUCT;
 
-    constructor(public payload: number){}
+    constructor(public payload: string){}
 }
 
 export class NextPage implements Action{
@@ -51,4 +51,4 @@ export class PreviousPage implements Action{
     constructor(public payload: number){}
 }
 
-export type ProductsActions = SetProducts | AddProduct | EditProduct | NextPage | PreviousPage;
+export type ProductsActions = SetProducts | AddProduct | EditProduct | DeleteProduct | NextPage | PreviousPage;

@@ -1,4 +1,4 @@
-<h1>Доставки</h1>
+<h1>Поставки</h1>
 
 <a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
 <table class="table table-striped">
@@ -14,7 +14,7 @@
       <th></th>
   </thead>
   <tbody>
-    <tr *ngFor="let import of (importsState | async).imports; let i = index">
+    <tr *ngFor="let import of (imports | async); let i = index">
       <ng-template 
       [ngTemplateOutlet]="loadTemplate(import)"
       [ngTemplateOutletContext]="{ $implicit: import, index: i }"></ng-template>
@@ -22,12 +22,12 @@
   </tbody>
 </table>
 <app-pager 
-  [currentPage]="(importsState | async).pageInfo.currentPage"
-  [pagesCount]="(importsState | async).pageInfo.pageCount()"></app-pager>
+  [currentPage]="(pageInfo | async).currentPage"
+  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
 
   <ng-template #readOnlyTemplate let-import let-i="index">
     <td>{{i + 1}}</td>
-    <td>{{import.provider.Name}}</td>
+    <td>{{import.provider.name}}</td>
     <td>{{import.products.length}}</td>
     <td>{{import.status}}</td>
     <td>{{import.createdDate | date:'dd.MM.yyyy'}}</td>
@@ -37,14 +37,14 @@
         <input type="button" value="Изменить" class="btn btn-default" (click)="editImport(import)" />
     </td>
     <td>
-        <input type="button" value="Удалить" (click)="deleteImport(import)" class="btn btn-danger" />
+        <input type="button" value="Удалить" (click)="deleteImport(import.id)" class="btn btn-danger" />
     </td>
 </ng-template>
 
 <ng-template #editTemplate let-i="index">
     <td>{{i + 1}}</td>
     <td>
-      <app-dropdown [valueList]="(importsState | async).providers" [selectedItem]="editedImport.provider" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
+      <app-dropdown [valueList]="(providers | async)" [selectedItem]="editedImport.provider" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
     </td>
     <td>
         {{editedImport.products.length}}
@@ -80,7 +80,7 @@
           </ng-template>
     </td>    
     <td>
-        <input type="button" value="Сохранить" (click)="saveImport(i)" class="btn btn-success" />
+        <input type="button" value="Сохранить" (click)="saveImport(editedImport.id)" class="btn btn-success" />
     </td>
     <td>
         <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />

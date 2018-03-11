@@ -5,7 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 
-import * as fromManufacture from '../store/manufactures.reducers';
+import * as fromReducers from '../store/reducers';
+import * as fromSelectors from '../store/reducers/manufactures.selectors';
 import * as Actions from '../store/manufactures.actions';
 import { ManufactureModel } from '../src/ManufactureModel';
 
@@ -17,22 +18,23 @@ import { ManufactureModel } from '../src/ManufactureModel';
 export class ManufactureComponent implements OnInit {
   manufactureForm: FormGroup;
   
-  manufacturesState: Observable<fromManufacture.State>;
+  manufacturesState: Observable<ManufactureModel[]>;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromManufacture.FeatureState>) { }
+    private store: Store<fromReducers.FeatureState>) { }
 
   ngOnInit() {
-    this.manufacturesState = this.store.select('manufactures');
+    this.manufacturesState = this.store.select(fromSelectors.getAllManufactures);
 
     this.initForm();
   }
 
   initForm(){
     this.manufactureForm = new FormGroup({
-      'Name': new FormControl('', Validators.required),
-      'Country': new FormControl('', Validators.required)
+      'name': new FormControl('', Validators.required),
+      'country': new FormControl('', Validators.required),
+      'description': new FormControl('')  
     });
   }
 

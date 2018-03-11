@@ -1,3 +1,86 @@
-<p>
-  return-purchase works!
-</p>
+<h2>Создание возврата</h2>
+
+<form (ngSubmit)="addReturnPurchase()" [formGroup]="returnPurchaseForm">
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-success" [disabled]="!returnPurchaseForm.valid" type="submit">Сохранить</button>      
+    </div>        
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="col-sm-5 form-group">
+        <label for="purchase">Покупка</label>
+        <!-- <app-dropdown [valueList]="(purchasesState | async).purchases" (onItemSelect)="onPurchaseSelect($event)"></app-dropdown> -->
+        <div><app-dropdown [valueList]="(purchasesState | async)" (onItemSelect)="onPurchaseSelect($event)"></app-dropdown></div>
+        
+      </div>
+      <div class="col-sm-5 form-group">
+        <label for="returnPurchaseDate">Дата:</label>
+        <div>
+          <my-date-picker 
+          [options]="myDatePickerOptions"
+          name="returnPurchaseDate"
+          formControlName="date"
+          (dateChanged)="onDateChanged($event)"
+          [selDate]="{
+            year: returnPurchaseDate.getFullYear(),
+            month: returnPurchaseDate.getMonth() + 1,
+            day: returnPurchaseDate.getDate()
+        }"></my-date-picker>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h2>Комментарии</h2>
+  <div class="row">
+    <div class="col-xs-12">      
+        <textarea name="comment" id="comment" cols="30" rows="10" formControlName="comment"></textarea>
+    </div>
+  </div>
+<!-- 
+  <div class="row">
+    <div class="col-xs-12">
+      <table id="returnPurchaseProducts" class="table table-striped">
+        <thead>
+          <th>Товар</th>
+          <th>Количество</th>
+          <th><button class="btn btn-default" (click)="clearReturnPurchaseProducts()">Очистить</button></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let purchaseUnit of returnPurchaseUnits; let i = index">
+            <td>{{purchaseUnit.product.name}}</td>
+            <td>{{purchaseUnit.count}}</td>
+            <td><button class="btn btn-danger" (click)="deleteProductFromReturnPurchase(i)">Убрать</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <table id="products" class="table table-striped">
+        <thead>
+          <th>Наименование</th>
+          <th>Артикул</th>
+          <th>Категория</th>
+          <th>Количество</th>
+          <th>Закупочная цена</th>
+          <th>Фактическая цена</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of (productsState | async).products">
+            <td>{{product.name}}</td>
+            <td>{{product.vendorCode}}</td>
+            <td>{{product.category.Name}}</td>
+            <td>{{product.count}}</td>
+            <td>{{product.providerPrice}}</td>
+            <td>{{product.storePrice}}</td>
+            <td><button class="btn btn-success" (click)="addProductToReturnPurchase(product)">Добавить</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</form> -->

@@ -30,13 +30,13 @@ export class AddPurchase implements Action{
 export class EditPurchase implements Action{
     readonly type: string = EDIT_PURCHASE;
 
-    constructor(public payload: {purchase: PurchaseModel, index: number}){}
+    constructor(public payload: {purchase: PurchaseModel, id: string}){}
 }
 
 export class DeletePurchase implements Action{
     readonly type: string = DELETE_PURCHASE;
 
-    constructor(public payload: number){}
+    constructor(public payload: string){}
 }
 
 export class NextPage implements Action{
@@ -51,4 +51,4 @@ export class PreviousPage implements Action{
     constructor(public payload: number){}
 }
 
-export type PurchasesActions = SetPurchases | AddPurchase | EditPurchase | NextPage | PreviousPage;
+export type PurchasesActions = SetPurchases | AddPurchase | EditPurchase | DeletePurchase | NextPage | PreviousPage;

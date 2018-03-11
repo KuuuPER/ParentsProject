@@ -1,3 +1,12 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+}
+
 /* You can add global styles to this file, and also import other style files */
 form.ng-invalid.ng-touched .error-text{
     margin-top: 15px;

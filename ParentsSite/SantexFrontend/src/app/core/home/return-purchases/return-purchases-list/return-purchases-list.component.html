@@ -1,3 +1,63 @@
-<p>
-  return-purchases-list works!
-</p>
+<h1>Возвраты</h1>
+
+<a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
+<table class="table table-striped">
+  <thead>
+    <th></th>
+      <th>Покупка</th>
+      <th>Дата</th>
+      <th>Количество товаров</th>
+      <th>Причина</th>
+      <th></th>
+      <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let returnPurchases of (returnPurchasesState | async); let i = index">
+      <ng-template 
+      [ngTemplateOutlet]="loadTemplate(returnPurchases)"
+      [ngTemplateOutletContext]="{ $implicit: returnPurchases, index: i }"></ng-template>
+    </tr>
+  </tbody>
+</table>
+<!-- <app-pager 
+  [currentPage]="(returnPurchasesState | async).pageInfo.currentPage"
+  [pagesCount]="(returnPurchasesState | async).pageInfo.pageCount()"></app-pager> -->
+
+  <ng-template #readOnlyTemplate let-returnPurchases let-i="index">
+    <td>{{i + 1}}</td>
+    <td>{{returnPurchases.purchase.name}}</td>
+    <td>{{returnPurchases.date | date:'dd.MM.yyyy'}}</td>
+    <td>{{returnPurchases.units.length}}</td>
+    <td>{{getReasonStr(returnPurchases)}}</td>
+    <td>
+        <input type="button" value="Изменить" class="btn btn-default" (click)="editReturnPurchase(returnPurchases)" />
+    </td>
+    <td>
+        <input type="button" value="Удалить" (click)="deleteReturnPurchase(returnPurchases.id)" class="btn btn-danger" />
+    </td>
+</ng-template>
+
+<ng-template #editTemplate let-i="index">
+    <td>{{i + 1}}</td>
+    <td>
+      <app-dropdown [valueList]="(purchasesState | async)" [selectedItem]="editedReturnPurchase.purchase" (onItemSelect)="onPurchaseSelect($event)"></app-dropdown>
+    </td>
+    <td>
+        <my-date-picker [options]="datePickerOptions" name="returnPurchasesDate" [selDate]="
+            {
+                year: editedReturnPurchase.date.getFullYear(),
+                month: editedReturnPurchase.date.getMonth() + 1,
+                day: editedReturnPurchase.date.getDate()
+            }" (dateChanged)="onDateChanged($event)"></my-date-picker>
+    </td>
+    <td>{{editedReturnPurchase.units.length}}</td>
+    <td>
+        <app-dropdown [valueList]="getReasonsNameId()" [selectedItem]="editedReturnPurchase.getReasonNameId()" (onItemSelect)="onReasonSelect($event)"></app-dropdown>
+    </td>
+    <td>
+        <input type="button" value="Сохранить" (click)="saveReturnPurchase(editedReturnPurchase.id)" class="btn btn-success" />
+    </td>
+    <td>
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+    </td>
+</ng-template>

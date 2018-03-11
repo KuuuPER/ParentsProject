@@ -31,13 +31,13 @@ export class AddImport implements Action{
 export class EditImport implements Action{
     readonly type: string = EDIT_IMPORT;
 
-    constructor(public payload: {import: ImportModel, index: number}){}
+    constructor(public payload: {import: ImportModel, id: string}){}
 }
 
 export class DeleteImport implements Action{
     readonly type: string = DELETE_IMPORT;
 
-    constructor(public payload: number){}
+    constructor(public payload: string){}
 }
 
 export class NextPage implements Action{
@@ -52,4 +52,4 @@ export class PreviousPage implements Action{
     constructor(public payload: number){}
 }
 
-export type ImportActions = SetImports | FetchProducts | AddImport | EditImport | NextPage | PreviousPage;
+export type ImportActions = SetImports | FetchProducts | AddImport | EditImport | DeleteImport | NextPage | PreviousPage;

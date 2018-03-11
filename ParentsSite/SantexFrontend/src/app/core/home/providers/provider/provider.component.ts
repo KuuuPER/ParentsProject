@@ -5,7 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 
-import * as fromProvider from '../store/providers.reducers';
+import * as fromProvider from '../store/reducers/providers.reducers';
+import * as fromSelectors from '../store/reducers/providers.selectors';
 import * as Actions from '../store/providers.actions';
 import { ProviderModel } from '../src/ProviderModel';
 
@@ -17,14 +18,14 @@ import { ProviderModel } from '../src/ProviderModel';
 export class ProviderComponent implements OnInit {
   providerForm: FormGroup;
   
-  providersState: Observable<fromProvider.State>;
+  providers: Observable<ProviderModel[]>;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private store: Store<fromProvider.FeatureState>) { }
 
   ngOnInit() {
-    this.providersState = this.store.select('providers');
+    this.providers = this.store.select(fromSelectors.getAllProviders);
 
     this.initForm();
   }

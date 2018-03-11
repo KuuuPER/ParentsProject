@@ -9,6 +9,11 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 export class HomeComponent implements OnInit {
   list: {Type: string, Value: string};
 
+  public sidebarHidden: boolean = false;
+  onSidebarToggle(flag: boolean){
+    this.sidebarHidden = flag;
+  }
+
   constructor(private client: HttpClient) {
     
    }

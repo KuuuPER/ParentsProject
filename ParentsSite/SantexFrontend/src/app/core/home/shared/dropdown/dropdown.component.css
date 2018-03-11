@@ -5,11 +5,8 @@ label{
 
 .dropdown{
     width: 120px;
-    position: relative;    
-}
-
-.open label{
-    display: none;
+    position: relative;
+    z-index: 1000;
 }
 
 .dropdown .form-group{
@@ -17,6 +14,7 @@ label{
     visibility: hidden;
     transition: top 1s ease-in;
     position: absolute;
+    top: 0;
 }
 
 .open .form-group{

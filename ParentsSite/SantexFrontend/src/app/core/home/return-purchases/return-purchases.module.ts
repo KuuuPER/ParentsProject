@@ -8,7 +8,8 @@ import { ReturnPurchaseComponent } from './return-purchase/return-purchase.compo
 import { HomeSharedModule } from '../shared/home-shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReturnPurchasesRoutingModule } from './return-purchases-routing.module';
-import { returnPurchasesReducer } from './store/return-purchases.reducers';
+import * as fromReducers from './store/reducers';
+import { purchasesReducer } from '../purchases/store/reducers/purchases.reducers';
 
 import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-date-picker.module';
 
@@ -19,7 +20,7 @@ import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-da
     ReactiveFormsModule,
     HomeSharedModule,
     ReturnPurchasesRoutingModule,
-    StoreModule.forFeature('returnPurchases', returnPurchasesReducer),
+    StoreModule.forFeature('returnPurchases', fromReducers.reducers),
     MyDatePickerModule
   ],
   declarations: [
@@ -27,4 +28,4 @@ import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-da
     ReturnPurchaseComponent
 ]
 })
-export class PurchasesModule { }
+export class ReturnPurchasesModule { }

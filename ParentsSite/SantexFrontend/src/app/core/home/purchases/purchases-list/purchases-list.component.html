@@ -1,4 +1,4 @@
-<h1>Доставки</h1>
+<h1>Покупки</h1>
 
 <a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
 <table class="table table-striped">
@@ -11,7 +11,7 @@
       <th></th>
   </thead>
   <tbody>
-    <tr *ngFor="let purchase of (purchasesState | async).purchases; let i = index">
+    <tr *ngFor="let purchase of (purchasesState | async); let i = index">
       <ng-template 
       [ngTemplateOutlet]="loadTemplate(purchase)"
       [ngTemplateOutletContext]="{ $implicit: purchase, index: i }"></ng-template>
@@ -19,19 +19,19 @@
   </tbody>
 </table>
 <app-pager 
-  [currentPage]="(purchasesState | async).pageInfo.currentPage"
-  [pagesCount]="(purchasesState | async).pageInfo.pageCount()"></app-pager>
+  [currentPage]="(pageInfo | async).currentPage"
+  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
 
   <ng-template #readOnlyTemplate let-purchase let-i="index">
     <td>{{i + 1}}</td>
     <td>{{purchase.date | date:'dd.MM.yyyy'}}</td>
-    <td>{{purchase.products.length}}</td>
+    <td>{{purchase.units.length}}</td>
     <td>{{purchase.delivery ? "Есть" : "Нет"}}</td>
     <td>
         <input type="button" value="Изменить" class="btn btn-default" (click)="editPurchase(purchase)" />
     </td>
     <td>
-        <input type="button" value="Удалить" (click)="deletePurchase(purchase)" class="btn btn-danger" />
+        <input type="button" value="Удалить" (click)="deletePurchase(purchase.id)" class="btn btn-danger" />
     </td>
 </ng-template>
 
@@ -46,16 +46,16 @@
             }" (dateChanged)="onDateChanged($event)"></my-date-picker>
     </td>
     <td>
-      {{editedPurchase.products.length}}
+      {{editedPurchase.units.length}}
     </td>
     <td>
-      <a routerLink="/deliveries/edit/{{i}}" *ngIf="editedPurchase.delivery != null; else elseBlock">Перейти</a>
+      <a [routerLink]="['/home/deliveries/edit', editedPurchase.id]" *ngIf="editedPurchase.delivery != null; else elseBlock">Перейти</a>
       <ng-template #elseBlock>
-        <a [routerLink]="['/deliveries/add', { purchaseId: editedPurchase.id }]">Создать</a>
+        <a [routerLink]="['/home/deliveries/add', { purchaseId: editedPurchase.id }]">Создать</a>
       </ng-template>
     </td>    
     <td>
-        <input type="button" value="Сохранить" (click)="savePurchase(i)" class="btn btn-success" />
+        <input type="button" value="Сохранить" (click)="savePurchase(editedPurchase.id)" class="btn btn-success" />
     </td>
     <td>
         <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />

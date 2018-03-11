@@ -15,11 +15,11 @@
           class="form-control"
           id="address"
           name="address"
-          formControlName="Address">
+          formControlName="address">
         </div>
         <div class="col-sm-2 form-group">
           <label>Водитель</label>
-          <app-dropdown [valueList]="(deliveriesState | async).drivers" (onItemSelect)="onDriverSelect($event)"></app-dropdown>        
+          <app-dropdown [valueList]="(drivers | async)" (onItemSelect)="onDriverSelect($event)"></app-dropdown>        
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@
           <my-date-picker 
           [options]="myDatePickerOptions"
           name="deliveryDate"
-          formControlName="DeliveryDate"
+          formControlName="date"
           (dateChanged)="onDateChanged($event)"
           [selDate]="{
             year: deliveryDate.getFullYear(),
@@ -57,12 +57,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let product of deliveryProducts; let i = index">
-            <td>{{product.Name}}</td>
-            <td>{{product.VendorCode}}</td>
-            <td>{{product.Category.Name}}</td>
-            <td>{{product.Count}}</td>
-            <td>{{product.PurchasePrice}}</td>
-            <td>{{product.SellingPrice}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.vendorCode}}</td>
+            <td>{{product.category.Name}}</td>
+            <td>{{product.count}}</td>
+            <td>{{product.providerPrice}}</td>
+            <td>{{product.storePrice}}</td>
             <td><button class="btn btn-danger" (click)="deleteProductFromDelivery(i)">Убрать</button></td>
           </tr>
         </tbody>
@@ -83,13 +83,13 @@
           <th></th>
         </thead>
         <tbody>
-          <tr *ngFor="let product of (productsState | async).products">
-            <td>{{product.Name}}</td>
-            <td>{{product.VendorCode}}</td>
-            <td>{{product.Category.Name}}</td>
-            <td>{{product.Count}}</td>
-            <td>{{product.PurchasePrice}}</td>
-            <td>{{product.SellingPrice}}</td>
+          <tr *ngFor="let product of (productsState | async)">
+            <td>{{product.name}}</td>
+            <td>{{product.vendorCode}}</td>
+            <td>{{product.category.Name}}</td>
+            <td>{{product.count}}</td>
+            <td>{{product.providerPrice}}</td>
+            <td>{{product.storePrice}}</td>
             <td><button class="btn btn-success" (click)="addProductToDelivery(product)">Добавить</button></td>
           </tr>
         </tbody>

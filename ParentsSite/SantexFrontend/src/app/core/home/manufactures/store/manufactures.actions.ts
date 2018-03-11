@@ -31,13 +31,13 @@ export class AddManufacture implements Action{
 export class EditManufacture implements Action{
     readonly type: string = EDIT_MANUFACTURE;
 
-    constructor(public payload: {manufacture: ManufactureModel, index: number}){}
+    constructor(public payload: {manufacture: ManufactureModel, id: string}){}
 }
 
 export class DeleteManufacture implements Action{
     readonly type: string = DELETE_MANUFACTURE;
 
-    constructor(public payload: number){}
+    constructor(public payload: string){}
 }
 
 export class NextPage implements Action{
@@ -52,4 +52,4 @@ export class PreviousPage implements Action{
     constructor(public payload: number){}
 }
 
-export type ManufactureActions = SetManufactures | FetchProducts | AddManufacture | EditManufacture | NextPage | PreviousPage;
+export type ManufactureActions = SetManufactures | FetchProducts | AddManufacture | EditManufacture | DeleteManufacture | NextPage | PreviousPage;

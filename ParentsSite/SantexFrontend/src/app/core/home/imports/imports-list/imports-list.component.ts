@@ -5,11 +5,15 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import * as Actions from '../store/imports.actions';
-import * as fromImports from '../store/imports.reducers';
-import * as fromProviders from '../../providers/store/providers.reducers';
+import * as fromImports from '../store/reducers/imports.reducers';
+import * as fromReducers from '../store/reducers';
+import * as fromSelectors from '../store/reducers/imports.selectors';
+import * as fromProviders from '../../providers/store/reducers/providers.reducers';
 import { ImportModel } from '../src/ImportModel';
 import { IMyOptions, IMyDateModel } from 'angular4-datepicker/src/my-date-picker/interfaces';
 import { INameId } from '../../src/INameId';
+import { ProviderModel } from '../../providers/src/ProviderModel';
+import { PageInfo } from '../../src/PageInfo';
 
 @Component({
   selector: 'app-imports-list',
@@ -17,8 +21,10 @@ import { INameId } from '../../src/INameId';
   styleUrls: ['./imports-list.component.css']
 })
 export class ImportsListComponent implements OnInit {
-  importsState: Observable<fromImports.State>;
-  editedImport: ImportModel;
+  public imports: Observable<ImportModel[]>;
+  public pageInfo: Observable<PageInfo>;
+  public providers: Observable<ProviderModel[]>
+  public editedImport: ImportModel;
 
   @ViewChild('readOnlyTemplate') readOnlyTemplate: TemplateRef<any>;
   @ViewChild('editTemplate') editTemplate: TemplateRef<any>;
@@ -33,12 +39,13 @@ export class ImportsListComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromImports.FeatureState>,
-    private providersStore: Store<fromProviders.FeatureState>,
+    private store: Store<fromReducers.FeatureState>,
   ) { }
 
   ngOnInit() {
-    this.importsState = this.store.select('imports');
+    this.imports = this.store.select(fromSelectors.getAllImports);
+    this.providers = this.store.select(fromSelectors.getAllProviders);
+    this.pageInfo = this.store.select(fromSelectors.getPageInfo);
   }
 
   editImport(importModel: ImportModel){
@@ -53,12 +60,12 @@ export class ImportsListComponent implements OnInit {
     this.editedImport.status = importModel.status;
   }
 
-  deleteImport(index: number){
-    this.store.dispatch(new Actions.DeleteImport(index));
+  deleteImport(id: string){
+    this.store.dispatch(new Actions.DeleteImport(id));
   }
 
-  saveImport(index: number){
-    this.store.dispatch(new Actions.EditImport({ index: index, import: this.editedImport }));
+  saveImport(id: string){
+    this.store.dispatch(new Actions.EditImport({ id: id, import: this.editedImport }));
     this.editedImport = null;
   }
 

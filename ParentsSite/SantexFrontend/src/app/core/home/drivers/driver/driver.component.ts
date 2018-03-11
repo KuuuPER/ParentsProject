@@ -5,7 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 
-import * as fromDriver from '../store/drivers.reducers';
+import * as fromReducers from '../store/reducers';
+import * as fromSelectors from '../store/reducers/drivers.selectors';
 import * as Actions from '../store/drivers.actions';
 import { DriverModel } from '../src/DriverModel';
 
@@ -17,14 +18,15 @@ import { DriverModel } from '../src/DriverModel';
 export class DriverComponent implements OnInit {
   driverForm: FormGroup;
   
-  driversState: Observable<fromDriver.State>;
+  public driversState: Observable<DriverModel[]>;
+  
 
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromDriver.FeatureState>) { }
+    private store: Store<fromReducers.FeatureState>) { }
 
   ngOnInit() {
-    this.driversState = this.store.select('drivers');    
+    this.driversState = this.store.select(fromSelectors.getAllDrivers);
 
     this.initForm();
   }
