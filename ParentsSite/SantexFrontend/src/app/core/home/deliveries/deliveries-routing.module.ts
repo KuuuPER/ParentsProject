@@ -12,7 +12,7 @@ const appRoutes: Routes = [
         path: 'add', component: DeliveryComponent
     },
     {
-        path: 'edit', component: DeliveryComponent
+        path: 'edit/:id', component: DeliveryComponent
     }
   ];
 

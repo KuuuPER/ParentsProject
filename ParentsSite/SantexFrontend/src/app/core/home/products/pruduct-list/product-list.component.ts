@@ -4,10 +4,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 
-import * as fromProducts from '../store/products.reducers';
+import * as fromProducts from '../store/reducers/products.reducers';
+import * as fromReducers from '../store/reducers';
+import * as fromSelectors from '../store/reducers/products.selectors';
 import * as ProductActions from '../store/products.actions';
 import { ProductModel } from '../src/ProductModel';
 import { INameId } from '../../src/INameId';
+import { CategoryModel } from '../../categories/src/CategoryModel';
+import { ManufactureModel } from '../../manufactures/src/ManufactureModel';
+import { ProviderModel } from '../../providers/src/ProviderModel';
+import { PageInfo } from '../../src/PageInfo';
 
 @Component({
   selector: 'app-product-list',
@@ -15,7 +21,11 @@ import { INameId } from '../../src/INameId';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  productsState: Observable<fromProducts.State>;
+  public products: Observable<ProductModel[]>;
+  public pageInfo: Observable<PageInfo>;
+  public categories: Observable<CategoryModel[]>;
+  public manufactures: Observable<ManufactureModel[]>;
+  public providers: Observable<ProviderModel[]>;
 
   @ViewChild('readOnlyTemplate') readOnlyTemplate: TemplateRef<any>;
   @ViewChild('editTemplate') editTemplate: TemplateRef<any>;
@@ -27,46 +37,52 @@ export class ProductListComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromProducts.FeatureState>
+    private store: Store<fromReducers.FeatureState>
   ) { }
 
   ngOnInit() {
-    this.productsState = this.store.select('products');
+    this.products = this.store.select(fromSelectors.getAllProducts);
+    this.pageInfo = this.store.select(fromSelectors.getPageInfo);
+    this.categories = this.store.select(fromSelectors.getAllCategories);
+    this.manufactures = this.store.select(fromSelectors.getAllManufactures);
+    this.providers = this.store.select(fromSelectors.getAllProviders);
     //this.store.dispatch(new ProductActions.FetchProducts())
   }
 
   editProduct(product: ProductModel){
+    debugger;
     this.editedProduct = new ProductModel(
-      product.Id,
-      product.Name,
-      product.VendorCode,
-      product.Category,
-      product.Manufacture,
-      product.Provider,
-      product.Count,
-      product.PurchasePrice,
-      product.SellingPrice);
+      product.id,
+      product.name,
+      product.vendorCode,
+      product.category,
+      product.manufacture,
+      product.provider,
+      product.count,
+      product.providerPrice,
+      product.storePrice);
+      this.editedProduct.state = product.state;
   }
 
-  deleteProduct(index: number){
-    this.store.dispatch(new ProductActions.DeleteProduct(index));
+  deleteProduct(id: string){
+    this.store.dispatch(new ProductActions.DeleteProduct(id));
   }
 
-  saveProduct(index: number){
-    this.store.dispatch(new ProductActions.EditProduct({ index: index, product: this.editedProduct }));
+  saveProduct(id: string){
+    this.store.dispatch(new ProductActions.EditProduct({ id: id, product: this.editedProduct }));
     this.editedProduct = null;
   }
 
   onCategorySelect(selectedCategory: INameId){
-    this.editedProduct.Category = selectedCategory;
+    this.editedProduct.category = selectedCategory;
   }
 
   onManufactureSelect(selectedManufacture: INameId){
-    this.editedProduct.Manufacture = selectedManufacture;
+    this.editedProduct.manufacture = selectedManufacture;
   }
 
   onProviderSelect(selectedProvider: INameId){
-    this.editedProduct.Provider = selectedProvider;
+    this.editedProduct.provider = selectedProvider;
   }
 
   cancel(){
@@ -74,7 +90,7 @@ export class ProductListComponent implements OnInit {
   }
 
   loadTemplate(product: ProductModel){
-    if (this.editedProduct && this.editedProduct.Id == product.Id) {
+    if (this.editedProduct && this.editedProduct.id == product.id) {
       return this.editTemplate;
     }
     else{

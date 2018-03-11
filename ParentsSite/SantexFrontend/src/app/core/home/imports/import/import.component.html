@@ -1,4 +1,4 @@
-<h2>Создание доставки</h2>
+<h2>Создание поставки</h2>
 
 <form (ngSubmit)="addImport()" [formGroup]="importForm">
   <div class="row">
@@ -8,11 +8,11 @@
   </div>
   <div class="row">
     <div class="col-xs-12">      
-        <div class="col-sm-2 form-group">
+        <div class="col-sm-7 col-md-4 form-group">
           <label>Поставщик</label>
-          <app-dropdown [valueList]="(importsState | async).providers" (onItemSelect)="onProviderSelect($event)"></app-dropdown>        
+          <div><app-dropdown [valueList]="(providers | async)" (onItemSelect)="onProviderSelect($event)"></app-dropdown></div>        
         </div>
-        <div class="col-sm-2 form-group">
+        <div class="col-sm-7 col-md-4 form-group">
           <label for="createdDate">Дата создания</label>
           <div>
             <my-date-picker 
@@ -27,39 +27,41 @@
                 day: importDate.getDate()
               }"></my-date-picker>
           </div>
+        </div>        
+    </div>
+    <div class="col-xs-12">
+      <div class="col-sm-7 col-md-4 form-group">
+        <label for="importDate">Ожидаемая дата поставки:</label>
+        <div>
+          <my-date-picker 
+            [options]="myDatePickerOptions"
+            name="importDate"
+            [required]="true"
+            formControlName="importDate"
+            (dateChanged)="onImportDateChanged($event)"
+            [selDate]="{
+              year: importDate.getFullYear(),
+              month: importDate.getMonth() + 1,
+              day: importDate.getDate()
+            }"></my-date-picker>
         </div>
-        <div class="col-sm-5 form-group">
-          <label for="importDate">Ожидаемая дата поставки:</label>
-          <div>
-            <my-date-picker 
-              [options]="myDatePickerOptions"
-              name="importDate"
-              [required]="true"
-              formControlName="importDate"
-              (dateChanged)="onImportDateChanged($event)"
-              [selDate]="{
-                year: importDate.getFullYear(),
-                month: importDate.getMonth() + 1,
-                day: importDate.getDate()
-              }"></my-date-picker>
-          </div>
+      </div>
+      <div class="col-sm-7 col-md-4 form-group">
+        <label for="importDate">Фактическая дата поставки:</label>
+        <div>
+          <my-date-picker 
+            [options]="myDatePickerOptions"
+            name="finishDate"
+            [required]="true"
+            formControlName="finishDate"
+            (dateChanged)="onFinishDateChanged($event)"
+            [selDate]="{
+              year: importDate.getFullYear(),
+              month: importDate.getMonth() + 1,
+              day: importDate.getDate()
+            }"></my-date-picker>
         </div>
-        <div class="col-sm-5 form-group">
-          <label for="importDate">Фактическая дата поставки:</label>
-          <div>
-            <my-date-picker 
-              [options]="myDatePickerOptions"
-              name="finishDate"
-              [required]="true"
-              formControlName="finishDate"
-              (dateChanged)="onFinishDateChanged($event)"
-              [selDate]="{
-                year: importDate.getFullYear(),
-                month: importDate.getMonth() + 1,
-                day: importDate.getDate()
-              }"></my-date-picker>
-          </div>
-        </div>
+      </div>
     </div>
   </div>
 
@@ -77,12 +79,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let product of importProducts; let i = index">
-            <td>{{product.Name}}</td>
-            <td>{{product.VendorCode}}</td>
-            <td>{{product.Category.Name}}</td>
-            <td>{{product.Count}}</td>
-            <td>{{product.PurchasePrice}}</td>
-            <td>{{product.SellingPrice}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.vendorCode}}</td>
+            <td>{{product.category.name}}</td>
+            <td>{{product.count}}</td>
+            <td>{{product.providerPrice}}</td>
+            <td>{{product.storePrice}}</td>
             <td><button class="btn btn-danger" (click)="deleteProductFromImport(i)">Убрать</button></td>
           </tr>
         </tbody>
@@ -103,13 +105,13 @@
           <th></th>
         </thead>
         <tbody>
-          <tr *ngFor="let product of (productsState | async).products">
-            <td>{{product.Name}}</td>
-            <td>{{product.VendorCode}}</td>
-            <td>{{product.Category.Name}}</td>
-            <td>{{product.Count}}</td>
-            <td>{{product.PurchasePrice}}</td>
-            <td>{{product.SellingPrice}}</td>
+          <tr *ngFor="let product of (productsState | async)">
+            <td>{{product.name}}</td>
+            <td>{{product.vendorCode}}</td>
+            <td>{{product.category.Name}}</td>
+            <td>{{product.count}}</td>
+            <td>{{product.providerPrice}}</td>
+            <td>{{product.storePrice}}</td>
             <td><button class="btn btn-success" (click)="addProductToImport(product)">Добавить</button></td>
           </tr>
         </tbody>

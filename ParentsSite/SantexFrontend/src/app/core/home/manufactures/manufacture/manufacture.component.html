@@ -16,21 +16,29 @@
           class="form-control"
           id="name"
           name="name"
-          formControlName="Name">
+          formControlName="name">
         </div>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">      
         <div class="col-sm-5 form-group">
-          <label for="name">Страна</label>
+          <label for="country">Страна</label>
           <input
           type="text"
           class="form-control"
           id="country"
           name="country"
-          formControlName="Country">
+          formControlName="country">
         </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="col-sm-5">
+        <label for="description">Описание</label>
+        <textarea name="description" id="description" formControlName="description" cols="30" rows="10"></textarea>
+      </div>
     </div>
   </div>
 </form>

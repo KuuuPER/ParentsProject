@@ -10,7 +10,7 @@ import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { ManufactureListComponent } from './manufacture-list/manufacture-list.component';
 import { ManufactureComponent } from './manufacture/manufacture.component';
 import { ManufacturesRoutingModule } from './manufactures-routing.module';
-import { manufacturesReducer } from './store/manufactures.reducers';
+import * as fromReducers from './store/reducers';
 
 @NgModule({
   imports: [
@@ -19,7 +19,7 @@ import { manufacturesReducer } from './store/manufactures.reducers';
     ReactiveFormsModule,
     ManufacturesRoutingModule,
     HomeSharedModule,
-    StoreModule.forFeature('manufactures', manufacturesReducer),
+    StoreModule.forFeature('manufactures', fromReducers.reducer),
   ],
 
   declarations: [

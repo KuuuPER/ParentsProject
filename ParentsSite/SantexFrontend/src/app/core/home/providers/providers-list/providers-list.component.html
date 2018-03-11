@@ -9,7 +9,7 @@
     <th></th>
   </thead>
   <tbody>
-    <tr *ngFor="let provider of (providersState | async).providers; let i = index">
+    <tr *ngFor="let provider of (providers | async); let i = index">
       <ng-template 
       [ngTemplateOutlet]="loadTemplate(provider)"
       [ngTemplateOutletContext]="{ $implicit: provider, index: i }"></ng-template>
@@ -17,27 +17,27 @@
   </tbody>
 </table>
 <app-pager 
-  [currentPage]="(providersState | async).pageInfo.currentPage"
-  [pagesCount]="(providersState | async).pageInfo.pageCount()"></app-pager>
+  [currentPage]="(pageInfo | async).currentPage"
+  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
 
   <ng-template #readOnlyTemplate let-provider let-i="index">
       <td>{{i + 1}}</td>
-      <td>{{provider.Name}}</td>
+      <td>{{provider.name}}</td>
       <td>
           <input type="button" value="Изменить" class="btn btn-default" (click)="editProvider(provider)" />
       </td>
       <td>
-          <input type="button" value="Удалить" (click)="deleteProvider(provider)" class="btn btn-danger" />
+          <input type="button" value="Удалить" (click)="deleteProvider(provider.id)" class="btn btn-danger" />
       </td>
   </ng-template>
 
   <ng-template #editTemplate let-i="index">
       <td>{{i + 1}}</td>
       <td>
-        <input type="text" [(ngModel)]="editedProvider.Name" class="form-control">
+        <input type="text" [(ngModel)]="editedProvider.name" class="form-control">
       </td>
       <td>
-          <input type="button" value="Сохранить" (click)="saveProvider(i)" class="btn btn-success" />
+          <input type="button" value="Сохранить" (click)="saveProvider(editedProvider.id)" class="btn btn-success" />
       </td>
       <td>
           <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />

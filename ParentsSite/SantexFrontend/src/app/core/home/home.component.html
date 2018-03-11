@@ -1,7 +1,7 @@
 <div class="container-fluid content">
   <div class="row">
-    <app-side-bar></app-side-bar>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <app-side-bar (onSidebarToggle)="onSidebarToggle($event)"></app-side-bar>
+    <div [ngClass]="sidebarHidden ? 'main col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1' : 'col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2'" class="main">
       <router-outlet></router-outlet>
     </div>
   </div>

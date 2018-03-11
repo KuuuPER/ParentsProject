@@ -5,14 +5,18 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import * as fromDeliveries from '../store/imports.reducers';
+import * as fromImports from '../store/reducers/imports.reducers';
+import * as fromReducers from '../store/reducers';
+import * as fromSelectors from '../store/reducers/imports.selectors';
 import * as ImportActions from '../store/imports.actions';
-import * as fromProducts from '../../products/store/products.reducers';
+import * as fromProducts from '../../products/store/reducers/products.reducers';
 import { ImportModel } from '../src/ImportModel';
 import { ImportStatus } from '../src/ImportStatus'
 import { INameId } from '../../src/INameId';
 import { ProductModel } from '../../products/src/ProductModel';
 import { IMyOptions, IMyDateModel } from 'angular4-datepicker/src/my-date-picker/interfaces';
+import { PageInfo } from '../../src/PageInfo';
+import { ProviderModel } from '../../providers/src/ProviderModel';
 
 @Component({
   selector: 'app-import',
@@ -20,11 +24,13 @@ import { IMyOptions, IMyDateModel } from 'angular4-datepicker/src/my-date-picker
   styleUrls: ['./import.component.css']
 })
 export class ImportComponent implements OnInit {
-  importsState: Observable<fromDeliveries.State>;
-  productsState: Observable<fromProducts.State>;
-  importForm: FormGroup;
+  public importsState: Observable<ImportModel[]>;
+  public providers: Observable<ProviderModel[]>;
+  public pageInfo: Observable<PageInfo>;
+  public productsState: Observable<ProductModel[]>;
+  public importForm: FormGroup;
   
-  importProducts: ProductModel[] = new Array<ProductModel>();
+  public importProducts: ProductModel[] = new Array<ProductModel>();
   
   public importDate = new Date();
 
@@ -38,12 +44,13 @@ export class ImportComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromDeliveries.FeatureState>
+    private store: Store<fromReducers.FeatureState>
   ) { }
 
   ngOnInit() {
-    this.importsState = this.store.select('imports');
-    this.productsState = this.store.select('products');
+    this.importsState = this.store.select(fromSelectors.getAllImports);
+    this.providers = this.store.select(fromSelectors.getAllProviders);
+    this.productsState = this.store.select(fromSelectors.getAllProducts);
     //this.store.dispatch(new ImportActions.FetchDeliveries())
     this.initForm();
   }
@@ -67,8 +74,8 @@ export class ImportComponent implements OnInit {
 
   onProviderSelect(selectedProvider: INameId){
     let provider = <FormGroup>this.importForm.get('Provider');
-      provider.setControl('Id', new FormControl(selectedProvider.Id, Validators.required));
-      provider.setControl('Name', new FormControl(selectedProvider.Name, Validators.required));
+      provider.setControl('Id', new FormControl(selectedProvider.id, Validators.required));
+      provider.setControl('Name', new FormControl(selectedProvider.name, Validators.required));
   }
 
   onCreatedDateChanged(dateModel: IMyDateModel){

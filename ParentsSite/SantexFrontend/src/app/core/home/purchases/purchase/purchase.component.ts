@@ -6,11 +6,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { IMyOptions, IMyDateModel } from 'angular4-datepicker/src/my-date-picker/interfaces';
 
-import * as fromPurchases from '../store/purchases.reducers';
+import * as fromPurchases from '../store/reducers/purchases.reducers';
+import * as fromSelectors from '../store/reducers/purchases.selectors';
 import { PurchaseModel } from '../src/PurchaseModel';
 import { ContactModel } from '../src/ContactModel';
-import * as fromProducts from '../../products/store/products.reducers';
+import * as fromProducts from '../../products/store/reducers/products.reducers';
 import { ProductModel } from '../../products/src/ProductModel';
+import { PurchaseUnitModel } from '../../src/PurchaseUnit';
+import * as fromReducers from '../store/reducers';
 
 @Component({
   selector: 'app-purchase',
@@ -18,12 +21,11 @@ import { ProductModel } from '../../products/src/ProductModel';
   styleUrls: ['./purchase.component.css']
 })
 export class PurchaseComponent implements OnInit {
-  purchasesState: Observable<fromPurchases.State>;
-  productsState: Observable<fromProducts.State>;
+  purchasesState: Observable<PurchaseModel[]>;
+  productsState: Observable<ProductModel[]>;
   purchaseForm: FormGroup;
-  driverControlName: 'Driver';
 
-  purchaseProducts: ProductModel[] = new Array<ProductModel>();
+  purchaseUnits: PurchaseUnitModel[] = new Array<PurchaseUnitModel>();
   
   public purchaseDate = new Date();
 
@@ -37,46 +39,60 @@ export class PurchaseComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromPurchases.FeatureState>
+    private store: Store<fromReducers.FeatureState>
   ) { }
 
   ngOnInit() {
-    this.purchasesState = this.store.select('purchases');
-    this.productsState = this.store.select('products');
+    this.purchasesState = this.store.select(fromSelectors.getAllPurchases);
+    this.productsState = this.store.select(fromSelectors.getAllProducts);
     //this.store.dispatch(new PurchaseActions.FetchDeliveries())
     this.initForm();
   }
 
   initForm(){
     let address = '';
-    let contact = new ContactModel('', '', '');
+    let contact = new ContactModel('', '', '', '');
 
     this.purchaseForm = new FormGroup({
-      'Address': new FormControl(address, Validators.required),
-      'PurchaseDate': new FormControl(this.purchaseDate, Validators.required),
-      'Contact': new FormGroup({
-        'ContactName': new FormControl(contact.name),
-        'ContactPhone': new FormControl(contact.phone),
-        'ContactAddress': new FormControl(contact.address),
+      'date': new FormControl(this.purchaseDate, Validators.required),
+      'contact': new FormGroup({
+        'name': new FormControl(contact.name),
+        'phone': new FormControl(contact.phone),
+        'address': new FormControl(contact.address),
       })
-    });    
+    });
   }
 
   addProductToPurchase(product: ProductModel){
-    this.purchaseProducts.push(product);
+    product.count--;
+
+    if (this.purchaseUnits.some(u => u.product.id === product.id)) {
+      let p = this.purchaseUnits.find(u => u.product.id === product.id);
+      p.count++;
+    }
+    else{
+      let purchaseUnit = new PurchaseUnitModel(null, null, {id: product.id, name: product.name}, 1, product.storePrice, new Date(), new Date());
+      this.purchaseUnits.push(purchaseUnit);
+    }
   }
 
   deleteProductFromPurchase(index: number){
-    this.purchaseProducts.splice(index, 1);
+    let productId = this.purchaseUnits[index].product.id;
+    this.productsState.forEach(s => {
+      let p = s.find(i => i.id === productId);
+      p.count += this.purchaseUnits[index].count
+    });
+
+    this.purchaseUnits.splice(index, 1);
   }
 
   onDateChanged(dateModel: IMyDateModel){
     let date = new Date(dateModel.date.year, dateModel.date.month, dateModel.date.day);
-    this.purchaseForm.setControl('PurchaseDate', new FormControl(date, Validators.required));
+    this.purchaseForm.setControl('date', new FormControl(date, Validators.required));
   }
 
   clearPurchaseProducts(){
-    this.purchaseProducts = [];
+    this.purchaseUnits = [];
   }
 
   addPurchase(){

@@ -8,7 +8,7 @@ import { PurchaseComponent } from './purchase/purchase.component';
 import { HomeSharedModule } from '../shared/home-shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PurchasesRoutingModule } from './purchases-routing.module';
-import { purchasesReducer } from './store/purchases.reducers';
+import * as fromReducers from './store/reducers';
 
 import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-date-picker.module';
 
@@ -19,7 +19,7 @@ import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-da
     ReactiveFormsModule,
     HomeSharedModule,
     PurchasesRoutingModule,
-    StoreModule.forFeature('purchases', purchasesReducer),
+    StoreModule.forFeature('purchases', fromReducers.reducers),
     MyDatePickerModule
   ],
   declarations: [

@@ -14,7 +14,8 @@ const appRoutes: Routes = [
             { path: 'imports',  loadChildren: './imports/imports.module#ImportsModule'},
             { path: 'purchases', loadChildren: './purchases/purchases.module#PurchasesModule' },
             { path: 'drivers', loadChildren: './drivers/drivers.module#DriversModule' },
-            { path: 'deliveries', loadChildren: './deliveries/deliveries.module#DeliveriesModule' }
+            { path: 'deliveries', loadChildren: './deliveries/deliveries.module#DeliveriesModule' },
+            { path: 'return-purchases', loadChildren: './return-purchases/return-purchases.module#ReturnPurchasesModule' },
         ] },
   ];
 

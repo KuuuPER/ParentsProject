@@ -30,13 +30,13 @@ export class AddDelivery implements Action{
 export class EditDelivery implements Action{
     readonly type: string = EDIT_DELIVERY;
 
-    constructor(public payload: {delivery: DeliveryModel, index: number}){}
+    constructor(public payload: {delivery: DeliveryModel, id: string}){}
 }
 
 export class DeleteDelivery implements Action{
     readonly type: string = DELETE_DELIVERY;
 
-    constructor(public payload: number){}
+    constructor(public payload: string){}
 }
 
 export class NextPage implements Action{
@@ -51,4 +51,4 @@ export class PreviousPage implements Action{
     constructor(public payload: number){}
 }
 
-export type DeliveriesActions = SetDeliveries | AddDelivery | EditDelivery | NextPage | PreviousPage;
+export type DeliveriesActions = SetDeliveries | AddDelivery | EditDelivery | DeleteDelivery | NextPage | PreviousPage;

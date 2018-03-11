@@ -11,45 +11,45 @@ export const NEXT_PAGE: string = 'NEXT_PAGE';
 export const PREVIOUS_PAGE: string = 'PREVIOUS_PAGE';
 
 export class FetchDrivers implements Action{
-    readonly type: string = FETCH_DRIVERS;
+    public readonly type: string = FETCH_DRIVERS;
 
     constructor(public payload: number = 1){}
 }
 
 export class SetDrivers implements Action{
-    readonly type: string = SET_DRIVERS;
+    public readonly type: string = SET_DRIVERS;
 
     constructor(public payload: DriverModel[]){}
 }
 
 export class AddDriver implements Action{
-    readonly type: string = ADD_DRIVER;
+    public readonly type: string = ADD_DRIVER;
 
     constructor(public payload: DriverModel){}
 }
 
 export class EditDriver implements Action{
-    readonly type: string = EDIT_DRIVER;
+    public readonly type: string = EDIT_DRIVER;
 
-    constructor(public payload: {driver: DriverModel, index: number}){}
+    constructor(public payload: {driver: DriverModel, id: string}){}
 }
 
 export class DeleteDriver implements Action{
-    readonly type: string = DELETE_DRIVER;
+    public readonly type: string = DELETE_DRIVER;
 
-    constructor(public payload: number){}
+    constructor(public payload: string){}
 }
 
 export class NextPage implements Action{
-    readonly type: string = NEXT_PAGE;
+    public readonly type: string = NEXT_PAGE;
 
     constructor(public payload: number){}
 }
 
 export class PreviousPage implements Action{
-    readonly type: string = PREVIOUS_PAGE;
+    public readonly type: string = PREVIOUS_PAGE;
 
     constructor(public payload: number){}
 }
 
-export type DriverActions = SetDrivers | FetchProducts | AddDriver | EditDriver | NextPage | PreviousPage;
+export type DriverActions = SetDrivers | FetchProducts | AddDriver | EditDriver | DeleteDriver | NextPage | PreviousPage;

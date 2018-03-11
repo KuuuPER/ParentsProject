@@ -13,7 +13,7 @@
       <th></th>
   </thead>
   <tbody>
-    <tr *ngFor="let delivery of (deliveriesState | async).deliveries; let i = index">
+    <tr *ngFor="let delivery of (deliveries | async); let i = index">
       <ng-template 
       [ngTemplateOutlet]="loadTemplate(delivery)"
       [ngTemplateOutletContext]="{ $implicit: delivery, index: i }"></ng-template>
@@ -21,31 +21,31 @@
   </tbody>
 </table>
 <app-pager 
-  [currentPage]="(deliveriesState | async).pageInfo.currentPage"
-  [pagesCount]="(deliveriesState | async).pageInfo.pageCount()"></app-pager>
+  [currentPage]="(pageInfo | async).currentPage"
+  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
 
   <ng-template #readOnlyTemplate let-delivery let-i="index">
     <td>{{i + 1}}</td>
-    <td>{{delivery.Address}}</td>
-    <td>{{delivery.Driver.Name}}</td>
+    <td>{{delivery.address}}</td>
+    <td>{{delivery.driver.name}}</td>
     <td>{{delivery.deliveryDate | date:'dd.MM.yyyy'}}</td>
-    <td>{{delivery.ProductsCount}}</td>
-    <td>{{delivery.Status}}</td>
+    <td>{{delivery.productsCount}}</td>
+    <td>{{delivery.status}}</td>
     <td>
         <input type="button" value="Изменить" class="btn btn-default" (click)="editDelivery(delivery)" />
     </td>
     <td>
-        <input type="button" value="Удалить" (click)="deleteDelivery(delivery)" class="btn btn-danger" />
+        <input type="button" value="Удалить" (click)="deleteDelivery(delivery.id)" class="btn btn-danger" />
     </td>
 </ng-template>
 
 <ng-template #editTemplate let-i="index">
     <td>{{i + 1}}</td>
     <td>
-      <input type="text" [(ngModel)]="editedDelivery.Address" class="form-control">
+      <input type="text" [(ngModel)]="editedDelivery.address" class="form-control">
     </td>
     <td>
-      <app-dropdown [valueList]="(deliveriesState | async).drivers" [selectedItem]="editedDelivery.Driver" (onItemSelect)="onDriverSelect($event)"></app-dropdown>
+      <app-dropdown [valueList]="(drivers | async)" [selectedItem]="editedDelivery.driver" (onItemSelect)="onDriverSelect($event)"></app-dropdown>
     </td>
     <td>
         <my-date-picker [options]="datePickerOptions" name="deliveryDate" [selDate]="
@@ -56,13 +56,13 @@
             }" (dateChanged)="onDateChanged($event)"></my-date-picker>
     </td>
     <td>
-        {{editedDelivery.ProductsCount}}
+        {{editedDelivery.productsCount}}
     </td>
     <td>
-        {{editedDelivery.Status}}
+        {{editedDelivery.status}}
     </td>
     <td>
-        <input type="button" value="Сохранить" (click)="saveDelivery(i)" class="btn btn-success" />
+        <input type="button" value="Сохранить" (click)="saveDelivery(editedDelivery.id)" class="btn btn-success" />
     </td>
     <td>
         <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />

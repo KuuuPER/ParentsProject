@@ -5,6 +5,7 @@ export class PurchaseUnitModel{
     private purchaseUnitStatus: PurchaseUnitStatus;
 
     constructor(
+        public id: string,
         public purchase: INameId,
         public product: INameId,
         public count: number,

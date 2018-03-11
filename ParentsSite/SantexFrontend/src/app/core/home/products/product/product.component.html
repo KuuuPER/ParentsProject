@@ -16,7 +16,7 @@
           class="form-control"
           id="name"
           name="name"
-          formControlName="Name">
+          formControlName="name">
         </div>
         <div class="col-sm-2 form-group">
           <label for="count">Количество</label>
@@ -24,7 +24,7 @@
           class="form-control"
           id="count"
           name="count"
-          formControlName="Count">
+          formControlName="count">
         </div>      
     </div>
   </div>
@@ -32,11 +32,11 @@
     <div class="col-xs-12">
       <div class="col-sm-2 form-group">
           <label>Категория</label>
-          <app-dropdown [valueList]="(productsState | async).categories" (onItemSelect)="onCategorySelect($event)"></app-dropdown>        
+          <app-dropdown [valueList]="(categories | async)" (onItemSelect)="onCategorySelect($event)"></app-dropdown>        
       </div>
       <div class="col-sm-2 form-group">
           <label>Производитель</label>
-          <app-dropdown [valueList]="(productsState | async).manufactures" (onItemSelect)="onManufactureSelect($event)"></app-dropdown>        
+          <app-dropdown [valueList]="(manufactures | async)" (onItemSelect)="onManufactureSelect($event)"></app-dropdown>        
       </div>
     </div>  
   </div>
@@ -44,7 +44,19 @@
       <div class="col-xs-12">
         <div class="col-sm-2 form-group">
             <label>Поставщик</label>
-            <app-dropdown [valueList]="(productsState | async).providers" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
+            <app-dropdown [valueList]="(providers | async)" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
+        </div>
+      </div>  
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="col-sm-2 form-group">
+            <label for="description">Описание</label>
+            <textarea
+            class="form-control"
+            id="description"
+            name="description"
+            formControlName="description"></textarea>
         </div>
       </div>  
     </div>

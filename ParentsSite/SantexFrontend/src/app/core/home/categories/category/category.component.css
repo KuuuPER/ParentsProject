@@ -1,0 +1,9 @@
+.error-text{
+    display: none;
+}
+
+form.ng-invalid.ng-touched .error-text{
+    display: block;
+    margin-top: 15px;
+    color: red;
+}

@@ -12,18 +12,19 @@ export class DeliveryModel{
     private DeliveryStatus: DeliveryStatus = DeliveryStatus.New;
 
     public constructor(
-        public Id: string,
-        public Address: string,
-        public ProductsCount: number,
-        public deliveryDate: Date,
-        public Driver: INameId,
-        Status?: DeliveryStatus) {
-            if (Status !== null) {
-                this.DeliveryStatus = Status;
+        public id: string,
+        public address: string,
+        public productsCount: number,
+        public date: Date,
+        public driver: INameId,
+        status?: DeliveryStatus,
+        public finishDate?: Date) {
+            if (status !== null) {
+                this.DeliveryStatus = status;
             }
         }
 
-    get Status(): string{
+    get status(): string{
         switch (this.DeliveryStatus) {
             case DeliveryStatus.New:
                 return 'Новый';
@@ -38,7 +39,7 @@ export class DeliveryModel{
         }
     }
 
-    set Status(status: string){
+    set status(status: string){
         switch (status) {
             case 'Новый':
                 this.DeliveryStatus = DeliveryStatus.New;

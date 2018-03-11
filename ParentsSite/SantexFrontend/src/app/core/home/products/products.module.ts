@@ -8,11 +8,10 @@ import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { PagerComponent } from '../shared/pager/pager.component';
 import { HomeSharedModule } from '../shared/home-shared.module';
 
-import { ProductsComponent } from './products.component';
 import { ProductComponent } from './product/product.component';
 import { ProductListComponent } from './pruduct-list/product-list.component';
 import { ProductsRoutingModule } from './products-routing.module';
-import { productsReducer } from './store/products.reducers';
+import * as fromReducers from './store/reducers';
 
 @NgModule({
   imports: [
@@ -21,13 +20,12 @@ import { productsReducer } from './store/products.reducers';
     ReactiveFormsModule,
     ProductsRoutingModule,
     HomeSharedModule,
-    StoreModule.forFeature('products', productsReducer)
+    StoreModule.forFeature('products', fromReducers.reducers)
     // EffectsModule.forFeature([ProductsEffects])
   ],
   declarations: [
     ProductComponent,
-    ProductListComponent,
-    ProductsComponent
+    ProductListComponent
 ],
 })
 export class ProductsModule { }

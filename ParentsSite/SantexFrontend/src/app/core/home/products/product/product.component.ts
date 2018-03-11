@@ -5,10 +5,14 @@ import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import * as fromProducts from '../store/products.reducers';
+import * as fromSelectors from '../store/reducers/products.selectors';
+import * as fromReducers from '../store/reducers';
 import * as ProductActions from '../store/products.actions';
 import { ProductModel } from '../src/ProductModel';
 import { INameId } from '../../src/INameId';
+import { CategoryModel } from '../../categories/src/CategoryModel';
+import { ManufactureModel } from '../../manufactures/src/ManufactureModel';
+import { ProviderModel } from '../../providers/src/ProviderModel';
 
 @Component({
   selector: 'app-product',
@@ -18,14 +22,20 @@ import { INameId } from '../../src/INameId';
 export class ProductComponent implements OnInit {
   productForm: FormGroup;
   
-  productsState: Observable<fromProducts.State>;
+  products: Observable<ProductModel[]>;
+  categories: Observable<CategoryModel[]>;
+  manufactures: Observable<ManufactureModel[]>;
+  providers: Observable<ProviderModel[]>;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromProducts.FeatureState>) { }
+    private store: Store<fromReducers.FeatureState>) { }
 
   ngOnInit() {
-    this.productsState = this.store.select('products');
+    this.products = this.store.select(fromSelectors.getAllProducts);
+    this.categories = this.store.select(fromSelectors.getAllCategories);
+    this.manufactures = this.store.select(fromSelectors.getAllManufactures);
+    this.providers = this.store.select(fromSelectors.getAllProviders);
 
     this.initForm();
   }
@@ -33,44 +43,45 @@ export class ProductComponent implements OnInit {
   initForm(){
     let productName = '';
     let category = new FormGroup({
-      'Id': new FormControl('', Validators.required),
+      'id': new FormControl('', Validators.required),
       'name': new FormControl('', Validators.required)
     });
     let manufacture = new FormGroup({
-      'Id': new FormControl('', Validators.required),
+      'id': new FormControl('', Validators.required),
       'name': new FormControl('', Validators.required)
     });
     let provider = new FormGroup({
-      'Id': new FormControl('', Validators.required),
+      'id': new FormControl('', Validators.required),
       'name': new FormControl('', Validators.required)
     });
     let count = 0;
 
     this.productForm = new FormGroup({
-      'Name': new FormControl(productName, Validators.required),
-      'Category': category,
-      'Manufacture': manufacture,
-      'Provider': provider,
-      'Count': new FormControl(count, Validators.required),
+      'name': new FormControl(productName, Validators.required),
+      'category': category,
+      'manufacture': manufacture,
+      'provider': provider,
+      'count': new FormControl(count, Validators.required),
+      'description': new FormControl('')
     });    
   }
 
   onProviderSelect(selectedProvider: INameId){
-      let provider = <FormGroup>this.productForm.get('Provider');
-      provider.setControl('Id', new FormControl(selectedProvider.Id, Validators.required))
-      provider.setControl('Name', new FormControl(selectedProvider.Name, Validators.required));
+      let provider = <FormGroup>this.productForm.get('provider');
+      provider.setControl('id', new FormControl(selectedProvider.id, Validators.required))
+      provider.setControl('name', new FormControl(selectedProvider.name, Validators.required));
   }
 
   onManufactureSelect(selectedManufacture: INameId){
-      let manufacture = <FormGroup>this.productForm.get('Manufacture');
-      manufacture.setControl('Id', new FormControl(selectedManufacture.Id, Validators.required));
-      manufacture.setControl('Name', new FormControl(selectedManufacture.Name, Validators.required));
+      let manufacture = <FormGroup>this.productForm.get('manufacture');
+      manufacture.setControl('id', new FormControl(selectedManufacture.id, Validators.required));
+      manufacture.setControl('name', new FormControl(selectedManufacture.name, Validators.required));
   }
 
   onCategorySelect(selectedCategory: INameId){
-    let category = <FormGroup>this.productForm.get('Category');
-      category.setControl('Id', new FormControl(selectedCategory.Id, Validators.required));
-      category.setControl('Name', new FormControl(selectedCategory.Name, Validators.required));
+    let category = <FormGroup>this.productForm.get('category');
+      category.setControl('id', new FormControl(selectedCategory.id, Validators.required));
+      category.setControl('name', new FormControl(selectedCategory.name, Validators.required));
   }
 
   addProduct(){

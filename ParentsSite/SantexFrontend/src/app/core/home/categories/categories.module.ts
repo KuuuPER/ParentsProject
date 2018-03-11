@@ -10,7 +10,8 @@ import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
 import { CategoryComponent } from './category/category.component';
 import { CategoriesRoutingModule } from './categories-routing.module';
-import { categoriesReducer } from './store/categories.reducers';
+import * as fromReducer from './store/reducers';
+import { categoriesReducer } from './store/reducers/categories.reducers';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { categoriesReducer } from './store/categories.reducers';
     ReactiveFormsModule,
     CategoriesRoutingModule,
     HomeSharedModule,
-    StoreModule.forFeature('categories', categoriesReducer),
+    StoreModule.forFeature('categories', fromReducer.reducer),
   ],
   declarations: [
     CategoriesListComponent,

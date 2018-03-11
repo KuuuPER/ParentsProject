@@ -16,7 +16,7 @@
       <th></th>
   </thead>
   <tbody>
-    <tr *ngFor="let product of (productsState | async).products; let i = index">
+    <tr *ngFor="let product of (products | async); let i = index">
       <ng-template 
       [ngTemplateOutlet]="loadTemplate(product)"
       [ngTemplateOutletContext]="{ $implicit: product, index: i }"></ng-template>
@@ -24,55 +24,55 @@
   </tbody>
 </table>
 <app-pager 
-  [currentPage]="(productsState | async).pageInfo.currentPage"
-  [pagesCount]="(productsState | async).pageInfo.pageCount()"></app-pager>
+  [currentPage]="(pageInfo | async).currentPage"
+  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
 
 <ng-template #readOnlyTemplate let-product let-i="index">
     <td>{{i + 1}}</td>
-    <td>{{product.Name}}</td>
-    <td>{{product.VendorCode}}</td>
-    <td>{{product.Category.Name}}</td>
-    <td>{{product.Manufacture.Name}}</td>
-    <td>{{product.Provider.Name}}</td>
-    <td>{{product.Count}}</td>
-    <td>{{product.PurchasePrice}}</td>
-    <td>{{product.SellingPrice}}</td>
+    <td>{{product.name}}</td>
+    <td>{{product.vendorCode}}</td>
+    <td>{{product.category.name}}</td>
+    <td>{{product.manufacture.name}}</td>
+    <td>{{product.provider.name}}</td>
+    <td>{{product.count}}</td>
+    <td>{{product.providerPrice}}</td>
+    <td>{{product.storePrice}}</td>
     <td>
         <input type="button" value="Изменить" class="btn btn-default" (click)="editProduct(product)" />
     </td>
     <td>
-        <input type="button" value="Удалить" (click)="deleteProduct(product)" class="btn btn-danger" />
+        <input type="button" value="Удалить" (click)="deleteProduct(product.id)" class="btn btn-danger" />
     </td>
 </ng-template>
 
 <ng-template #editTemplate let-i="index">
     <td>{{i + 1}}</td>
     <td>
-      <input type="text" [(ngModel)]="editedProduct.Name" class="form-control">
+      <input type="text" [(ngModel)]="editedProduct.name" class="form-control">
     </td>
     <td>
-        <input type="text" [(ngModel)]="editedProduct.VendorCode" class="form-control">
+        <input type="text" [(ngModel)]="editedProduct.vendorCode" class="form-control">
     </td>
     <td>
-      <app-dropdown [valueList]="(productsState | async).categories" [selectedItem]="editedProduct.Category" (onItemSelect)="onCategorySelect($event)"></app-dropdown>
+      <app-dropdown [valueList]="(categories | async)" [selectedItem]="editedProduct.category" (onItemSelect)="onCategorySelect($event)"></app-dropdown>
     </td>
     <td>
-        <app-dropdown [valueList]="(productsState | async).manufactures" [selectedItem]="editedProduct.Manufacture" (onItemSelect)="onManufactureSelect($event)"></app-dropdown>
+        <app-dropdown [valueList]="(manufactures | async)" [selectedItem]="editedProduct.manufacture" (onItemSelect)="onManufactureSelect($event)"></app-dropdown>
     </td>
     <td>
-        <app-dropdown [valueList]="(productsState | async).providers" [selectedItem]="editedProduct.Provider" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
+        <app-dropdown [valueList]="(providers | async)" [selectedItem]="editedProduct.provider" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
     </td>
     <td>
-        <input type="text" [(ngModel)]="editedProduct.Count" class="form-control">
+        <input type="text" [(ngModel)]="editedProduct.count" class="form-control">
     </td>
     <td>
-        <input type="text" [(ngModel)]="editedProduct.PurchasePrice" class="form-control">
+        <input type="text" [(ngModel)]="editedProduct.providerPrice" class="form-control">
     </td>
     <td>
-        <input type="text" [(ngModel)]="editedProduct.SellingPrice" class="form-control">
+        <input type="text" [(ngModel)]="editedProduct.storePrice" class="form-control">
     </td>
     <td>
-        <input type="button" value="Сохранить" (click)="saveProduct(i)" class="btn btn-success" />
+        <input type="button" value="Сохранить" (click)="saveProduct(editedProduct.id)" class="btn btn-success" />
     </td>
     <td>
         <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />

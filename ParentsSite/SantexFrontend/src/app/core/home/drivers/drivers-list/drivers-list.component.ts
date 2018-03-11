@@ -5,8 +5,12 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import * as Actions from '../store/drivers.actions';
-import * as fromDrivers from '../store/drivers.reducers';
+import * as fromDrivers from '../store/reducers/drivers.reducers';
+import * as fromSelectors from '../store/reducers/drivers.selectors';
+import * as fromReducers from '../store/reducers';
+import * as fromIndex from '../store/reducers/index';
 import { DriverModel } from '../src/DriverModel';
+import { PageInfo } from '../../src/PageInfo';
 
 @Component({
   selector: 'app-drivers-list',
@@ -14,7 +18,8 @@ import { DriverModel } from '../src/DriverModel';
   styleUrls: ['./drivers-list.component.css']
 })
 export class DriversListComponent implements OnInit {
-  driversState: Observable<fromDrivers.State>;
+  driversState: Observable<DriverModel[]>;
+  pageInfo: Observable<PageInfo>;
   editedDriver: DriverModel;
 
   @ViewChild('readOnlyTemplate') readOnlyTemplate: TemplateRef<any>;
@@ -24,23 +29,24 @@ export class DriversListComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromDrivers.FeatureState>
+    private store: Store<fromReducers.FeatureState>
   ) { }
 
   ngOnInit() {
-    this.driversState = this.store.select('drivers');
+    this.driversState = this.store.select(fromSelectors.getAllDrivers);
+    this.pageInfo = this.store.select(fromSelectors.getPageInfo);
   }
 
   editDriver(driver: DriverModel){
     this.editedDriver = new DriverModel(driver.id, driver.name, driver.rate, driver.notes, driver.deliveries);
   }
 
-  deleteDriver(index: number){
-    this.store.dispatch(new Actions.DeleteDriver(index));
+  deleteDriver(id: string){
+    this.store.dispatch(new Actions.DeleteDriver(id));
   }
 
-  saveDriver(index: number){
-    this.store.dispatch(new Actions.EditDriver({ index: index, driver: this.editedDriver }));
+  saveDriver(id: string){
+    this.store.dispatch(new Actions.EditDriver({ id: id, driver: this.editedDriver }));
     this.editedDriver = null;
   }
 

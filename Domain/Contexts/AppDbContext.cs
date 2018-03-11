@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Models;
+using System;
 
 namespace Domain.Contexts
 {
@@ -143,12 +144,12 @@ namespace Domain.Contexts
                 .HasKey(p => p.Id);
 
             modelBuilder.Entity<Product>()
-            .Property<int>("CategoryForeignKey");
+            .Property<Guid>("CategoryForeignKey");
 
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.Category)
                 .WithOne()
-                .HasForeignKey("CategoryForeignKey");
+                .HasForeignKey<Product>("CategoryForeignKey");
 
 
             modelBuilder.Entity<Product>()

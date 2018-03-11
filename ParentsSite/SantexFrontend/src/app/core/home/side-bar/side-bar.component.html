@@ -1,4 +1,4 @@
-<div class="col-sm-3 col-md-2 sidebar">
+<div [ngClass]="hidden ? 'sidebar-hidden' : 'col-sm-3 col-md-2'" class="sidebar">
   <ul class="nav nav-sidebar menu">
     <li routerLinkActive="active"><a routerLink='./products'>Товары</a></li>
     <li routerLinkActive="active"><a routerLink='./categories'>Категории товаров</a></li>
@@ -8,5 +8,9 @@
     <li routerLinkActive="active"><a routerLink='./purchases'>Покупки</a></li>
     <li routerLinkActive="active"><a routerLink='./drivers'>Водители</a></li>
     <li routerLinkActive="active"><a routerLink='./deliveries'>Доставки</a></li>
+    <li routerLinkActive="active"><a routerLink='./return-purchases'>Возвраты</a></li>
   </ul>
+  <div class="footer" (click)="sidebarToggle()">
+    <span for="hide" class="hide-panel">{{ hidden ? '>>' : '<<' }}</span>
+  </div>
 </div>

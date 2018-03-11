@@ -2,7 +2,8 @@
 {
     public enum ProductState
     {
-        Awaiting,
-        InStock
+        Awaiting = 0,
+        InStock = 1,
+        Absent = 2
     }
 }
