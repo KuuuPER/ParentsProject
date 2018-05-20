@@ -10,6 +10,9 @@ createFeatureSelector<fromReducers.FeatureState>('deliveries');
 export const getDeliveriesState = 
 createSelector(getReducers, fromReducers.getDeliveries);
 
+export const getEditDelivery = createSelector(getDeliveriesState, fromDeliveries.getEditDelivery);
+export const getPurchases = createSelector(getDeliveriesState, fromDeliveries.getPurchases);
+export const getDeliveryUnits = createSelector(getDeliveriesState, fromDeliveries.getDeliveryUnits);
 export const getDeliveriesIds = createSelector(getDeliveriesState, fromDeliveries.getIds);
 export const getDeliveries = createSelector(getDeliveriesState, fromDeliveries.getDeliveries);
 export const getAllDeliveries = createSelector(getDeliveriesIds, getDeliveries, (ids, deliveries) => {
@@ -17,7 +20,7 @@ export const getAllDeliveries = createSelector(getDeliveriesIds, getDeliveries, 
 });
 export const getPageInfo = createSelector(getDeliveriesState, fromDeliveries.getPageInfo);
 
-const getDriversState = createSelector(getReducers, r => r.drivers);
+const getDriversState = createSelector(getReducers, fromReducers.getDrivers);
 
 const getDriversIds = createSelector(getDriversState, fromDrivers.getIds);
 export const getDrivers = createSelector(getDriversState, fromDrivers.getDrivers);

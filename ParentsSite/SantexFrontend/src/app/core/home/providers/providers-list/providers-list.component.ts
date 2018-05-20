@@ -34,6 +34,12 @@ export class ProvidersListComponent implements OnInit {
   ngOnInit() {
     this.providers = this.store.select(fromSelectors.getAllProviders);
     this.pageInfo = this.store.select(fromSelectors.getPageInfo);
+
+    this.pageInfo
+    .take(1)
+    .subscribe((p) => {
+      this.store.dispatch(new Actions.FetchProviders(p));
+    });
   }
 
   editProvider(provider: ProviderModel){
@@ -53,12 +59,19 @@ export class ProvidersListComponent implements OnInit {
     this.editedProvider = null;
   }
 
+  onPageClicked(pageInfo: PageInfo){
+    this.store.dispatch(new Actions.ChangePage(pageInfo.currentPage));
+    this.store.dispatch(new Actions.FetchProviders(pageInfo));
+  }
+
   loadTemplate(provider: ProviderModel){
     if (this.editedProvider && this.editedProvider.id == provider.id) {
       return this.editTemplate;
     }
-    else{
+    else if(provider){
       return this.readOnlyTemplate;
     }
+
+    return null;
   }
 }

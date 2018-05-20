@@ -1,6 +1,9 @@
-﻿namespace Domain.Models
+﻿using System.ComponentModel;
+
+namespace Domain.Models
 {
-    public class Manufacture : BaseEntity
+    [Description("Производитель")]
+    public class Manufacture : BaseEntity, INameId
     {
         public string Name { get; set; }
 

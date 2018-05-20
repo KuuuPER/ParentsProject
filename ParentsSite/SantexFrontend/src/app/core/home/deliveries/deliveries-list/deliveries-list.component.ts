@@ -8,8 +8,10 @@ import { Store } from '@ngrx/store';
 import * as fromReducers from '../store/reducers';
 import * as fromDeliveries from '../store/reducers/deliveries.reducers';
 import * as fromSelectors from '../store/reducers/deliveries.selectors';
-import * as DeliveryActions from '../store/deliveries.actions';
-import { DeliveryModel, DeliveryStatus } from '../src/DeliveryModel';
+import * as Actions from '../store/deliveries.actions';
+import * as DriversActions from '../../drivers/store/drivers.actions';
+import { DeliveryModel } from '../src/DeliveryModel';
+import { DeliveryStatus } from '../src/DeliveryStatus';
 import { INameId } from '../../src/INameId';
 import { IMyOptions, IMyDateModel } from 'angular4-datepicker/src/my-date-picker/interfaces';
 import { DriverModel } from '../../drivers/src/DriverModel';
@@ -21,9 +23,9 @@ import { PageInfo } from '../../src/PageInfo';
   styleUrls: ['./deliveries-list.component.css']
 })
 export class DeliveriesListComponent implements OnInit {
-  deliveries: Observable<DeliveryModel[]>;
-  pageInfo: Observable<PageInfo>;
-  drivers: Observable<DriverModel[]>;
+  public deliveries: Observable<DeliveryModel[]>;
+  public pageInfo: Observable<PageInfo>;
+  public drivers: Observable<DriverModel[]>;
   @ViewChild('readOnlyTemplate') readOnlyTemplate: TemplateRef<any>;
   @ViewChild('editTemplate') editTemplate: TemplateRef<any>;
 
@@ -47,20 +49,29 @@ export class DeliveriesListComponent implements OnInit {
     this.deliveries = this.store.select(fromSelectors.getAllDeliveries);
     this.pageInfo = this.store.select(fromSelectors.getPageInfo);
     this.drivers = this.store.select(fromSelectors.getAllDrivers);
-    //this.store.dispatch(new DeliveryActions.FetchDeliveries())
+    
+    this.store.dispatch(new DriversActions.FetchDrivers());
+    this.fetchFirstPage();
   }
 
+  public fetchFirstPage(){
+    this.pageInfo
+     .take(1)
+     .subscribe((p) => {
+     this.store.dispatch(new Actions.FetchDeliveries(p));
+     });
+ }
+
   editDelivery(delivery: DeliveryModel){
-    this.editedDelivery = new DeliveryModel(delivery.id, delivery.address, delivery.productsCount, delivery.date, delivery.driver);
-    this.editedDelivery.status = delivery.status;
+    this.editedDelivery = new DeliveryModel(delivery.id, delivery.deliveryDate, delivery.driver, delivery.purchases, delivery.DeliveryStatus, delivery.finishDate);    
   }
 
   deleteDelivery(id: string){
-    this.store.dispatch(new DeliveryActions.DeleteDelivery(id));
+    this.store.dispatch(new Actions.DeleteDelivery(id));
   }
 
   saveDelivery(id: string){
-    this.store.dispatch(new DeliveryActions.EditDelivery({ id: id, delivery: this.editedDelivery }));
+    this.store.dispatch(new Actions.EditDelivery({ id: id, delivery: this.editedDelivery }));
     this.editedDelivery = null;
   }
 
@@ -69,7 +80,12 @@ export class DeliveriesListComponent implements OnInit {
   }
 
   onDateChanged(event: IMyDateModel){
-    this.editedDelivery.date = new Date (event.date.year, event.date.month, event.date.day);
+    this.editedDelivery.deliveryDate = new Date (event.date.year, event.date.month, event.date.day);
+  }
+
+  onPageClicked(pageInfo: PageInfo){
+    this.store.dispatch(new Actions.FetchDeliveries(pageInfo));
+    this.store.dispatch(new Actions.ChangePage(pageInfo.currentPage));
   }
 
   cancel(){

@@ -23,12 +23,12 @@
     </tr>
   </tbody>
 </table>
-<app-pager 
-  [currentPage]="(pageInfo | async).currentPage"
-  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
+<app-pager *ngIf="(pageInfo | async).pageCount() > 1"
+  [pageInfo]="(pageInfo | async)"
+  (onPageClick)="onPageClicked($event)"></app-pager>
 
 <ng-template #readOnlyTemplate let-product let-i="index">
-    <td>{{i + 1}}</td>
+    <td><a [routerLink]="['./edit', product.id]">{{getItemNumber((pageInfo | async), i)}}</a></td>
     <td>{{product.name}}</td>
     <td>{{product.vendorCode}}</td>
     <td>{{product.category.name}}</td>
@@ -46,7 +46,7 @@
 </ng-template>
 
 <ng-template #editTemplate let-i="index">
-    <td>{{i + 1}}</td>
+    <td>{{getItemNumber((pageInfo | async), i)}}</td>
     <td>
       <input type="text" [(ngModel)]="editedProduct.name" class="form-control">
     </td>
@@ -54,7 +54,10 @@
         <input type="text" [(ngModel)]="editedProduct.vendorCode" class="form-control">
     </td>
     <td>
-      <app-dropdown [valueList]="(categories | async)" [selectedItem]="editedProduct.category" (onItemSelect)="onCategorySelect($event)"></app-dropdown>
+      <app-dropdown
+      [valueList]="(categories | async)"
+      [selectedItem]="editedProduct.category"
+      (onItemSelect)="onCategorySelect($event)"></app-dropdown>
     </td>
     <td>
         <app-dropdown [valueList]="(manufactures | async)" [selectedItem]="editedProduct.manufacture" (onItemSelect)="onManufactureSelect($event)"></app-dropdown>

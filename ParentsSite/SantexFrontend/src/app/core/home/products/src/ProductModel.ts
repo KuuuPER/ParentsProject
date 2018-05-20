@@ -19,6 +19,9 @@ export class ProductModel{
             if (status !== null) {
                 this._status = status;
             }
+            else{
+                this._status = ProductState.InStock;
+            }
         }
 
     get state(): string{

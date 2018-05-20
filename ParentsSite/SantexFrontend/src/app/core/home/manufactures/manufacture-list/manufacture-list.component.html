@@ -10,19 +10,19 @@
     <th></th>
   </thead>
   <tbody>
-    <tr *ngFor="let manufacture of (manufacturesState | async); let i = index">
+    <tr *ngFor="let manufacture of (manufactures | async); let i = index">
       <ng-template 
       [ngTemplateOutlet]="loadTemplate(manufacture)"
       [ngTemplateOutletContext]="{ $implicit: manufacture, index: i }"></ng-template>
     </tr>
   </tbody>
 </table>
-<app-pager 
-  [currentPage]="(pageInfo | async).currentPage"
-  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
+<app-pager *ngIf="(pageInfo | async).pageCount() > 1"
+  [pageInfo]="(pageInfo | async)"
+  (onPageClick)="onPageClicked($event)"></app-pager>
 
   <ng-template #readOnlyTemplate let-manufacture let-i="index">
-      <td>{{i + 1}}</td>
+      <td><a [routerLink]="['./edit', manufacture.id]">{{getItemNumber((pageInfo | async), i)}}</a></td>
       <td>{{manufacture.name}}</td>
       <td>{{manufacture.country}}</td>
       <td>
@@ -34,7 +34,7 @@
   </ng-template>
 
   <ng-template #editTemplate let-i="index">
-      <td>{{i + 1}}</td>
+      <td>{{getItemNumber((pageInfo | async), i)}}</td>
       <td>
         <input type="text" [(ngModel)]="editedManufacture.name" class="form-control">
       </td>

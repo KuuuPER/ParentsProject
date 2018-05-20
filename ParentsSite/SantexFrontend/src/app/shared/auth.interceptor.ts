@@ -12,9 +12,7 @@ import 'rxjs/add/operator/take';
 export class AuthInterceptor implements HttpInterceptor{
     constructor(private store: Store<fromApp.AppState>){}
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-        console.log('intercepted');
-
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{        
         return this.store.select('auth')
         .take(1)
         .switchMap((authState: fromAauth.State) => {

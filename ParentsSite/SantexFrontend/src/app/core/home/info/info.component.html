@@ -1,0 +1,7 @@
+<div *ngFor="let info of (infos | async); let i = index" [ngClass]="getContainerClasses(info)">
+  <p [ngClass]="getTextClasses(info)">
+    <span [ngClass]="getTextClasses(info)">{{info.title}}</span>
+    {{info.text}}
+  </p>
+  <a (click)='onInfoClose(i)'></a>
+</div>

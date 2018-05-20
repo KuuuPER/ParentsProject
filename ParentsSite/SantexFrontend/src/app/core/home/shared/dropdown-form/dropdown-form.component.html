@@ -1,0 +1,17 @@
+<div class="dropdown" [ngClass]="isOpen ? 'open' : ''"  *ngIf="form != null" [formGroup]="form">
+  <label (click)="toggleDropdown()">
+    <a>
+      {{(selectedItem | async).name}}
+    </a>
+  </label>
+  <div class="form-group">
+    <input type="text" class="form-control" [value]='(selectedItem | async).name' formControlName="name" #searchText (keyup)="filterItems(searchText.value)">
+    <ul class="form-control">
+      <li *ngFor="let element of (valueList | async)" (click)="itemSelect(element)" style="cursor: pointer">
+        <a>
+          {{element.name}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

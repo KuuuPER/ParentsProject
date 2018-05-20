@@ -16,12 +16,12 @@
     </tr>
   </tbody>
 </table>
-<app-pager 
-  [currentPage]="(pageInfo | async).currentPage"
-  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
+<app-pager *ngIf="(pageInfo | async).pageCount() > 1"
+  [pageInfo]="(pageInfo | async)"
+  (onPageClick)="onPageClicked($event)"></app-pager>
 
   <ng-template #readOnlyTemplate let-category let-i="index">
-      <td>{{i + 1}}</td>
+      <td><a [routerLink]="['./edit', category.id]">{{getItemNumber((pageInfo | async), i)}}</a></td>
       <td>{{category.name}}</td>
       <td>
           <input type="button" value="Изменить" class="btn btn-default" (click)="editCategory(category)" />
@@ -32,7 +32,7 @@
   </ng-template>
 
   <ng-template #editTemplate let-i="index">
-      <td>{{i + 1}}</td>
+      <td>{{getItemNumber((pageInfo | async), i)}}</td>
       <td>
         <input type="text" [(ngModel)]="editedCategory.name" class="form-control">
       </td>

@@ -17,7 +17,7 @@ import { PageInfo } from '../../src/PageInfo';
   styleUrls: ['./manufacture-list.component.css']
 })
 export class ManufactureListComponent implements OnInit {
-  manufacturesState: Observable<ManufactureModel[]>;
+  manufactures: Observable<ManufactureModel[]>;
   pageInfo: Observable<PageInfo>;
   editedManufacture: ManufactureModel;
 
@@ -32,8 +32,14 @@ export class ManufactureListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.manufacturesState = this.store.select(fromSelectors.getAllManufactures);
+    this.manufactures = this.store.select(fromSelectors.getAllManufactures);
     this.pageInfo = this.store.select(fromSelectors.getPageInfo);
+
+    this.pageInfo
+    .take(1)
+    .subscribe((p) => {
+      this.store.dispatch(new Actions.FetchManufactures(p));
+    });
   }
 
   editManufacture(manufacture: ManufactureModel){
@@ -51,6 +57,15 @@ export class ManufactureListComponent implements OnInit {
 
   cancel(){
     this.editedManufacture = null;
+  }
+
+  onPageClicked(pageInfo: PageInfo){
+    this.store.dispatch(new Actions.ChangePage(pageInfo.currentPage));
+    this.store.dispatch(new Actions.FetchManufactures(pageInfo));
+  }
+
+  getItemNumber(info: PageInfo, index: number): number{
+    return info.itemsPerPage * (info.currentPage - 1) + index + 1;
   }
 
   loadTemplate(manufacture: ManufactureModel){

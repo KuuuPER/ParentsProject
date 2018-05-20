@@ -1,8 +1,9 @@
-﻿using System;
+﻿using System.ComponentModel;
 
 namespace Domain.Models
 {
-    public class ProductCategory : BaseEntity
+    [Description("Категория товара")]
+    public class ProductCategory : BaseEntity, INameId
     {
         public string Name { get; set; }
     }

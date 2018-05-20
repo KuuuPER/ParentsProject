@@ -1,0 +1,68 @@
+<div [formGroup]="formGroup" *ngIf="formGroup.get('deliveries') !== null">
+    <div class="row">
+      <div class="col-xs-12">
+          <div class="panel panel-default"
+          formArrayName="deliveries"
+          *ngFor="let delivery of getDeliveriesFormArray().controls; let i = index;">
+          <div class="panel-heading">
+              <span>Доставка {{i + 1}}</span>
+              <span class="glyphicon glyphicon-remove pull-right" *ngIf="getDeliveriesFormArray().controls.length > 1" (click)="removeDelivery(i)"></span>
+          </div>
+          <div class="panel-body"
+          [formGroupName]="i">
+            <!-- <app-dropdown-form [formGroup]="delivery" [valueList]="deliveries" [controlName]="delivery"></app-dropdown-form> -->
+            <div class="row">
+              <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                  <label for="deliveryDate">Дата доставки:</label>
+                  <my-date-picker 
+                    [options]="dpOptions"
+                    name="deliveryDate"
+                    id="deliveryDate"
+                    formControlName="deliveryDate"
+                    (dateChanged)="onDateChanged($event, delivery)"
+                    [selDate]="selectedDate"></my-date-picker>
+              </div>
+              <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                <label for="timeFrom">С:</label>
+                <input type="number" name="timeFrom" id="timeFrom" formControlName="timeFrom" class="form-control">
+              </div>
+              <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                  <label for="timeTo">По:</label>
+                  <input type="number" name="timeTo" id="timeTo" formControlName="timeTo" class="form-control">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label for="address">Адрес:</label>
+                <input type="text" name="address" id="address" class="form-control" formControlName="address">
+              </div>
+            </div>
+            <div formArrayName="contacts">
+              <div *ngFor="let contact of getContactsFromDelivery(delivery).controls; let j = index">
+                  <div class="panel panel-default" [formGroupName]="j">
+                      <div class="panel-heading">
+                        <span>Контакт {{j + 1}}</span>
+                        <span class="glyphicon glyphicon-remove pull-right" *ngIf="getContactsFromDelivery(delivery).controls.length > 1" (click)="removeContact(delivery, j)"></span>
+                      </div>
+                      <div class="panel-body">
+                        <app-contact [form]="contact"></app-contact>
+                      </div>
+                  </div>
+              </div>
+                
+              </div>
+              <div class="margin-20">
+                  <a (click)="addContact(delivery)" style="cursor: default">
+                    Добавить контакт +
+                  </a>
+              </div>
+          </div>
+      </div>
+    </div>      
+  </div>
+</div>
+<div class="margin-20">
+    <a (click)="addDelivery()" style="cursor: default">
+      Добавить доставку +
+    </a>
+</div>

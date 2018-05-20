@@ -16,6 +16,7 @@ export const getPageInfo = createSelector(getProductsState, fromProducts.getPage
 export const getAllProducts = createSelector(getIds, getProducts, (ids, purchases) => {
     return ids.map(id => purchases[id]);
 });
+export const getEditProduct = createSelector(getProductsState, fromProducts.getEditProduct);
 
 export const getCategoriesState = createSelector(getReducers, fromReducers.getCategories);
 

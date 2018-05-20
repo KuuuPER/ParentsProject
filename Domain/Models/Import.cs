@@ -1,14 +1,16 @@
 ﻿using Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Domain.Models
 {
+    [Description("Приход")]
     public class Import : BaseEntity
     {
         public Provider Provider { get; set; }
 
-        public List<Product> Products { get; set; }
+        public ICollection<ImportProduct> Products { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

@@ -1,16 +1,10 @@
 ﻿using DataAccess;
 using Domain.Models;
-using Managers.Providers;
 
 namespace Services
 {
-    public class ProductsService
+    public class ProductsService: NameIdService<Product>
     {
-        public BaseProvider<Product> ProductsProvider { get; set; }
-
-        public ProductsService(UnitOfWork unitOfWork)
-        {
-            this.ProductsProvider = new BaseProvider<Product>(unitOfWork);
-        }
+        public ProductsService(UnitOfWork unitOfWork): base(unitOfWork, unitOfWork.Products) { }
     }
 }

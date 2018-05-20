@@ -22,9 +22,9 @@ import { ReturnPurchaseModel } from '../src/ReturnPurchaseModel';
   styleUrls: ['./return-purchase.component.css']
 })
 export class ReturnPurchaseComponent implements OnInit {
-  public purchasesState: Observable<PurchaseModel[]>;
-  public productsState: Observable<ProductModel[]>;
-  public returnPurchasesState: Observable<ReturnPurchaseModel[]>;
+  public purchases: Observable<PurchaseModel[]>;
+  public products: Observable<ProductModel[]>;
+  public returnPurchases: Observable<ReturnPurchaseModel[]>;
   public returnPurchaseForm: FormGroup;  
 
   public returnPurchaseUnits: ReturnPurchaseUnitModel[] = new Array<ReturnPurchaseUnitModel>();
@@ -46,8 +46,8 @@ export class ReturnPurchaseComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.purchasesState = this.store.select(fromReturnSelectors.getAllPurchases);
-    this.returnPurchasesState = this.store.select(fromReturnSelectors.getAllReturnPurchases);
+    this.purchases = this.store.select(fromReturnSelectors.getAllPurchases);
+    this.returnPurchases = this.store.select(fromReturnSelectors.getAllReturnPurchases);
     //this.productsState = this.store.select('products');
     //this.store.dispatch(new PurchaseActions.FetchDeliveries())
     this.initForm();
@@ -86,28 +86,17 @@ export class ReturnPurchaseComponent implements OnInit {
 
   deleteProductFromPurchase(index: number){
     let productId = this.returnPurchaseUnits[index].product.id;
-    let unit = this.purchase.units.find(p => p.product.id === productId);
+    let unit = this.purchase.purchaseUnits.find(p => p.product.id === productId);
     
     this.returnPurchaseUnits.splice(index, 1);
   }
 
-  onPurchaseSelect(purchase: INameId){
-    this.purchase = <PurchaseModel>purchase;
-    let formGroup = <FormGroup>this.returnPurchaseForm.get('purchase');
-    formGroup.setControl('purchase', new FormControl(purchase.name, Validators.required))
-  }
-
-  onDateChanged(dateModel: IMyDateModel){
+    onDateChanged(dateModel: IMyDateModel){
     let date = new Date(dateModel.date.year, dateModel.date.month, dateModel.date.day);
     this.returnPurchaseForm.setControl('date', new FormControl(date, Validators.required));
   }
 
-  getNameIds(purchases: PurchaseModel[]){
-    let nameIds = purchases.map(p => <INameId>p);
-    return nameIds;
-  }
-
-  clearPurchaseProducts(){
+    clearPurchaseProducts(){
     this.returnPurchaseUnits = [];
   }
 

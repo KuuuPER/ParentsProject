@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Domain.Models
 {
-    public class Provider : BaseEntity
+    [Description("Поставщик")]
+    public class Provider : BaseEntity, INameId
     {
         public string Name { get; set; }
 

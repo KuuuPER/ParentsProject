@@ -2,6 +2,7 @@ import { ProviderModel } from "../../providers/src/ProviderModel";
 import { ProductModel } from "../../products/src/ProductModel";
 import { ImportStatus } from "./ImportStatus";
 import { INameId } from "../../src/INameId";
+import { ImportProductModel } from "./ImportProductModel";
 
 export class ImportModel{
     private ImportStatus: ImportStatus;
@@ -9,17 +10,17 @@ export class ImportModel{
     constructor(
         public id: string,
         public provider: INameId,
-        public products: ProductModel[],
+        public products: ImportProductModel[],
         public createdDate: Date,
         public importDate: Date,
         public finishDate: Date = null,
-        status?: ImportStatus) {
+        public status?: ImportStatus) {
             if (status !== null) {
                 this.ImportStatus = status;
             }
         }    
 
-    get status(): string{
+    get statusStr(): string{
         switch (this.ImportStatus) {
             case ImportStatus.New:
                 return 'Новый';
@@ -34,7 +35,7 @@ export class ImportModel{
         }
     }
 
-    set status(status: string){
+    set statusStr(status: string){
         switch (status) {
             case 'Новый':
                 this.ImportStatus = ImportStatus.New;
@@ -50,5 +51,12 @@ export class ImportModel{
             default:
                 break;
         }
+    }
+
+    public productsCount(): number{
+        let count = 0;
+        this.products.forEach(p => count += p.count);
+
+        return count;
     }
 }

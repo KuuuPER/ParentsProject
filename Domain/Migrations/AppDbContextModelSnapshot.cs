@@ -18,7 +18,7 @@ namespace Domain.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
+                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Domain.Models.Contact", b =>
@@ -26,7 +26,7 @@ namespace Domain.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address");
+                    b.Property<Guid?>("DeliveryPurchaseId");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -37,6 +37,8 @@ namespace Domain.Migrations
                     b.Property<Guid?>("ProviderId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DeliveryPurchaseId");
 
                     b.HasIndex("ProviderId");
 
@@ -58,8 +60,6 @@ namespace Domain.Migrations
 
                     b.Property<DateTime?>("FinishDate");
 
-                    b.Property<string>("Notes");
-
                     b.Property<int>("Status");
 
                     b.HasKey("Id");
@@ -67,6 +67,34 @@ namespace Domain.Migrations
                     b.HasIndex("DriverId");
 
                     b.ToTable("Deliveries");
+                });
+
+            modelBuilder.Entity("Domain.Models.DeliveryPurchase", b =>
+                {
+                    b.Property<Guid>("DeliveryPurchaseId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<Guid?>("DeliveryId");
+
+                    b.Property<string>("Notes");
+
+                    b.Property<Guid?>("PurchaseId");
+
+                    b.Property<byte>("TimeFrom");
+
+                    b.Property<byte>("TimeTo");
+
+                    b.HasKey("DeliveryPurchaseId");
+
+                    b.HasIndex("DeliveryId");
+
+                    b.HasIndex("PurchaseId");
+
+                    b.ToTable("DeliveryPurchases");
                 });
 
             modelBuilder.Entity("Domain.Models.Driver", b =>
@@ -108,6 +136,26 @@ namespace Domain.Migrations
                     b.ToTable("Imports");
                 });
 
+            modelBuilder.Entity("Domain.Models.ImportProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<Guid?>("ImportId");
+
+                    b.Property<Guid?>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImportId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ImportProduct");
+                });
+
             modelBuilder.Entity("Domain.Models.Manufacture", b =>
                 {
                     b.Property<Guid>("Id")
@@ -131,11 +179,11 @@ namespace Domain.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("CategoryForeignKey");
+                    b.Property<Guid?>("CategoryId");
 
                     b.Property<int>("Count");
 
-                    b.Property<Guid?>("ImportId");
+                    b.Property<string>("Description");
 
                     b.Property<Guid?>("ManufactureId");
 
@@ -155,10 +203,7 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryForeignKey")
-                        .IsUnique();
-
-                    b.HasIndex("ImportId");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ManufactureId");
 
@@ -198,24 +243,20 @@ namespace Domain.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("ContactId");
-
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("DeliveryId");
+                    b.Property<string>("Notes");
+
+                    b.Property<int>("Status");
 
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnUpdate();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.HasIndex("DeliveryId");
 
                     b.ToTable("Purchases");
                 });
@@ -278,6 +319,11 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Models.Contact", b =>
                 {
+                    b.HasOne("Domain.Models.DeliveryPurchase")
+                        .WithMany("Contacts")
+                        .HasForeignKey("DeliveryPurchaseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Domain.Models.Provider")
                         .WithMany("Contacts")
                         .HasForeignKey("ProviderId");
@@ -290,6 +336,17 @@ namespace Domain.Migrations
                         .HasForeignKey("DriverId");
                 });
 
+            modelBuilder.Entity("Domain.Models.DeliveryPurchase", b =>
+                {
+                    b.HasOne("Domain.Models.Delivery", "Delivery")
+                        .WithMany("DeliveryPurchases")
+                        .HasForeignKey("DeliveryId");
+
+                    b.HasOne("Domain.Models.Purchase", "Purchase")
+                        .WithMany("DeliveryPurchases")
+                        .HasForeignKey("PurchaseId");
+                });
+
             modelBuilder.Entity("Domain.Models.Import", b =>
                 {
                     b.HasOne("Domain.Models.Provider", "Provider")
@@ -297,16 +354,23 @@ namespace Domain.Migrations
                         .HasForeignKey("ProviderId");
                 });
 
+            modelBuilder.Entity("Domain.Models.ImportProduct", b =>
+                {
+                    b.HasOne("Domain.Models.Import")
+                        .WithMany("Products")
+                        .HasForeignKey("ImportId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+                });
+
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.HasOne("Domain.Models.ProductCategory", "Category")
-                        .WithOne()
-                        .HasForeignKey("Domain.Models.Product", "CategoryForeignKey")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Domain.Models.Import")
-                        .WithMany("Products")
-                        .HasForeignKey("ImportId");
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("Domain.Models.Manufacture", "Manufacture")
                         .WithMany()
@@ -315,17 +379,6 @@ namespace Domain.Migrations
                     b.HasOne("Domain.Models.Provider", "Provider")
                         .WithMany()
                         .HasForeignKey("ProviderId");
-                });
-
-            modelBuilder.Entity("Domain.Models.Purchase", b =>
-                {
-                    b.HasOne("Domain.Models.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
-
-                    b.HasOne("Domain.Models.Delivery", "Delivery")
-                        .WithMany()
-                        .HasForeignKey("DeliveryId");
                 });
 
             modelBuilder.Entity("Domain.Models.PurchaseUnit", b =>

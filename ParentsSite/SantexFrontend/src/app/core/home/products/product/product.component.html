@@ -1,6 +1,6 @@
 <h2>Добавление продукта</h2>
 
-<form (ngSubmit)="addProduct()" [formGroup]="productForm">
+<form (ngSubmit)="addProduct()" *ngIf="productForm != null" [formGroup]="productForm">
   <div class="row">
     <div class="col-xs-12">
       <button class="btn btn-success" [disabled]="!productForm.valid" type="submit">Сохранить</button>
@@ -32,11 +32,11 @@
     <div class="col-xs-12">
       <div class="col-sm-2 form-group">
           <label>Категория</label>
-          <app-dropdown [valueList]="(categories | async)" (onItemSelect)="onCategorySelect($event)"></app-dropdown>        
+          <app-dropdown-form [form]="productForm.get('category')" [valueList]="categories" [controlName]="'category'"></app-dropdown-form>        
       </div>
       <div class="col-sm-2 form-group">
           <label>Производитель</label>
-          <app-dropdown [valueList]="(manufactures | async)" (onItemSelect)="onManufactureSelect($event)"></app-dropdown>        
+          <app-dropdown-form [form]="productForm.get('manufacture')" [valueList]="manufactures" [controlName]="'manufacture'"></app-dropdown-form>
       </div>
     </div>  
   </div>
@@ -44,9 +44,33 @@
       <div class="col-xs-12">
         <div class="col-sm-2 form-group">
             <label>Поставщик</label>
-            <app-dropdown [valueList]="(providers | async)" (onItemSelect)="onProviderSelect($event)"></app-dropdown>
+            <app-dropdown-form [form]="productForm.get('provider')" [valueList]="providers" [controlName]="'provider'"></app-dropdown-form>
         </div>
-      </div>  
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="providerPrice">Цена поставщика</label>
+          <input type="number"
+          class="form-control"
+          id="providerPrice"
+          name="providerPrice"
+          formControlName="providerPrice">
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="storePrice">Цена магазина</label>
+          <input type="number"
+          class="form-control"
+          id="storePrice"
+          name="storePrice"
+          formControlName="storePrice">
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="vendorCode">Артикул</label>
+          <input type="text"
+          class="form-control"
+          id="vendorCode"
+          name="vendorCode"
+          formControlName="vendorCode">
+      </div>
     </div>
     <div class="row">
       <div class="col-xs-12">

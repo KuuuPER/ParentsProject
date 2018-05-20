@@ -1,9 +1,11 @@
 <h2>Создание покупки</h2>
 
-<form (ngSubmit)="addPurchase()" [formGroup]="purchaseForm">
+<side-panel-container></side-panel-container>
+
+<form (ngSubmit)="addPurchase()" *ngIf="purchaseForm != null" [formGroup]="purchaseForm">
   <div class="row">
     <div class="col-xs-12">
-      <button class="btn btn-success" [disabled]="!purchaseForm.valid" type="submit">Сохранить</button>      
+      <button class="btn btn-success" [disabled]="!checkPurchaseValid()" type="submit">Сохранить</button>      
     </div>        
   </div>
   <div class="row">
@@ -14,7 +16,6 @@
             <my-date-picker 
             [options]="myDatePickerOptions"
             name="purchaseDate"
-            formControlName="purchaseDate"
             (dateChanged)="onDateChanged($event)"
             [selDate]="{
               year: purchaseDate.getFullYear(),
@@ -23,29 +24,20 @@
           }"></my-date-picker>
           </div>
         </div>
+        <div class="col-sm-5 form-group">
+          <label for="needDelivery">Нужна доставка:</label>
+          <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default">
+                  <span [ngStyle]="needDelivery ? {'opacity': '1'} : {'opacity': '0'}" class="glyphicon glyphicon-ok" (click)="sidePanelOpenDeliveries()"></span>
+              </label>            
+          </div>
+        </div>
     </div>
   </div>
 
-  <h3>Контакт</h3>
-  <div class="row" formGroupName="contact">
-    <div class="col-xs-12">
-      <div class="col-sm-5 form-group">
-        <label for="contactName">Имя</label>
-        <input type="text" class="form-control" id="contactName" name="contactName" formControlName="name">
-      </div>
-      <div class="col-sm-5 form-group">
-        <label for="contactPhone">Телефон</label>
-        <input type="text" class="form-control" id="contactPhone" name="contactPhone" formControlName="phone">
-      </div>
-    </div>
-    <div class="col-xs-12">
-      <div class="col-sm-5 form-group">
-        <label for="contactAddress">Адрес</label>
-        <input type="text" id="contactAddress" name="contactAddress" class="form-control" formControlName="address">
-      </div>
-    </div>
-  </div>
-
+  <a (click)="sidePanelOpenProducts()" style="cursor: pointer;">
+      <h3>Добавить продукты</h3>
+  </a>
   <div class="row">
     <div class="col-xs-12">
       <table id="purchaseProducts" class="table table-striped">
@@ -56,38 +48,11 @@
           <th><button class="btn btn-default" (click)="clearPurchaseProducts()">Очистить</button></th>
         </thead>
         <tbody>
-          <tr *ngFor="let unit of purchaseUnits; let i = index">
+          <tr *ngFor="let unit of (purchaseUnits | async); let i = index">
             <td>{{unit.product.name}}</td>
             <td>{{unit.storePrice}}</td>
             <td>{{unit.count}}</td>
-            <td><button class="btn btn-danger" (click)="deleteProductFromPurchase(i)">Убрать</button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <table id="products" class="table table-striped">
-        <thead>
-          <th>Наименование</th>
-          <th>Артикул</th>
-          <th>Категория</th>
-          <th>Количество</th>
-          <th>Закупочная цена</th>
-          <th>Конечная цена</th>
-          <th></th>
-        </thead>
-        <tbody>
-          <tr *ngFor="let product of (productsState | async)">
-            <td>{{product.name}}</td>
-            <td>{{product.vendorCode}}</td>
-            <td>{{product.category.Name}}</td>
-            <td>{{product.count}}</td>
-            <td>{{product.providerPrice}}</td>
-            <td>{{product.storePrice}}</td>
-            <td><button class="btn btn-success" [disabled]="product.count <= 0" (click)="addProductToPurchase(product)">Добавить</button></td>
+            <td><a class="btn btn-danger" (click)="deleteProductFromPurchase(unit.product.id)">Убрать</a></td>
           </tr>
         </tbody>
       </table>

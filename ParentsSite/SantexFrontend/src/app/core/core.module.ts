@@ -17,14 +17,13 @@ import { AuthModule } from './auth/auth.module';
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AuthModule
   ],
   declarations: [
     CoreComponent,
-    StartComponent,
-    AuthComponent
+    StartComponent
 ],
   exports:[
     AppRoutingModule,

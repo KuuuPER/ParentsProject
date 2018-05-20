@@ -6,10 +6,13 @@ import { ImportsListComponent } from './imports-list/imports-list.component';
 
 const appRoutes: Routes = [
     { 
-        path: '', component: ImportsListComponent,        
+        path: '', component: ImportsListComponent
     },
     {
         path: 'add', component: ImportComponent
+    },
+    {
+        path: 'edit/:id', component: ImportComponent
     }
   ];
 

@@ -1,7 +1,7 @@
 <h1>Поставки</h1>
 
 <a href="#" type="button" routerLink='./add' class="btn btn-default">Добавить</a>
-<table class="table table-striped">
+<table class="table table-striped" >
   <thead>
     <th></th>
       <th>Поставщик</th>
@@ -21,15 +21,15 @@
     </tr>
   </tbody>
 </table>
-<app-pager 
-  [currentPage]="(pageInfo | async).currentPage"
-  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
+<app-pager *ngIf="(pageInfo | async).pageCount() > 1"
+    [pageInfo]="(pageInfo | async)"
+    (onPageClick)="onPageClicked($event)"></app-pager>
 
   <ng-template #readOnlyTemplate let-import let-i="index">
-    <td>{{i + 1}}</td>
+    <td><a [routerLink]="['./edit', import.id]">{{i + 1}}</a></td>
     <td>{{import.provider.name}}</td>
-    <td>{{import.products.length}}</td>
-    <td>{{import.status}}</td>
+    <td>{{import.products === null ? 0 : import.productsCount()}}</td>
+    <td>{{import.statusStr}}</td>
     <td>{{import.createdDate | date:'dd.MM.yyyy'}}</td>
     <td>{{import.importDate | date:'dd.MM.yyyy'}}</td>
     <td>{{import.finishtDate ? (import.finishtDate | date:'dd.MM.yyyy') : ''}}</td>

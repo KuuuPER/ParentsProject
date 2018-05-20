@@ -11,6 +11,7 @@ import * as fromReducers from '../store/reducers';
 import * as fromIndex from '../store/reducers/index';
 import { DriverModel } from '../src/DriverModel';
 import { PageInfo } from '../../src/PageInfo';
+import { DriversListService } from '../services/drivers-list.service';
 
 @Component({
   selector: 'app-drivers-list',
@@ -18,7 +19,7 @@ import { PageInfo } from '../../src/PageInfo';
   styleUrls: ['./drivers-list.component.css']
 })
 export class DriversListComponent implements OnInit {
-  driversState: Observable<DriverModel[]>;
+  drivers: Observable<DriverModel[]>;
   pageInfo: Observable<PageInfo>;
   editedDriver: DriverModel;
 
@@ -27,14 +28,16 @@ export class DriversListComponent implements OnInit {
 
 
   constructor(
+    private service: DriversListService,
     private router: Router,
-    private route: ActivatedRoute,
     private store: Store<fromReducers.FeatureState>
   ) { }
 
   ngOnInit() {
-    this.driversState = this.store.select(fromSelectors.getAllDrivers);
+    this.drivers = this.store.select(fromSelectors.getAllDrivers);
     this.pageInfo = this.store.select(fromSelectors.getPageInfo);
+
+    this.service.fetchFirstPage(this.pageInfo);
   }
 
   editDriver(driver: DriverModel){
@@ -52,6 +55,15 @@ export class DriversListComponent implements OnInit {
 
   cancel(){
     this.editedDriver = null;
+  }
+
+  getItemNumber(info: PageInfo, index: number): number{
+    return info.itemsPerPage * (info.currentPage - 1) + index + 1;
+  }
+
+  onPageClicked(pageInfo: PageInfo){
+    this.store.dispatch(new Actions.FetchDrivers(pageInfo));
+    this.store.dispatch(new Actions.ChangePage(pageInfo.currentPage));
   }
 
   loadTemplate(driver: DriverModel){

@@ -1,16 +1,10 @@
 ﻿using DataAccess;
 using Domain.Models;
-using Managers.Providers;
 
 namespace Services
 {
-    public class ManufacturesService
+    public class ManufacturesService: NameIdService<Manufacture>
     {
-        public BaseProvider<Manufacture> ManufacturesProvider { get; set; }
-
-        public ManufacturesService(UnitOfWork unitOfWork)
-        {
-            this.ManufacturesProvider = new BaseProvider<Manufacture>(unitOfWork);
-        }
+        public ManufacturesService(UnitOfWork unitOfWork): base(unitOfWork, unitOfWork.Manufactures){ }
     }
 }

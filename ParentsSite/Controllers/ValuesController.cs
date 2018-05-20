@@ -24,12 +24,11 @@ namespace ParentsSite.Controllers
         // GET api/values
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        public async Task<object> Get()
+        public object Get()
         {
             try
             {
-                var appDbContext = _unitOfWork.Context as AppDbContext;
-                var providers = await appDbContext.Providers.ToListAsync();
+                var providers = _unitOfWork.Providers.GetAll();
             }
             catch (System.Exception e)
             {

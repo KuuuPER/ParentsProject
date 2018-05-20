@@ -1,0 +1,10 @@
+<div class="overlay" [@blackout]="show"></div>
+<aside [@showIn]="show">
+        <div class="head">
+            <h1>{{headTitle}}</h1>
+            <a (click)="onClose()" class="close-button">Закрыть</a>
+        </div>
+        <div class="container">
+                <ng-template #componentContainer></ng-template>
+        </div>
+</aside>

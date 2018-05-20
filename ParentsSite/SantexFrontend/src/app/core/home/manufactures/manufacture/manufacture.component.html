@@ -1,6 +1,6 @@
 <h2>Добавление производителя</h2>
 
-<form (ngSubmit)="addManufacture()" [formGroup]="manufactureForm">
+<form (ngSubmit)="addManufacture()" *ngIf="manufactureForm != null" [formGroup]="manufactureForm">
   <div class="row">
     <div class="col-xs-12">
       <button class="btn btn-success" [disabled]="!manufactureForm.valid" type="submit">Сохранить</button>
@@ -18,6 +18,11 @@
           name="name"
           formControlName="name">
         </div>
+        <div class="col-sm-5 form-group error">
+          <label for="name" class="error-text">
+            *Поле необходимо заполнить
+          </label>
+        </div>
     </div>
   </div>
   <div class="row">
@@ -31,13 +36,24 @@
           name="country"
           formControlName="country">
         </div>
+        <div class="col-sm-5 form-group error">
+          <label for="name" class="error-text">
+            *Поле необходимо заполнить
+          </label>
+        </div>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
       <div class="col-sm-5">
         <label for="description">Описание</label>
-        <textarea name="description" id="description" formControlName="description" cols="30" rows="10"></textarea>
+        <textarea
+          name="description"
+          id="description"
+          formControlName="description"
+          class="form-control"
+          cols="30"
+          rows="10"></textarea>
       </div>
     </div>
   </div>

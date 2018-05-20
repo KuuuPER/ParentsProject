@@ -11,11 +11,13 @@ import * as fromSelectors from '../store/reducers/categories.selectors';
 import * as fromIndex from '../store/reducers/index';
 import { CategoryModel } from '../src/CategoryModel';
 import { PageInfo } from '../../src/PageInfo';
+import { CategoriesListService } from '../services/category-list.service';
 
 @Component({
   selector: 'app-categories-list',
   templateUrl: './categories-list.component.html',
-  styleUrls: ['./categories-list.component.css']
+  styleUrls: ['./categories-list.component.css'],
+  providers: [CategoriesListService]
 })
 export class CategoriesListComponent implements OnInit {
   public categories: Observable<CategoryModel[]>;
@@ -27,6 +29,7 @@ export class CategoriesListComponent implements OnInit {
 
 
   constructor(
+    private service: CategoriesListService,
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<fromReducer.FeatureState>
@@ -35,6 +38,8 @@ export class CategoriesListComponent implements OnInit {
   ngOnInit() {
     this.categories = this.store.select(fromSelectors.getAllCategories);
     this.pageInfo = this.store.select(fromSelectors.getPageInfo);
+
+    this.service.fetchFirstPage(this.pageInfo);
   }
 
   editCategory(category: CategoryModel){
@@ -45,29 +50,24 @@ export class CategoriesListComponent implements OnInit {
     this.store.dispatch(new Actions.DeleteCategory(id));
   }
 
-  saveCategory(index: number){
+  saveCategory(id: string){
     this.store.dispatch(new Actions.EditCategory({
-      index: index,
+      id: id,
       category: this.editedCategory
     }));
-    // this.store.dispatch({
-    //   type: Actions.EDIT_CATEGORY,
-    //   payload: { index: index, category: this.editedCategory}
-    // });
+    
     this.editedCategory = null;
   }
 
-  getCategories(categories: any){
-    let array = [];
-
-    for (let i = 0; i < Object.keys(categories).length; i++) {
-      const element = categories[i];
-      array.push(element);
-    }
-
-    return array;
+  onPageClicked(pageInfo: PageInfo){
+    this.store.dispatch(new Actions.ChangePage(pageInfo.currentPage));
+    this.store.dispatch(new Actions.FetchCategories(pageInfo));
   }
 
+  getItemNumber(info: PageInfo, index: number): number{
+    return info.itemsPerPage * (info.currentPage - 1) + index + 1;
+  }
+  
   cancel(){
     this.editedCategory = null;
   }

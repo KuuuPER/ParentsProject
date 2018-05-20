@@ -1,4 +1,5 @@
 import { DeliveryModel } from "../../deliveries/src/DeliveryModel";
+import { DriverDeliveryModel } from "./DriverDeliveryModel";
 
 export class DriverModel{
     constructor(
@@ -6,5 +7,9 @@ export class DriverModel{
         public name: string,
         public rate: number,
         public notes: string,
-        public deliveries: DeliveryModel[]){}
+        public deliveries: DriverDeliveryModel[]) {
+            if (!deliveries) {
+                deliveries = new Array<DriverDeliveryModel>();
+            }
+        }
 }

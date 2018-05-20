@@ -7,8 +7,8 @@
   <div class="form-group">
     <input type="text" class="form-control" [ngModel]='inputText' #searchText (keyup)="filterItems(searchText.value)">
     <ul class="form-control">
-      <li *ngFor="let element of valueList">
-        <a (click)="itemSelect(element)" style="cursor: pointer">
+      <li (click)="itemSelect(element)" style="cursor: pointer" *ngFor="let element of valueList">
+        <a>
           {{element.name}}
         </a>
       </li>

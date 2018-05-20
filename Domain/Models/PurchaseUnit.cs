@@ -1,8 +1,10 @@
 ﻿using Domain.Enums;
 using System;
+using System.ComponentModel;
 
 namespace Domain.Models
 {
+    [Description("Единица покупки")]
     public class PurchaseUnit : BaseEntity
     {
         public Purchase Purchase { get; set; }

@@ -7,7 +7,7 @@
       <th>Адрес</th>
       <th>Водитель</th>
       <th>Дата</th>
-      <th>Количество товаров</th>
+      <th>Количество доставок</th>
       <th>Статус</th>
       <th></th>
       <th></th>
@@ -20,16 +20,16 @@
     </tr>
   </tbody>
 </table>
-<app-pager 
-  [currentPage]="(pageInfo | async).currentPage"
-  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
+<app-pager *ngIf="(pageInfo | async).pageCount() > 1"
+        [pageInfo]="(pageInfo | async)"
+        (onPageClick)="onPageClicked($event)"></app-pager>
 
   <ng-template #readOnlyTemplate let-delivery let-i="index">
-    <td>{{i + 1}}</td>
+    <td><a [routerLink]="['./edit', delivery.id]">{{i + 1}}</a></td>
     <td>{{delivery.address}}</td>
     <td>{{delivery.driver.name}}</td>
-    <td>{{delivery.deliveryDate | date:'dd.MM.yyyy'}}</td>
-    <td>{{delivery.productsCount}}</td>
+    <td>{{delivery.date | date:'dd.MM.yyyy'}}</td>
+    <td>{{delivery.purchases.length}}</td>
     <td>{{delivery.status}}</td>
     <td>
         <input type="button" value="Изменить" class="btn btn-default" (click)="editDelivery(delivery)" />
@@ -42,21 +42,18 @@
 <ng-template #editTemplate let-i="index">
     <td>{{i + 1}}</td>
     <td>
-      <input type="text" [(ngModel)]="editedDelivery.address" class="form-control">
-    </td>
-    <td>
       <app-dropdown [valueList]="(drivers | async)" [selectedItem]="editedDelivery.driver" (onItemSelect)="onDriverSelect($event)"></app-dropdown>
     </td>
     <td>
         <my-date-picker [options]="datePickerOptions" name="deliveryDate" [selDate]="
             {
-                year: editedDelivery.deliveryDate.getFullYear(),
-                month: editedDelivery.deliveryDate.getMonth() + 1,
-                day: editedDelivery.deliveryDate.getDate()
+                year: editedDelivery.date.getFullYear(),
+                month: editedDelivery.date.getMonth() + 1,
+                day: editedDelivery.date.getDate()
             }" (dateChanged)="onDateChanged($event)"></my-date-picker>
     </td>
     <td>
-        {{editedDelivery.productsCount}}
+        {{editedDelivery.purchases.length}}
     </td>
     <td>
         {{editedDelivery.status}}

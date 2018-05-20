@@ -21,8 +21,8 @@ import { PurchaseModel } from '../../purchases/src/PurchaseModel';
   styleUrls: ['./return-purchases-list.component.css']
 })
 export class ReturnPurchasesListComponent implements OnInit {
-  public returnPurchasesState: Observable<ReturnPurchaseModel[]>;
-  public purchasesState: Observable<PurchaseModel[]>;
+  public returnPurchases: Observable<ReturnPurchaseModel[]>;
+  public purchases: Observable<PurchaseModel[]>;
 
   @ViewChild('readOnlyTemplate') readOnlyTemplate: TemplateRef<any>;
   @ViewChild('editTemplate') editTemplate: TemplateRef<any>;
@@ -44,8 +44,8 @@ export class ReturnPurchasesListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.returnPurchasesState = this.store.select(fromReturnSelectors.getAllReturnPurchases);
-    this.purchasesState = this.store.select(fromReturnSelectors.getAllPurchases);
+    this.returnPurchases = this.store.select(fromReturnSelectors.getAllReturnPurchases);
+    this.purchases = this.store.select(fromReturnSelectors.getAllPurchases);
     //this.store.dispatch(new ReturnPurchaseActions.FetchDeliveries())
   }
 

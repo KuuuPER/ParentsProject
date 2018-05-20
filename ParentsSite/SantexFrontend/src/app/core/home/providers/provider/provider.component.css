@@ -1,9 +1,6 @@
-input.ng-invalid.ng-touched{
-    border-color: red;
+input.ng-invalid.ng-touched .text-danger{
+    display: block;
 }
-.error{
-    color: red;
-}
-.error{
+.error-text{
     display: none;
 }

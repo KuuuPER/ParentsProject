@@ -1,22 +1,16 @@
 import { ProductModel } from '../../products/src/ProductModel'
 import { INameId } from '../../src/INameId';
-
-export enum DeliveryStatus{
-    New = 0,
-    InProgress = 1,
-    Delivered = 2,
-    Canceled = 3
-}
+import { DeliveryStatus } from './DeliveryStatus';
+import { DeliveryPurchaseModel } from './DeliveryPurchaseModel';
 
 export class DeliveryModel{
-    private DeliveryStatus: DeliveryStatus = DeliveryStatus.New;
+    public DeliveryStatus: DeliveryStatus = DeliveryStatus.Planned;
 
     public constructor(
-        public id: string,
-        public address: string,
-        public productsCount: number,
-        public date: Date,
+        public id: string,        
+        public deliveryDate: Date,
         public driver: INameId,
+        public purchases: DeliveryPurchaseModel[],
         status?: DeliveryStatus,
         public finishDate?: Date) {
             if (status !== null) {
@@ -26,9 +20,11 @@ export class DeliveryModel{
 
     get status(): string{
         switch (this.DeliveryStatus) {
-            case DeliveryStatus.New:
-                return 'Новый';
-            case DeliveryStatus.InProgress:
+            case DeliveryStatus.Planned:
+                return 'Запланировано';
+            case DeliveryStatus.NotDelivered:
+                return 'Не доставлен';
+            case DeliveryStatus.InDelivery:
                 return 'Доставляется';
             case DeliveryStatus.Delivered:
                 return 'Доставлен';
@@ -42,10 +38,12 @@ export class DeliveryModel{
     set status(status: string){
         switch (status) {
             case 'Новый':
-                this.DeliveryStatus = DeliveryStatus.New;
+                this.DeliveryStatus = DeliveryStatus.Planned;
             break;
+            case 'Не доставлен':
+                this.DeliveryStatus = DeliveryStatus.NotDelivered;
             case 'Доставляется':
-                this.DeliveryStatus = DeliveryStatus.InProgress;
+                this.DeliveryStatus = DeliveryStatus.InDelivery;
             break;
             case 'Доставлен':
                 this.DeliveryStatus = DeliveryStatus.Delivered;

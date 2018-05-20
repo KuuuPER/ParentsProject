@@ -1,28 +1,28 @@
 .sidebar{
     max-height: 100%;
-    transition: max-height 1s ease-in-out;
+    transition: max-height 0.5s ease-in-out;
     background-color: #f5f5f5;
-    border-right: 1px solid #eee;    
+    border-right: 1px solid #eee;
 }
 .sidebar ul{
     max-height: 100%;
-    transition: max-height 1s ease-in-out;
+    transition: max-height 0.5s ease-in-out;
 }
 
 .sidebar li{
     opacity: 1;
     max-height: 100%;
-    transition: max-height, opacity 1s ease-in-out;
+    transition: max-height 0.5s ease-in, opacity 0.5s ease-in;
 }
 
 .sidebar-hidden ul{
     max-height: 0px;
-    transition: max-height 1s ease-in-out;
+    transition: max-height 0.5s ease-in-out;
 }
 .sidebar-hidden li{
     opacity: 0;
     max-height: 0px;
-    transition: max-height, opacity 1s ease-in-out;
+    transition: max-height 0.5s ease-in, opacity 0.5s ease-in;
 }
 
 li.active, li:hover{        
@@ -40,6 +40,9 @@ li.active a{
 }
 .hide-panel{
     float: right;
+    display: block;
+    padding: 10px 15px;
+    border-left: lightgray 1px solid;
 }
 .footer{
     position: absolute;
@@ -48,6 +51,15 @@ li.active a{
     right: 10px;
     cursor: pointer;
     width: 100%;
+    margin-right: -10px;
+    border-bottom: lightgray solid 1px;
+    border-top: lightgray solid 1px;
+}
+.footer:hover{
+    background-color: #C0C0C0;
+}
+.footer:hover .hide-panel{
+    border-left-color: #C0C0C0;
 }
 @media (min-width: 768px){
     .sidebar {
@@ -60,13 +72,13 @@ li.active a{
         overflow-y: auto;
         position: absolute;
         bottom: 0px;
+        border-right: 1px solid lightgray;
     }
     .sidebar-hidden{
         transition: width 1s ease-in;
         width: 20px;
     }
     .footer{
-        position: relative;
         display: inline-block;
     }
 }

@@ -1,6 +1,6 @@
 <h2>Добавление водителя</h2>
 
-<form (ngSubmit)="addDriver()" [formGroup]="driverForm">
+<form (ngSubmit)="addDriver()" *ngIf="driverForm != null" [formGroup]="driverForm">
   <div class="row">
     <div class="col-xs-12">
       <button class="btn btn-success" [disabled]="!driverForm.valid" type="submit">Сохранить</button>

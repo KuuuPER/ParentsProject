@@ -3,6 +3,9 @@ import { CommonModule } from "@angular/common";
 import { PagerComponent } from './pager/pager.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { DropdownFormComponent } from './dropdown-form/dropdown-form.component';
+import { ContactComponent } from './contact/contact.component';
+import { SidePanelContainerComponent } from './side-panel-container/side-panel-container.component';
 
 @NgModule({
     imports:[
@@ -12,11 +15,17 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     ],
     declarations: [
         PagerComponent,
-        DropdownComponent
-    ],
+        DropdownComponent,
+        DropdownFormComponent,
+        ContactComponent,
+        SidePanelContainerComponent
+],
     exports: [
         PagerComponent,
-        DropdownComponent
+        DropdownComponent,
+        DropdownFormComponent,
+        ContactComponent,
+        SidePanelContainerComponent
     ]
 })
 export class HomeSharedModule{

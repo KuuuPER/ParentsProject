@@ -1,14 +1,20 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthComponent } from './auth.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
     AuthComponent
+],
+  exports: [
+    AuthComponent
   ],
   imports: [
-    FormsModule    
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class AuthModule {}

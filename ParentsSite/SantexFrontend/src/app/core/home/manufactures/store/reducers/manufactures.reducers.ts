@@ -11,24 +11,36 @@ export interface FeatureState extends fromApp.AppState {
 
 export interface State{
     ids: string[],
-    manufactures: {[id: string]: ManufactureModel};    
+    manufactures: {[id: string]: ManufactureModel};
+    editedManufacture: ManufactureModel;
     pageInfo: PageInfo;
 }
 
 const initialState: State = {
-    ids: ['0', '1', '2'],
-    manufactures: {'0': {id: '0', name: 'Производитель 1', country: 'Россия', description: ''}, '1': {id: '1', name: 'Производитель 2', country: 'Россия', description: ''}, '2': {id: '2', name: 'Производитель 3', country: 'Россия', description: ''}},
-    pageInfo: new PageInfo(10, 3, 1)
+    ids: [],
+    manufactures: {},
+    editedManufacture: null,
+    pageInfo: null
 }
 
-export function manufacturesReducer(state: State = initialState, action: Actions.ManufactureActions){
+export function manufacturesReducer(state: State = initialState, action: Actions.ManufactureActions): State{
     switch (action.type) {
         case Actions.SET_MANUFACTURES:
-        let manufactureModels: {[id: number]: ManufactureModel} = {};
-        (<ManufactureModel[]>action.payload).forEach(m => manufactureModels[m.id] = m);
+        const payloads = <ManufactureModel[]>action.payload;
+        const fetchedManufactures: {[id: string]: ManufactureModel} = {};
+        const idsArray = [];
+        payloads.forEach(p => {fetchedManufactures[p.id] = p});
+        payloads.forEach(p => idsArray.push(p.id));
         return {
             ...state,
-            manufactures: manufactureModels
+            ids: [...idsArray],
+            manufactures: {...fetchedManufactures}
+        };
+        case Actions.SET_EDIT_MANUFACTURE:
+        const manufacture = <ManufactureModel>action.payload;
+        return {
+            ...state,
+            editedManufacture: {...manufacture}
         };
         case Actions.ADD_MANUFACTURE:
         if (Object.keys(state.manufactures).length < state.pageInfo.itemsPerPage) {
@@ -71,12 +83,21 @@ export function manufacturesReducer(state: State = initialState, action: Actions
             ids: [...ids],
             manufactures: {...oldState.manufactures},
         };
-        case Actions.PREVIOUS_PAGE:
-        case Actions.NEXT_PAGE:
+        case  Actions.SET_PAGEINFO:
+        const pageInfo = <PageInfo>action.payload;
+        const newPageInfo = new PageInfo(pageInfo.itemsPerPage, pageInfo.itemsCount, pageInfo.currentPage);
+        return <State>{
+            ...state,
+            pageInfo: newPageInfo
+        };
+        case Actions.CHANGE_PAGE:
         const newCurrentPage = <number>action.payload;
         return {
             ...state,
-            currentPage: newCurrentPage
+            pageInfo: <PageInfo>{
+                ...state.pageInfo,
+                currentPage: newCurrentPage
+            }
         };
         default:
             return state;
@@ -85,4 +106,5 @@ export function manufacturesReducer(state: State = initialState, action: Actions
 
 export const getManufactures = (state: State) => state.manufactures;
 export const getIds = (state: State) => state.ids;
+export const getEditManufacture = (state: State) => state.editedManufacture;
 export const getPageInfo = (state: State) => state.pageInfo;

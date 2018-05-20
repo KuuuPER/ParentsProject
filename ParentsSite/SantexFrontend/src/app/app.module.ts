@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from "@angular/common/http";
 
@@ -17,6 +18,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { environment } from '../environments/environment';
 import { FooterComponent } from './shared/footer/footer.component';
+import { HomeSharedModule } from './core/home/shared/home-shared.module';
 
 @NgModule({
   declarations: [
@@ -24,9 +26,11 @@ import { FooterComponent } from './shared/footer/footer.component';
 ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
+    HomeSharedModule,
     CoreModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects]),

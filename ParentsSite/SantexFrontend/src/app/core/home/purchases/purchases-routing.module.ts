@@ -6,10 +6,13 @@ import { PurchasesListComponent } from './purchases-list/purchases-list.componen
 
 const appRoutes: Routes = [
     { 
-        path: '', component: PurchasesListComponent,        
+        path: '', component: PurchasesListComponent, pathMatch: 'full'        
     },
     {
-        path: 'add', component: PurchaseComponent
+        path: 'add', component: PurchaseComponent, pathMatch: 'full'
+    },
+    {
+        path: 'edit/:id', component: PurchaseComponent, pathMatch: 'full'
     }
   ];
 

@@ -1,16 +1,10 @@
 ﻿using DataAccess;
 using Domain.Models;
-using Managers.Providers;
 
 namespace Services
 {
-    public class ContactsService
+    public class ContactsService: NameIdService<Contact>
     {
-        public BaseProvider<Contact> ContactsProvider { get; set; }
-
-        public ContactsService(UnitOfWork unitOfWork)
-        {
-            this.ContactsProvider = new BaseProvider<Contact>(unitOfWork);
-        }
+        public ContactsService(UnitOfWork unitOfWork): base(unitOfWork, unitOfWork.Contacts) { }
     }
 }

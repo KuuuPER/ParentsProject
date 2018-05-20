@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Domain.Models
 {
-    public class Driver : BaseEntity
+    [Description("Водитель")]
+    public class Driver : BaseEntity, INameId
     {
         public string Name { get; set; }
 
@@ -10,6 +12,6 @@ namespace Domain.Models
 
         public string Notes { get; set; }
 
-        public IEnumerable<Delivery> Deliveries { get; set; }
+        public ICollection<Delivery> Deliveries { get; set; }
     }
 }

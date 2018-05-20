@@ -1,0 +1,35 @@
+.head{
+    height: 120px;
+    width: 100%;
+    display: table;
+}
+.head>h1{
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 20px;
+}
+.close-button{
+    cursor: pointer;
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+    padding-right: 20px;
+    color: #d3d3d3;
+    text-decoration: none;
+}
+aside{
+    overflow-y: auto;
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    -webkit-box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+    box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+}
+.overlay{
+    z-index: 2;
+    background: black;
+}

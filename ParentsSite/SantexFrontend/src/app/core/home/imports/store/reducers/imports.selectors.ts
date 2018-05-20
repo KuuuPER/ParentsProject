@@ -10,7 +10,11 @@ createFeatureSelector<fromReducers.FeatureState>('imports');
 export const getImportsState = createSelector(getReducers, fromReducers.getImports);
 
 const getImportIds = createSelector(getImportsState, fromImports.getIds);
+export const getImportProducts = createSelector(getImportsState, fromImports.getImportProducts);
+export const getImportProductsPageInfo = createSelector(getImportsState, fromImports.getProductsPageInfo);
 export const getPageInfo = createSelector(getImportsState, fromImports.getPageInfo);
+export const getEditImport = createSelector(getImportsState, fromImports.getEditImport);
+export const getEditImportProducts = createSelector(getImportsState, fromImports.getEditImportProducts);
 export const getImports = createSelector(getImportsState, fromImports.getImports);
 export const getAllImports = createSelector(getImportIds, getImports, (ids, imports) => {
     return ids.map(id => imports[id]);
@@ -28,6 +32,7 @@ const getProductsState = createSelector(getReducers, fromReducers.getProducts);
 
 const getProductsIds = createSelector(getProductsState, fromProducts.getIds);
 export const getProducts = createSelector(getProductsState, fromProducts.getProducts);
+export const getProductsPageInfo = createSelector(getProductsState, fromProducts.getPageInfo);
 export const getAllProducts = createSelector(getProductsIds, getProducts, (ids, imports) => {
     return ids.map(id => imports[id]);
 });

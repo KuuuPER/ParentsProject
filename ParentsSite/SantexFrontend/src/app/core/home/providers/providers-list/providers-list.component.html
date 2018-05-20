@@ -16,12 +16,12 @@
     </tr>
   </tbody>
 </table>
-<app-pager 
-  [currentPage]="(pageInfo | async).currentPage"
-  [pagesCount]="(pageInfo | async).pageCount()"></app-pager>
+<app-pager *ngIf="(pageInfo | async).pageCount() > 1"
+  [pageInfo]="(pageInfo | async)"
+  (onPageClick)="onPageClicked($event)"></app-pager>
 
   <ng-template #readOnlyTemplate let-provider let-i="index">
-      <td>{{i + 1}}</td>
+      <td><a [routerLink]="['./edit', provider.id]">{{i + 1}}</a></td>
       <td>{{provider.name}}</td>
       <td>
           <input type="button" value="Изменить" class="btn btn-default" (click)="editProvider(provider)" />

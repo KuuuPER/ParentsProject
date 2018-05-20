@@ -12,24 +12,19 @@ export interface FeatureState extends fromApp.AppState {
 export interface State{
     ids: string[],
     categories: { [id: string]: CategoryModel};
+    editedCategory: CategoryModel,
     pageInfo: PageInfo;
 }
 
 const initialState: State = {
-    ids: ['0', '1', '2'],
-    categories: {'0': {id: '0', name: 'Категория 1'}, '1': {id: '1', name: 'Категория 2'}, '2': {id: '2', name: 'Категория 3'}},
-    pageInfo: new PageInfo(10, 3, 1)
+    ids: [],
+    categories: {},
+    editedCategory: null,
+    pageInfo: null
 }
 
 export function categoriesReducer(state: State = initialState, action: Actions.CategoryActions){
     switch (action.type) {
-        case Actions.SET_CATEGORIES:
-        let categoriesModels: {[id: string]: CategoryModel} = {};
-        (<(CategoryModel[])>action.payload).forEach(cm => categories[cm.id] = cm);
-        return {
-            ...state,
-            categories: categoriesModels
-        };
         case Actions.ADD_CATEGORY:
         if (Object.keys(state.categories).length < state.pageInfo.itemsPerPage) {
             const payload = <CategoryModel>action.payload;
@@ -59,27 +54,48 @@ export function categoriesReducer(state: State = initialState, action: Actions.C
             categories: {...oldState.categories},
         };
         case Actions.EDIT_CATEGORY:
-        const payload = <{category: CategoryModel, index: number}>action.payload;
+        const payload = <{category: CategoryModel, id: string}>action.payload;
         const categoryToUpdate = {
-            ...state.categories[payload.index],
+            ...state.categories[payload.id],
             ...payload.category
         };
         const categories = {...state.categories};
-        categories[payload.index] = categoryToUpdate;
+        categories[payload.id] = categoryToUpdate;
         const newCategories = {...categories};
         return {
             ...state,
             categories: newCategories
         };
-        case Actions.PREVIOUS_PAGE:
-        case Actions.NEXT_PAGE:
-        const newCurrentPage = <number>action.payload;
+        case Actions.SET_CATEGORIES:
+        const payloads = <CategoryModel[]>action.payload;
+        const fetchedCategories: {[id: string]: CategoryModel} = {};
+        const idsArray = [];
+        payloads.forEach(p => {fetchedCategories[p.id] = p});
+        payloads.forEach(p => idsArray.push(p.id));
         return {
             ...state,
-            pageInfo: <PageInfo>{
-                ...state.pageInfo,
-                currentPage: newCurrentPage
-            }
+            categories: {...fetchedCategories},
+            ids: [...idsArray]
+        };
+        case Actions.SET_EDIT_CATEGORY:
+        const category = <CategoryModel>action.payload;
+        return {
+            ...state,
+            editedCategory: {...category}
+        }
+        case  Actions.SET_PAGEINFO:
+        const pageInfo = <PageInfo>action.payload;
+        const newPageInfo = new PageInfo(pageInfo.itemsPerPage, pageInfo.itemsCount, pageInfo.currentPage);
+        return <State>{
+            ...state,
+            pageInfo: newPageInfo
+        };
+        case Actions.CHANGE_PAGE:
+        const newCurrentPage = <number>action.payload;
+        let newPage = new PageInfo(state.pageInfo.itemsPerPage, state.pageInfo.itemsCount, newCurrentPage);
+        return {
+            ...state,
+            pageInfo: newPage
         };
         default:
             return state;
@@ -87,5 +103,6 @@ export function categoriesReducer(state: State = initialState, action: Actions.C
 }
 
 export const getCategories = (state: State) => state.categories;
+export const getEditCategory = (state: State) => state.editedCategory;
 export const getIds = (state: State) => state.ids;
 export const getPageInfo = (state: State) => state.pageInfo;

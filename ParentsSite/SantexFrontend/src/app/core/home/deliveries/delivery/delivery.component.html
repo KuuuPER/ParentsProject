@@ -1,99 +1,58 @@
 <h2>Создание доставки</h2>
 
-<form (ngSubmit)="addDelivery()" [formGroup]="deliveryForm">
+<side-panel-container></side-panel-container>
+<form (ngSubmit)="addDelivery()" *ngIf="deliveryForm != null" [formGroup]="deliveryForm">
   <div class="row">
     <div class="col-xs-12">
       <button class="btn btn-success" [disabled]="!deliveryForm.valid" type="submit">Сохранить</button>      
     </div>        
   </div>
   <div class="row">
-    <div class="col-xs-12">      
-        <div class="col-sm-5 form-group">
-          <label for="address">Адрес</label>
-          <input
-          type="text"
-          class="form-control"
-          id="address"
-          name="address"
-          formControlName="address">
-        </div>
-        <div class="col-sm-2 form-group">
+    <div class="col-xs-12">
+        <div class="col-sm-3 form-group">
           <label>Водитель</label>
-          <app-dropdown [valueList]="(drivers | async)" (onItemSelect)="onDriverSelect($event)"></app-dropdown>        
+          <app-dropdown-form [valueList]="drivers" (onItemSelect)="onDriverSelect($event)" [controlName]="controlName" [form]="deliveryForm.get('delivery.driver')"></app-dropdown-form>        
+      </div>    
+      <div class="col-sm-2 form-group">
+        <label for="date">Дата доставки:</label>
+        <div>
+          <my-date-picker 
+          [options]="myDatePickerOptions"
+          name="date"
+          formControlName="date"
+          (dateChanged)="onDateChanged($event)"></my-date-picker>
+        </div>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
-      <div class="col-sm-5 form-group">
-        <label for="deliveryDate">Дата доставки:</label>
-        <div>
-          <my-date-picker 
-          [options]="myDatePickerOptions"
-          name="deliveryDate"
-          formControlName="date"
-          (dateChanged)="onDateChanged($event)"
-          [selDate]="{
-            year: deliveryDate.getFullYear(),
-            month: deliveryDate.getMonth() + 1,
-            day: deliveryDate.getDate()
-        }"></my-date-picker>
-        </div>
+      <div class="col-xs-3">
+        <h3>Товары к доставке</h3>
       </div>
-    </div>
   </div>
+
+  <a (click)="sidePanelOpen()" style="cursor: pointer;">
+      <h2>Добавить</h2>
+  </a>
 
   <div class="row">
     <div class="col-xs-12">
       <table id="deliveryProducts" class="table table-striped">
         <thead>
           <th>Наименование</th>
-          <th>Артикул</th>
-          <th>Категория</th>
           <th>Количество</th>
-          <th>Закупочная цена</th>
           <th>Фактическая цена</th>
           <th><button class="btn btn-default" (click)="clearDeliveryProducts()">Очистить</button></th>
         </thead>
         <tbody>
-          <tr *ngFor="let product of deliveryProducts; let i = index">
-            <td>{{product.name}}</td>
-            <td>{{product.vendorCode}}</td>
-            <td>{{product.category.Name}}</td>
-            <td>{{product.count}}</td>
-            <td>{{product.providerPrice}}</td>
-            <td>{{product.storePrice}}</td>
-            <td><button class="btn btn-danger" (click)="deleteProductFromDelivery(i)">Убрать</button></td>
+          <tr *ngFor="let unit of (deliveryUnits | async); let i = index">
+            <td>{{unit.product.name}}</td>
+            <td>{{unit.count}}</td>
+            <td>{{unit.storePrice}}</td>
+            <td><button class="btn btn-danger" (click)="deleteProductFromDelivery(unit.id)">Убрать</button></td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <table id="products" class="table table-striped">
-        <thead>
-          <th>Наименование</th>
-          <th>Артикул</th>
-          <th>Категория</th>
-          <th>Количество</th>
-          <th>Закупочная цена</th>
-          <th>Фактическая цена</th>
-          <th></th>
-        </thead>
-        <tbody>
-          <tr *ngFor="let product of (productsState | async)">
-            <td>{{product.name}}</td>
-            <td>{{product.vendorCode}}</td>
-            <td>{{product.category.Name}}</td>
-            <td>{{product.count}}</td>
-            <td>{{product.providerPrice}}</td>
-            <td>{{product.storePrice}}</td>
-            <td><button class="btn btn-success" (click)="addProductToDelivery(product)">Добавить</button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  </div>  
 </form>

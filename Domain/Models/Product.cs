@@ -1,8 +1,10 @@
 ﻿using Domain.Enums;
+using System.ComponentModel;
 
 namespace Domain.Models
 {
-    public class Product : BaseEntity
+    [Description("Товар")]
+    public class Product : BaseEntity, INameId
     {
         public string Name { get; set; }
 
@@ -21,5 +23,6 @@ namespace Domain.Models
         public int StorePrice { get; set; }
 
         public ProductState State { get; set; }
+        public string Description { get; set; }
     }
 }

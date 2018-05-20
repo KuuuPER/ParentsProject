@@ -9,6 +9,7 @@ export const getProvidersState = createSelector(getReducer, fromReducers.getProv
 export const getIds = createSelector(getProvidersState, fromProviders.getIds);
 export const getPageInfo = createSelector(getProvidersState, fromProviders.getPageInfo);
 export const getProviders = createSelector(getProvidersState, fromProviders.getProviders);
+export const getEditProvider = createSelector(getProvidersState, fromProviders.getEditProvider);
 export const getAllProviders = createSelector(getIds, getProviders, (ids, providers) => {
     return ids.map(id => providers[id]);
 });

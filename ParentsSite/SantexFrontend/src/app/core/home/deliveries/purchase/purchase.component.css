@@ -1,0 +1,13 @@
+.icon{
+    text-align: center;
+    display: table-cell;
+    padding-left: 20px;
+    padding-top: 20px;
+}
+.purchase{
+    display: table-cell;    
+}
+.purchase-units_list{    
+}
+.purchase-units_list>purchases{
+}

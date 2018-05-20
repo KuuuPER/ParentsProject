@@ -13,23 +13,35 @@ export interface FeatureState extends fromApp.AppState {
 export interface State{
     ids: string[],
     providers: {[id: string]: ProviderModel};
+    editProvider: ProviderModel;
     pageInfo: PageInfo;
 }
 
 const initialState: State = {
-    ids: ['0', '1', '2'],
-    providers: {'0': {id: '0', name: 'Поставщик 1', contacts: [], imports: []}, '1': {id: '1', name: 'Поставщик 2', contacts: [], imports: []}, '2': {id: '2', name: 'Поставщик 3', contacts: [], imports: []}},
-    pageInfo: new PageInfo(10, 3, 1)
+    ids: [],
+    providers: {},
+    editProvider: null,
+    pageInfo: null
 }
 
-export function providersReducer(state: State = initialState, action: Actions.ProviderActions){
+export function providersReducer(state: State = initialState, action: Actions.ProviderActions):State{
     switch (action.type) {
         case Actions.SET_PROVIDERS:
-        let newProviderModels: {[id:string]: ProviderModel} = {};
-        (<ProviderModel[]>action.payload).forEach(pm => newProviderModels[pm.id] = pm);
+        const payloads = <ProviderModel[]>action.payload;
+        const fetchedProviders: {[id: string]: ProviderModel} = {};
+        const idsArray = [];
+        payloads.forEach(p => {fetchedProviders[p.id] = p});
+        payloads.forEach(p => idsArray.push(p.id));
         return {
             ...state,
-            providers: {...newProviderModels}
+            ids: [...idsArray],
+            providers: {...fetchedProviders}
+        };
+        case Actions.SET_EDIT_PROVIDER:
+        const provider = <ProviderModel>action.payload;
+        return {
+            ...state,
+            editProvider: {...provider}
         };
         case Actions.ADD_PROVIDER:
         if (Object.keys(state.providers).length < state.pageInfo.itemsPerPage) {
@@ -70,12 +82,21 @@ export function providersReducer(state: State = initialState, action: Actions.Pr
             ...state,
             providers: newProviders
         };
-        case Actions.PREVIOUS_PAGE:
-        case Actions.NEXT_PAGE:
+        case  Actions.SET_PAGEINFO:
+        const pageInfo = <PageInfo>action.payload;
+        const newPageInfo = new PageInfo(pageInfo.itemsPerPage, pageInfo.itemsCount, pageInfo.currentPage);
+        return <State>{
+            ...state,
+            pageInfo: newPageInfo
+        };
+        case Actions.CHANGE_PAGE:
         const newCurrentPage = <number>action.payload;
         return {
             ...state,
-            currentPage: newCurrentPage
+            pageInfo: <PageInfo>{
+                ...state.pageInfo,
+                currentPage: newCurrentPage
+            }
         };
         default:
             return state;
@@ -83,5 +104,6 @@ export function providersReducer(state: State = initialState, action: Actions.Pr
 }
 
 export const getProviders = (state: State) => state.providers;
+export const getEditProvider = (state: State) => state.editProvider;
 export const getIds = (state: State) => state.ids;
 export const getPageInfo = (state: State) => state.pageInfo;

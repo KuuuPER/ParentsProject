@@ -1,19 +1,27 @@
 import { Action } from '@ngrx/store';
 import { ProviderModel } from '../src/ProviderModel';
-import { FetchProducts } from '../../products/store/products.actions';
+import { PageInfo } from '../../src/PageInfo';
 
 export const FETCH_PROVIDERS: string = 'FETCH_PROVIDERS';
+export const GET_PROVIDER: string = 'GET_PROVIDER';
 export const SET_PROVIDERS: string = 'SET_PROVIDERS';
+export const SET_EDIT_PROVIDER: string = 'SET_EDIT_PROVIDER';
 export const ADD_PROVIDER: string = 'ADD_PROVIDER';
 export const EDIT_PROVIDER: string = 'EDIT_PROVIDER';
 export const DELETE_PROVIDER: string = 'DELETE_PROVIDER';
-export const NEXT_PAGE: string = 'NEXT_PAGE';
-export const PREVIOUS_PAGE: string = 'PREVIOUS_PAGE';
+export const SET_PAGEINFO: string = 'SET_PAGEINFO';
+export const CHANGE_PAGE: string = 'CHANGE_PAGE';
 
 export class FetchProviders implements Action{
     readonly type: string = FETCH_PROVIDERS;
 
-    constructor(public payload: number = 1){}
+    constructor(public payload: PageInfo = null){}
+}
+
+export class GetProvider implements Action{
+    readonly type: string = GET_PROVIDER;
+
+    constructor(public payload: string){}
 }
 
 export class SetProviders implements Action{
@@ -24,6 +32,12 @@ export class SetProviders implements Action{
 
 export class AddProvider implements Action{
     readonly type: string = ADD_PROVIDER;
+
+    constructor(public payload: ProviderModel){}
+}
+
+export class SetEditProvider implements Action{
+    readonly type: string = SET_EDIT_PROVIDER;
 
     constructor(public payload: ProviderModel){}
 }
@@ -40,16 +54,16 @@ export class DeleteProvider implements Action{
     constructor(public payload: string){}
 }
 
-export class NextPage implements Action{
-    readonly type: string = NEXT_PAGE;
+export class SetPageInfo implements Action{
+    readonly type: string = SET_PAGEINFO;
 
     constructor(public payload: number){}
 }
 
-export class PreviousPage implements Action{
-    readonly type: string = PREVIOUS_PAGE;
+export class ChangePage implements Action{
+    readonly type: string = CHANGE_PAGE;
 
     constructor(public payload: number){}
 }
 
-export type ProviderActions = SetProviders | FetchProducts | AddProvider | EditProvider | DeleteProvider | NextPage | PreviousPage;
+export type ProviderActions = SetProviders | FetchProviders | GetProvider | AddProvider | EditProvider | DeleteProvider | SetPageInfo | ChangePage;

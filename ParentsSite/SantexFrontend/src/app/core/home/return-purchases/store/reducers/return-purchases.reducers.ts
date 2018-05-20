@@ -8,7 +8,8 @@ import * as fromIndex from './index';
 import { PageInfo } from '../../../src/PageInfo';
 import { INameId } from '../../../src/INameId';
 import { ProductModel } from '../../../products/src/ProductModel';
-import { DeliveryModel, DeliveryStatus } from '../../../deliveries/src/DeliveryModel';
+import { DeliveryModel } from '../../../deliveries/src/DeliveryModel';
+import { DeliveryStatus } from '../../../deliveries/src/DeliveryStatus';
 import { PurchaseUnitModel } from '../../../src/PurchaseUnit';
 import { PurchaseUnitStatus } from '../../../src/PurchaseUnitStatus';
 import { ReturnReason } from '../../src/ReturnReason';
@@ -20,16 +21,9 @@ export interface State{
 }
 
 const initialState: State = {
-    ids: ['0'],
-    returnPurchases: {'0': new ReturnPurchaseModel(
-        '0',
-        {id: '1', name: 'Покупка 1'},
-        [ new PurchaseUnitModel('1', {id: '1', name: 'Покупка 1'}, {id: '1', name: 'Товар 1'}, 1, 5000, new Date(2018, 2, 26), new Date(2018, 2, 27), PurchaseUnitStatus.New) ],
-        'нет',
-        new Date(2018, 3, 3),
-        ReturnReason.Defect)
-    },
-    pageInfo: new PageInfo(10, 3, 1)
+    ids: [],
+    returnPurchases: {},
+    pageInfo: null
 }
 
 export function returnPurchasesReducer(state: State = initialState, action: Actions.ReturnPurchasesActions): State{

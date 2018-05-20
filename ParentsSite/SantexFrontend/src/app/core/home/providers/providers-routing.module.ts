@@ -6,10 +6,13 @@ import { ProvidersListComponent } from './providers-list/providers-list.componen
 
 const appRoutes: Routes = [
     { 
-        path: '', component: ProvidersListComponent,        
+        path: '', component: ProvidersListComponent, pathMatch: 'full'
     },
     {
-        path: 'add', component: ProviderComponent
+        path: 'add', component: ProviderComponent, pathMatch: 'full'
+    },
+    {
+        path: 'edit/:id', component: ProviderComponent, pathMatch: 'full'
     }
   ];
 

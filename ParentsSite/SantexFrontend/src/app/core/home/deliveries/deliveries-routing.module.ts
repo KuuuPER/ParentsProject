@@ -6,13 +6,13 @@ import { DeliveriesListComponent } from './deliveries-list/deliveries-list.compo
 
 const appRoutes: Routes = [
     { 
-        path: '', component: DeliveriesListComponent,        
+        path: '', component: DeliveriesListComponent, pathMatch: 'full'
     },
     {
-        path: 'add', component: DeliveryComponent
+        path: 'add', component: DeliveryComponent, pathMatch: 'full'
     },
     {
-        path: 'edit/:id', component: DeliveryComponent
+        path: 'edit/:id', component: DeliveryComponent, pathMatch: 'full'
     }
   ];
 

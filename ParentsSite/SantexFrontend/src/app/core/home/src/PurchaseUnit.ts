@@ -2,16 +2,13 @@ import { INameId } from "./INameId";
 import { PurchaseUnitStatus } from "./PurchaseUnitStatus";
 
 export class PurchaseUnitModel{
-    private purchaseUnitStatus: PurchaseUnitStatus;
+    public purchaseUnitStatus: PurchaseUnitStatus;
 
     constructor(
         public id: string,
-        public purchase: INameId,
         public product: INameId,
         public count: number,
         public storePrice: number,
-        public createdDate: Date,
-        public updatedDate: Date,
         status?: PurchaseUnitStatus
     ){
         if (status !== null) {

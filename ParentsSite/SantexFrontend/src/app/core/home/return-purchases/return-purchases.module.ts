@@ -5,7 +5,6 @@ import { StoreModule } from '@ngrx/store';
 
 import { ReturnPurchasesListComponent } from './return-purchases-list/return-purchases-list.component';
 import { ReturnPurchaseComponent } from './return-purchase/return-purchase.component';
-import { HomeSharedModule } from '../shared/home-shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReturnPurchasesRoutingModule } from './return-purchases-routing.module';
 import * as fromReducers from './store/reducers';
@@ -18,7 +17,6 @@ import { MyDatePickerModule } from 'angular4-datepicker/src/my-date-picker/my-da
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HomeSharedModule,
     ReturnPurchasesRoutingModule,
     StoreModule.forFeature('returnPurchases', fromReducers.reducers),
     MyDatePickerModule

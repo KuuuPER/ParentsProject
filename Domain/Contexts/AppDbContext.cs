@@ -24,14 +24,13 @@ namespace Domain.Contexts
 
         public DbSet<Purchase> Purchases { get; set; }
 
+        public DbSet<DeliveryPurchase> DeliveryPurchases { get; set; }
+
         public DbSet<PurchaseUnit> PurchaseUnits { get; set; }
 
         public DbSet<ReturnPurchase> ReturnPurchases { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
-        {
-            
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options): base(options){ }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,10 +44,7 @@ namespace Domain.Contexts
 
             modelBuilder.Entity<Contact>()
                 .Property(c => c.Phone)
-                .IsRequired();
-
-            modelBuilder.Entity<Contact>()
-                .Property(c => c.Address);
+                .IsRequired();            
             #endregion
 
             #region Driver
@@ -68,6 +64,51 @@ namespace Domain.Contexts
             modelBuilder.Entity<Driver>()
                 .HasMany(d => d.Deliveries)
                 .WithOne(d => d.Driver);
+            #endregion
+
+            #region DeliveryPurchase
+            modelBuilder.Entity<DeliveryPurchase>()
+                .Property<Guid>("DeliveryPurchaseId");
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .HasKey("DeliveryPurchaseId");
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .HasOne(dp => dp.Delivery)
+                .WithMany(d => d.DeliveryPurchases)
+                .HasForeignKey("DeliveryId")
+                .IsRequired(false);
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .HasOne(dp => dp.Purchase)
+                .WithMany(p => p.DeliveryPurchases)
+                .HasForeignKey("PurchaseId")
+                .IsRequired(false);
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .Property(dp => dp.TimeFrom);
+                
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .Property(dp => dp.TimeTo);
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .Property(dp => dp.Notes);
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .HasMany(p => p.Contacts)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .Property(dp => dp.Address);
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .Property(dp => dp.Date)
+                .IsRequired();
+
+            modelBuilder.Entity<DeliveryPurchase>()
+                .HasMany(dp => dp.Contacts);
             #endregion
 
             #region Delivery
@@ -90,15 +131,16 @@ namespace Domain.Contexts
                 .IsRequired(false);
 
             modelBuilder.Entity<Delivery>()
+                .HasMany(p => p.DeliveryPurchases)
+                .WithOne(dp => dp.Delivery);
+
+            modelBuilder.Entity<Delivery>()
                 .HasMany(p => p.PurchaseUnits)
                 .WithOne();
 
             modelBuilder.Entity<Delivery>()
                 .Property(d => d.Status)
                 .IsRequired();
-
-            modelBuilder.Entity<Delivery>()
-                .Property(d => d.Notes);
             #endregion
 
             #region Import
@@ -114,13 +156,26 @@ namespace Domain.Contexts
                 .IsRequired();
 
             modelBuilder.Entity<Import>()
-                .HasMany(i => i.Products);
+                .HasMany(i => i.Products)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Import>()
                 .HasOne(i => i.Provider);
 
             modelBuilder.Entity<Import>()
                 .Property(i => i.Status);
+            #endregion
+
+            #region ImportProduct
+            modelBuilder.Entity<ImportProduct>()
+                .HasKey(i => i.Id);
+
+            modelBuilder.Entity<ImportProduct>()
+                .HasOne(i => i.Product);
+
+            modelBuilder.Entity<ImportProduct>()
+                .Property(i => i.Count);
             #endregion
 
             #region Manufacture
@@ -144,13 +199,7 @@ namespace Domain.Contexts
                 .HasKey(p => p.Id);
 
             modelBuilder.Entity<Product>()
-            .Property<Guid>("CategoryForeignKey");
-
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Category)
-                .WithOne()
-                .HasForeignKey<Product>("CategoryForeignKey");
-
+                .HasOne(p => p.Category);
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.Count)
@@ -181,6 +230,9 @@ namespace Domain.Contexts
             modelBuilder.Entity<Product>()
                 .Property(p => p.VendorCode)
                 .IsRequired();
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Description);
             #endregion
 
             #region ProductCategory
@@ -213,9 +265,6 @@ namespace Domain.Contexts
                 .HasKey(p => p.Id);
 
             modelBuilder.Entity<Purchase>()
-                .HasOne(p => p.Contact);
-
-            modelBuilder.Entity<Purchase>()
                 .Property(p => p.CreatedDate)
                 .ValueGeneratedOnAdd();
 
@@ -224,7 +273,8 @@ namespace Domain.Contexts
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Purchase>()
-                .HasOne(p => p.Delivery);
+                .HasMany(p => p.DeliveryPurchases)
+                .WithOne(p => p.Purchase);
 
             modelBuilder.Entity<Purchase>()
                 .HasMany(p => p.PurchaseUnits)
@@ -233,6 +283,12 @@ namespace Domain.Contexts
             modelBuilder.Entity<Purchase>()
                 .Property(p => p.UpdatedDate)
                 .ValueGeneratedOnUpdate();
+
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.Status);
+
+            modelBuilder.Entity<Purchase>()
+                .Property(p => p.Notes);
             #endregion
 
             #region PurchaseUnits

@@ -12,7 +12,7 @@
       <th></th>
   </thead>
   <tbody>
-    <tr *ngFor="let returnPurchases of (returnPurchasesState | async); let i = index">
+    <tr *ngFor="let returnPurchases of (returnPurchases | async); let i = index">
       <ng-template 
       [ngTemplateOutlet]="loadTemplate(returnPurchases)"
       [ngTemplateOutletContext]="{ $implicit: returnPurchases, index: i }"></ng-template>
@@ -20,8 +20,8 @@
   </tbody>
 </table>
 <!-- <app-pager 
-  [currentPage]="(returnPurchasesState | async).pageInfo.currentPage"
-  [pagesCount]="(returnPurchasesState | async).pageInfo.pageCount()"></app-pager> -->
+  [currentPage]="(returnPurchases | async).pageInfo.currentPage"
+  [pagesCount]="(returnPurchases | async).pageInfo.pageCount()"></app-pager> -->
 
   <ng-template #readOnlyTemplate let-returnPurchases let-i="index">
     <td>{{i + 1}}</td>
@@ -40,7 +40,7 @@
 <ng-template #editTemplate let-i="index">
     <td>{{i + 1}}</td>
     <td>
-      <app-dropdown [valueList]="(purchasesState | async)" [selectedItem]="editedReturnPurchase.purchase" (onItemSelect)="onPurchaseSelect($event)"></app-dropdown>
+      <app-dropdown [valueList]="(purchases | async)" [selectedItem]="editedReturnPurchase.purchase" (onItemSelect)="onPurchaseSelect($event)"></app-dropdown>
     </td>
     <td>
         <my-date-picker [options]="datePickerOptions" name="returnPurchasesDate" [selDate]="

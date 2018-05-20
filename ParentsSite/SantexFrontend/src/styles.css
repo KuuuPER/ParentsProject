@@ -15,3 +15,25 @@ form.ng-invalid.ng-touched .error-text{
 form input.ng-invalid.ng-touched{
     border: 1px solid red;
 }
+.wrapper {
+  position: relative;
+  min-height: 100%;
+}
+
+input.ng-invalid.ng-touched{
+  border-color: red;
+}
+.error{
+  color: red;
+}
+.error{
+  display: none;
+}
+.text-danger{
+  display: none;
+}
+form.ng-invalid.ng-touched .error-text{
+  display: block;
+  margin-top: 15px;
+  color: red;
+}

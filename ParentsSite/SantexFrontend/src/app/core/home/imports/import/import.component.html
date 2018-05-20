@@ -1,16 +1,20 @@
-<h2>Создание поставки</h2>
+<h2>Создание прихода</h2>
 
-<form (ngSubmit)="addImport()" [formGroup]="importForm">
+<form (ngSubmit)="addImport()" [formGroup]="importForm" *ngIf="importForm != null">
   <div class="row">
     <div class="col-xs-12">
-      <button class="btn btn-success" [disabled]="!importForm.valid" type="submit">Сохранить</button>      
+      <button class="btn btn-success" [disabled]="!importForm.valid" type="submit" (click)="addImport()">Сохранить</button>      
     </div>        
   </div>
   <div class="row">
     <div class="col-xs-12">      
         <div class="col-sm-7 col-md-4 form-group">
           <label>Поставщик</label>
-          <div><app-dropdown [valueList]="(providers | async)" (onItemSelect)="onProviderSelect($event)"></app-dropdown></div>        
+          <div><app-dropdown-form
+            [form]="importForm.get('provider')"
+            [valueList]="providers"
+            [selectedItem]="provider"
+            [controlName]="'provider'"></app-dropdown-form></div>
         </div>
         <div class="col-sm-7 col-md-4 form-group">
           <label for="createdDate">Дата создания</label>
@@ -75,20 +79,23 @@
           <th>Количество</th>
           <th>Закупочная цена</th>
           <th>Фактическая цена</th>
-          <th><button class="btn btn-default" (click)="clearImportProducts()">Очистить</button></th>
+          <th><button class="btn btn-default" *ngIf="(importProducts | async).length > 0" (click)="clearImportProducts()">Очистить</button></th>
         </thead>
         <tbody>
-          <tr *ngFor="let product of importProducts; let i = index">
+          <tr *ngFor="let product of (importProducts | async); let i = index">
             <td>{{product.name}}</td>
             <td>{{product.vendorCode}}</td>
             <td>{{product.category.name}}</td>
             <td>{{product.count}}</td>
             <td>{{product.providerPrice}}</td>
             <td>{{product.storePrice}}</td>
-            <td><button class="btn btn-danger" (click)="deleteProductFromImport(i)">Убрать</button></td>
+            <td><button type="button" class="btn btn-danger" (click)="deleteProductFromImport(product)">Убрать</button></td>
           </tr>
         </tbody>
       </table>
+      <app-pager *ngIf="(importProductsPageInfo | async).pageCount() > 1"
+        [pageInfo]="(importProductsPageInfo | async)"
+        (onPageClick)="onImportProductsPageClicked($event)"></app-pager>
     </div>
   </div>
 
@@ -108,14 +115,17 @@
           <tr *ngFor="let product of (productsState | async)">
             <td>{{product.name}}</td>
             <td>{{product.vendorCode}}</td>
-            <td>{{product.category.Name}}</td>
+            <td>{{product.category.name}}</td>
             <td>{{product.count}}</td>
             <td>{{product.providerPrice}}</td>
             <td>{{product.storePrice}}</td>
-            <td><button class="btn btn-success" (click)="addProductToImport(product)">Добавить</button></td>
+            <td><button type="button" class="btn btn-success" (click)="addProductToImport(product)">Добавить</button></td>
           </tr>
         </tbody>
       </table>
+      <app-pager *ngIf="(productsPageInfo | async).pageCount() > 1"
+        [pageInfo]="(productsPageInfo | async)"
+        (onPageClick)="onPageClicked($event)"></app-pager>
     </div>
   </div>
 </form>

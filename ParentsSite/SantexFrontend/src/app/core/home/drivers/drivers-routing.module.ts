@@ -10,6 +10,9 @@ const appRoutes: Routes = [
     },
     {
         path: 'add', component: DriverComponent
+    },
+    {
+        path: 'edit/:id', component: DriverComponent
     }
   ];
 

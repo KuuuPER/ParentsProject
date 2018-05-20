@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
+import { PageInfo } from '../../src/PageInfo';
 
 @Component({
   selector: 'app-pager',
@@ -10,21 +11,23 @@ export class PagerComponent implements OnInit {
   @ViewChild('aLotItems') aLotItemsTemplate: TemplateRef<any>;
 
   @Input()
-  pagesCount: number;
-  @Input()
-  currentPage: number;
+  public pageInfo: PageInfo;  
 
-  Arr = Array;
-
-  
+  public Arr = Array;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  @Output() onPageClick = new EventEmitter<PageInfo>();
+  pageClick(pageNum: number){
+    this.pageInfo.currentPage = pageNum;
+    this.onPageClick.emit(this.pageInfo);
+  }
+
   loadTemplate(){
-    if(this.pagesCount <= 5){
+    if(this.pageInfo.pageCount() <= 5){
       return this.fewItemsTemplate;
     }
     else{

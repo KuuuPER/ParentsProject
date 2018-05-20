@@ -1,0 +1,38 @@
+div{
+    margin-top: 5px;
+}
+
+div.bg-success{
+    border: green solid 1px;
+    border-radius: 4px;
+}
+
+div.bg-warning{
+    border: olive solid 1px;
+    border-radius: 4px;
+}
+
+div.bg-danger{
+    border: red solid 1px;
+    border-radius: 4px;
+}
+
+div span{
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+div p{
+    margin: 5px 0;
+    display: inline-block;
+}
+div a{
+    cursor: pointer;
+    display: block;
+    background: url("/assets/close.png") no-repeat;
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    float: right;
+    margin: 6px 6px 0 0;
+}

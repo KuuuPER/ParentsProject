@@ -11,6 +11,6 @@
     <li routerLinkActive="active"><a routerLink='./return-purchases'>Возвраты</a></li>
   </ul>
   <div class="footer" (click)="sidebarToggle()">
-    <span for="hide" class="hide-panel">{{ hidden ? '>>' : '<<' }}</span>
+    <i for="hide" class="hide-panel" [ngClass]="hidden ? 'glyphicon glyphicon-menu-right' : 'glyphicon glyphicon-menu-left'"></i>
   </div>
 </div>

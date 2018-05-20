@@ -13,6 +13,8 @@ using System;
 using DataAccess;
 using Domain.Contexts;
 using Microsoft.AspNetCore.Authorization;
+using Services;
+using ParentsSite.Managers;
 
 namespace ParentsSite
 {
@@ -39,6 +41,42 @@ namespace ParentsSite
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connectionString));
             services.AddTransient<UnitOfWork>();
+            services.AddTransient<ProductCategoriesService>();
+            services.AddTransient<ProductCategoriesManager>();
+
+            services.AddTransient<ContactsService>();
+            services.AddTransient<ContactsManager>();
+
+            services.AddTransient<ManufacturesService>();
+            services.AddTransient<ManufacturesManager>();
+
+            services.AddTransient<ProductsService>();
+            services.AddTransient<ProductsManager>();
+
+            services.AddTransient<ProvidersService>();
+            services.AddTransient<ProvidersManager>();
+
+            services.AddTransient<ImportProductsService>();
+
+            services.AddTransient<ImportsService>();
+            services.AddTransient<ImportsManager>();
+
+            services.AddTransient<DeliveryPurchasesService>();
+
+            services.AddTransient<DeliveriesService>();
+            services.AddTransient<DeliveriesManager>();
+
+            services.AddTransient<DriversService>();
+            services.AddTransient<DriversManager>();
+
+            services.AddTransient<PurchasesService>();
+            services.AddTransient<PurchasesManager>();
+
+            services.AddTransient<PurchaseUnitsService>();
+            services.AddTransient<PurchaseUnitsManager>();
+
+            services.AddTransient<ReturnPurchasesService>();
+            services.AddTransient<ReturnPurchasesManager>();
 
             services.AddDbContext<IdentityDbContext>(options =>
                 options.UseSqlServer(connectionString));
@@ -116,6 +154,8 @@ namespace ParentsSite
                         };
                     });
 
+            services.AddCors();
+
             // Add framework services.
             services.AddMvc();
         }
@@ -131,6 +171,11 @@ namespace ParentsSite
                 var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
                 context.Database.EnsureCreated();
             }
+
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.Use(async (context, next) =>
             {

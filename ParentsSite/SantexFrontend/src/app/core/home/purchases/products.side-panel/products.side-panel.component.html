@@ -1,0 +1,35 @@
+
+
+    <div class="row">
+      <div class="col-xs-12">
+          <table class="table table-striped">
+              <thead>
+                <th>наименование</th>
+                <th>артикул</th>
+                <th>категория</th>
+                <th>производитель</th>
+                <th>поставщик</th>
+                <th>кол-во</th>
+                <th>цена поставщика</th>
+                <th>цена магазина</th>
+                <th></th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of (products | async)">
+                    <td>{{product.name}}</td>
+                    <td>{{product.vendorCode}}</td>
+                    <td>{{product.category.name}}</td>
+                    <td>{{product.manufacture.name}}</td>
+                    <td>{{product.provider.name}}</td>
+                    <td>{{product.count}}</td>
+                    <td>{{product.providerPrice}}</td>
+                    <td>{{product.storePrice}}</td>
+                    <td><input type="button" [disabled]="product.count === 0" class="btn btn-sm btn-success" value="добавить" (click)="addProductToPurchase(product)"></td>
+                  </tr>
+              </tbody>
+            </table>
+      </div>
+    </div>
+  <app-pager *ngIf="(pageInfo | async).pageCount() > 1"
+      [pageInfo]="(pageInfo | async)"
+      (onPageClick)="onPageClicked($event)"></app-pager>

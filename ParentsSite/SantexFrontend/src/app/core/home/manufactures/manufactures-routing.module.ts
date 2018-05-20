@@ -10,6 +10,9 @@ const appRoutes: Routes = [
     },
     {
         path: 'add', component: ManufactureComponent
+    },
+    {
+        path: 'edit/:id', component: ManufactureComponent
     }
   ];
 

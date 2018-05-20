@@ -1,0 +1,32 @@
+<div class="content">
+  <ul class="purchases">
+    <li *ngFor="let purchase of (purchases | async)">      
+      <span (click)="open = !open" style="cursor: pointer;">
+          <i [ngClass]="open ? 'glyphicon-menu-down' : 'glyphicon-menu-right'" class="glyphicon"></i>
+          {{purchase.address}}
+      </span>
+      <div [@showIn]="open" id="list" class="purchase-units_list">
+        <div class="purchases">
+          <table class="table table-striped">
+            <thead>
+              <th></th>
+              <th>Добавлено</th>
+              <th>наименование</th>
+              <th>цена магазина</th>
+              <th>количество</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let unit of purchase.purchaseUnits">
+                  <td><button [disabled]="unit.count === 0" class="btn btn-sm btn-success" value="добавить" (click)="addUnitToDelivery(unit, purchase.id)">Добавить</button></td>
+                  <td>{{(getUnitCount(unit.id) | async)}}</td>
+                  <td>{{unit.product.name}}</td>
+                  <td>{{unit.storePrice}}</td>
+                  <td>{{unit.count}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>      
+    </li>
+  </ul>
+</div>

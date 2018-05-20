@@ -1,6 +1,6 @@
-<h2>Добавление производителя</h2>
+<h2>Добавление поставщика</h2>
 
-<form (ngSubmit)="addProvider()" [formGroup]="providerForm">
+<form (ngSubmit)="addProvider()" novalidate *ngIf="providerForm != null" [formGroup]="providerForm">
   <div class="row">
     <div class="col-xs-12">
       <button class="btn btn-success" [disabled]="!providerForm.valid" type="submit">Сохранить</button>
@@ -16,13 +16,29 @@
           class="form-control"
           id="name"
           name="name"
-          formControlName="Name">
+          formControlName="name">
         </div>
         <div class="col-sm-5 form-group error">
-          <label for="name" class="">
+          <label for="name" class="error-text">
             *Поле необходимо заполнить
           </label>
         </div>
     </div>
   </div>
+  <div *ngFor="let contact of getContactsFromProviderForm().controls; let i = index" formArrayName="contacts">
+    <div class="panel panel-default" >
+        <div class="panel-heading">
+          <span>Контакт {{i + 1}}</span>
+          <span class="glyphicon glyphicon-remove pull-right" *ngIf="getContactsFromProviderForm().controls.length > 1" (click)="removeContact(i)"></span>
+        </div>
+        <div class="panel-body"  [formGroupName]="i">
+          <app-contact [form]="getContactsFromProviderForm().controls[i]"></app-contact>
+        </div>
+    </div>
+  </div>
+  <div class="margin-20">
+      <a (click)="addContact()" style="cursor: default">
+        Добавить контакт +
+      </a>
+    </div>
 </form>

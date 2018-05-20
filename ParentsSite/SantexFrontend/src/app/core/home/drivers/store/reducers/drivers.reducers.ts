@@ -4,7 +4,8 @@ import { DriverModel } from '../../src/DriverModel';
 import * as fromApp from '../../../../../store/app.reducers';
 import { PageInfo } from '../../../src/PageInfo';
 import { INameId } from '../../../src/INameId';
-import { DeliveryModel, DeliveryStatus } from '../../../deliveries/src/DeliveryModel';
+import { DeliveryStatus } from '../../../deliveries/src/DeliveryStatus';
+import { DriverDeliveryModel } from '../../src/DriverDeliveryModel';
 
 export interface FeatureState extends fromApp.AppState {
     drivers: State;
@@ -12,54 +13,37 @@ export interface FeatureState extends fromApp.AppState {
 
 export interface State{
     ids: string[],
-    drivers: {[id: string]: DriverModel};    
+    drivers: {[id: string]: DriverModel};
+    editedDriver: DriverModel,
     pageInfo: PageInfo;
 }
 
 const initialState: State = {
-    ids: ['0', '1', '2'],
-    drivers: {
-        '0':
-            {
-                id: '0',
-                name: 'Махмуд',
-                rate: 1,
-                notes: 'Нормально',
-                deliveries: [ new DeliveryModel('1', 'Северная 21, д. 2', 4, new Date(2018, 2, 25), null, DeliveryStatus.Delivered) ]
-            },
-        '1':
-            {
-                id: '1',
-                name: 'Аслан',
-                rate: 1,
-                notes: 'Нормально',
-                deliveries: [ new DeliveryModel('1', 'Северная 21, д. 2', 4, new Date(2018, 2, 25), null, DeliveryStatus.Delivered) ]
-            },
-        '2':
-            {
-                id: '2',
-                name: 'Руслан',
-                rate: 1,
-                notes: 'Нормально',
-                deliveries: [ new DeliveryModel('1', 'Северная 21, д. 2', 4, new Date(2018, 2, 25), null, DeliveryStatus.Delivered) ]
-            }},
-    pageInfo: new PageInfo(10, 3, 1)
+    ids: [],
+    drivers: {},
+    editedDriver: null,
+    pageInfo: null
 };
 
-export function driversReducer(state: State = initialState, action: Actions.DriverActions){
+export function driversReducer(state: State = initialState, action: Actions.DriverActions): State{
     switch (action.type) {
-        case Actions.SET_DRIVERS:
-        let driverModels :{[id: string]: DriverModel} = {};
-        (<DriverModel[]>action.payload).forEach(dm => driverModels[dm.id] = dm);
+        case Actions.SET_DRIVERS:        
+        const driverModels :{[id: string]: DriverModel} = {};        
+        const newIds = [];
+        if (action.payload) {
+            const drivers = [...(<DriverModel[]>action.payload)];
+            drivers.forEach(dm => {driverModels[dm.id] = dm; newIds.push(dm.id);});
+        }        
         return {
             ...state,
+            ids: [...newIds],
             drivers: driverModels
         };
         case Actions.ADD_DRIVER:
         if (Object.keys(state.drivers).length < state.pageInfo.itemsPerPage) {
             let newDriver: {[id: string]: DriverModel}= {};
             const payload= <DriverModel>action.payload;
-            newDriver[payload.id] = payload
+            newDriver[payload.id] = createDriverFromPayload(payload);
             return{
                 ...state,
                 drivers: {
@@ -94,10 +78,23 @@ export function driversReducer(state: State = initialState, action: Actions.Driv
         return {
             ...state,
             ids: [...ids],
-            categories: {...oldState.drivers},
+            drivers: {...oldState.drivers},
         };
-        case Actions.PREVIOUS_PAGE:
-        case Actions.NEXT_PAGE:
+        case Actions.SET_EDIT_DRIVER:
+        const driver = <DriverModel>action.payload;        
+        const editedDriver = createDriverFromPayload(driver);
+        return {
+            ...state,
+            editedDriver: editedDriver
+        };
+        case  Actions.SET_PAGEINFO:
+        const pageInfo = <PageInfo>action.payload;
+        const newPageInfo = new PageInfo(pageInfo.itemsPerPage, pageInfo.itemsCount, pageInfo.currentPage);
+        return <State>{
+            ...state,
+            pageInfo: newPageInfo
+        };
+        case Actions.CHANGE_PAGE:
         const newCurrentPage = <number>action.payload;
         return {
             ...state,
@@ -111,6 +108,18 @@ export function driversReducer(state: State = initialState, action: Actions.Driv
     }
 }
 
+function createDriverFromPayload(payload: DriverModel){
+    const newDriverDeliveries: DriverDeliveryModel[] = new Array<DriverDeliveryModel>();
+    if (payload.deliveries) {
+        let deliveries = [...payload.deliveries];
+        deliveries.forEach(d => newDriverDeliveries.push(new DriverDeliveryModel(d.id, d.deliveryDate, d.status, d.purchasesCount)))
+    }
+
+    return new DriverModel(payload.id, payload.name, payload.rate, payload.notes, newDriverDeliveries);
+}
+
 export const getDrivers = (state: State) => state.drivers;
 export const getIds = (state: State) => state.ids;
+export const getEditedDriver = (state: State) => state.editedDriver;
+export const getEditedDriverDeliveries = (state: State) => state.editedDriver.deliveries;
 export const getPageInfo = (state: State) => state.pageInfo;

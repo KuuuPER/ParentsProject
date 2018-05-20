@@ -46,6 +46,12 @@ export class ImportsListComponent implements OnInit {
     this.imports = this.store.select(fromSelectors.getAllImports);
     this.providers = this.store.select(fromSelectors.getAllProviders);
     this.pageInfo = this.store.select(fromSelectors.getPageInfo);
+
+    this.pageInfo
+    .take(1)
+    .subscribe((p) => {
+      this.store.dispatch(new Actions.FetchImports(p));
+    });
   }
 
   editImport(importModel: ImportModel){
@@ -57,7 +63,7 @@ export class ImportsListComponent implements OnInit {
       importModel.importDate,
       importModel.finishDate);
 
-    this.editedImport.status = importModel.status;
+    this.editedImport.statusStr = importModel.statusStr;
   }
 
   deleteImport(id: string){
@@ -90,6 +96,15 @@ export class ImportsListComponent implements OnInit {
 
   cancel(){
     this.editedImport = null;
+  }
+
+  onPageClicked(pageInfo: PageInfo){
+    this.store.dispatch(new Actions.FetchImports(pageInfo));
+    this.store.dispatch(new Actions.ChangePage(pageInfo.currentPage));
+  }
+
+  getItemNumber(info: PageInfo, index: number): number{
+    return info.itemsPerPage * (info.currentPage - 1) + index + 1;
   }
 
   loadTemplate(importModel: ImportModel){

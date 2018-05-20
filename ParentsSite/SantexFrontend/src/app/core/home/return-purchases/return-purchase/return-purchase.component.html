@@ -10,8 +10,8 @@
     <div class="col-xs-12">
       <div class="col-sm-5 form-group">
         <label for="purchase">Покупка</label>
-        <!-- <app-dropdown [valueList]="(purchasesState | async).purchases" (onItemSelect)="onPurchaseSelect($event)"></app-dropdown> -->
-        <div><app-dropdown [valueList]="(purchasesState | async)" (onItemSelect)="onPurchaseSelect($event)"></app-dropdown></div>
+        <!-- <app-dropdown [valueList]="(purchases | async).purchases" (onItemSelect)="onPurchaseSelect($event)"></app-dropdown> -->
+        <div><app-dropdown [valueList]="(purchases | async)" (onItemSelect)="onPurchaseSelect($event)"></app-dropdown></div>
         
       </div>
       <div class="col-sm-5 form-group">

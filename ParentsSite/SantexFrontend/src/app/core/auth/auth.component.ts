@@ -12,7 +12,7 @@ import * as AuthActions from './store/auth.actions';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-  authForm: FormGroup
+  public authForm: FormGroup
   constructor(private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
